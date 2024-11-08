@@ -1,14 +1,25 @@
 <div class="sinal-container">
-    <div class="row">
-    <select (change)="changeUF()" [(ngModel)]="selectedUF">
+    <!-- <p-dropdown [options]="ufs" [(ngModel)]="uf" [checkmark]="true" optionLabel="sigla" [showClear]="true" /> -->
+    <!-- <p-autoComplete (onSelect)="changeUF()" placeholder="Estado" [(ngModel)]="uf" [dropdown]="true" [suggestions]="filteredUFs"
+            (completeMethod)="filterUFs($event)" field="sigla" />
+
+        <p-autoComplete (onSelect)="changeCidade()" placeholder="Município" [forceSelection]="true" [(ngModel)]="cidade" [virtualScroll]="true"
+            [suggestions]="filteredCidades" (completeMethod)="filterCidades($event)" dropdown="true" field="nome" /> -->
+    <!-- 
+        <select (change)="changeUF()" [(ngModel)]="selectedUF">
             <option selected value="0">Estado</option>
             <option *ngFor="let u of ufs, index as i" value="{{i}}">{{u?.sigla}}</option>
-        </select>
-        <select (change)="changeCidade()" [(ngModel)]="selectedCidade">
+        </select> -->
+
+    <!-- <select (change)="changeCidade()" [(ngModel)]="selectedCidade">
             <option selected value="0">Cidade</option>
             <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
-        </select>
-    </div>
+        </select> -->
+    
+    
+    
+    
+    
 </div>
 <div class="map-container">
     <div class="map-frame">

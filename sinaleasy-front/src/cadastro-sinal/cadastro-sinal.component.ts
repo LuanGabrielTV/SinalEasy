@@ -3,28 +3,34 @@ import { AddressService } from '../services/address.service';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 @Component({
   selector: 'app-cadastro-sinal',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule],
   templateUrl: './cadastro-sinal.component.html',
   styleUrl: './cadastro-sinal.component.scss'
 })
 export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   private map!: L.Map;
-  ufs: UF[] = [];
-  cidades: Cidade[] = [];
+  ufs: UF[] | undefined;
+  cidades: Cidade[] | undefined;
   cidade: Cidade | undefined;
   uf: UF | undefined;
   selectedUF: number = -1;
-  selectedCidade: number = -1;
   brasiliaCoord: L.LatLng | undefined;
+  filteredCidades: any[] = [];
+  filteredUFs: any[] = [];
 
   constructor(private addressService: AddressService) { }
 
   ngOnInit() {
+    this.ufs = [];
+    this.cidades = [];
     this.brasiliaCoord = new L.LatLng(-15.47, -47.56);
     this.addressService.getUFs().subscribe((response) => {
       response.forEach((r) => {
@@ -32,7 +38,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         u.sigla = r['sigla'];
         u.id = r['id'];
         u.nome = r['nome'];
-        this.ufs.push(u);
+        this.ufs?.push(u);
       });
     });
   }
@@ -41,28 +47,58 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     this.initMap();
   }
 
+  filterCidades(event: AutoCompleteCompleteEvent) {
+
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.cidades as any[]).length; i++) {
+      let item = (this.cidades as any[])[i];
+      if (item.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(item);
+      }
+    }
+    this.filteredCidades = filtered;
+  }
+
+  filterUFs(event: AutoCompleteCompleteEvent) {
+
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.ufs as any[]).length; i++) {
+      let item = (this.ufs as any[])[i];
+      if (item.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(item);
+      }
+    }
+    this.filteredUFs = filtered;
+  }
+
   changeUF() {
-    this.selectedCidade = 0;
+    console.log(this.uf);
+    this.cidade = undefined;
     this.cidades = [];
     this.map.panTo(this.brasiliaCoord!);
-    let address = this.ufs[this.selectedUF]?.nome! + ', Brazil';
+    let address = this.uf?.nome + ', Brazil';
+    console.log(address);
     this.goToAdress(address, 7);
     this.loadCidades();
   }
 
   changeCidade() {
-    let address = this.cidades[this.selectedCidade].nome + ', ' + this.ufs[this.selectedUF]?.nome! + ', Brazil';
+    let address = this.cidade?.nome + ', ' + this.ufs![this.selectedUF]?.nome! + ', Brazil';
     this.goToAdress(address, 13);
   }
 
   loadCidades() {
-    this.addressService.getCidadesByUF(this.ufs[this.selectedUF]?.id!).subscribe((response) => {
+    this.addressService.getCidadesByUF(this.ufs![this.selectedUF]?.id!).subscribe((response) => {
       response.forEach((r) => {
         let c = new Cidade();
         c.nome = r['nome'];
         c.id = r['id'];
-        this.cidades.push(r);
-      })
+        this.cidades?.push(r);
+      });
     });
   }
 
