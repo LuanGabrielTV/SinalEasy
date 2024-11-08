@@ -22,4 +22,14 @@ export class AddressService {
     return this.httpClient.get<[]>(url);
   }
 
+  getCidadesByUF(UF: string){
+    let url = this.urlIBGE + 'estados/' + UF + '/municipios/';
+    return this.httpClient.get<[]>(url);
+  }
+
+  getCoordinates(address: string) {
+    let url = this.urlGeo + 'search?q='+ address +'&api_key='+this.key;
+    return this.httpClient.get<[]>(url);
+  }
+
 }

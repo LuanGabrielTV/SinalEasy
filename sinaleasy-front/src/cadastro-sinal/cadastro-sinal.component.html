@@ -1,1 +1,17 @@
-<p>cadastro-sinal works!</p>
+<div class="sinal-container">
+    <div class="row">
+    <select (change)="changeUF()" [(ngModel)]="selectedUF">
+            <option selected value="0">Estado</option>
+            <option *ngFor="let u of ufs, index as i" value="{{i}}">{{u?.sigla}}</option>
+        </select>
+        <select (change)="changeCidade()" [(ngModel)]="selectedCidade">
+            <option selected value="0">Cidade</option>
+            <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
+        </select>
+    </div>
+</div>
+<div class="map-container">
+    <div class="map-frame">
+        <div id="map"></div>
+    </div>
+</div>

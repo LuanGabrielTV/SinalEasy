@@ -1,0 +1,36 @@
+body{
+    margin:none;
+    padding: none;
+}
+
+.map-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    margin: 1%;
+}
+
+.map-frame {
+    border-radius: 15px;
+    height: 96vh;
+}
+
+#map {
+    height: 100%;
+    border-radius: 15px;
+    // margin: 1%;
+}
+
+.sinal-container{
+    height: 92vh;
+    width:45%;
+    position: absolute;
+    left:0;
+    top:0;
+    margin: 1%;
+    border-radius: 15px;
+    padding: 1%;
+}
+
