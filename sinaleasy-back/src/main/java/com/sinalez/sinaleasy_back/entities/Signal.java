@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.models;
+package com.sinalez.sinaleasy_back.entities;
 
 import java.util.UUID;
 
