@@ -1,28 +1,49 @@
-<div class="sinal-container">
-    <!-- <p-dropdown [options]="ufs" [(ngModel)]="uf" [checkmark]="true" optionLabel="sigla" [showClear]="true" /> -->
-    <!-- <p-autoComplete (onSelect)="changeUF()" placeholder="Estado" [(ngModel)]="uf" [dropdown]="true" [suggestions]="filteredUFs"
-            (completeMethod)="filterUFs($event)" field="sigla" />
+<body>
+    <div class="container">
+        <div class="sinal-container">
+            <!--<p-dropdown [options]="ufs" [(ngModel)]="uf" [checkmark]="true" optionLabel="sigla" [showClear]="true" /> -->
+            <p-autoComplete (onSelect)="changeUF()" placeholder="Estado" [(ngModel)]="uf" [dropdown]="true"
+                [suggestions]="filteredUFs" (completeMethod)="filterUFs($event)" field="sigla" />
 
-        <p-autoComplete (onSelect)="changeCidade()" placeholder="Município" [forceSelection]="true" [(ngModel)]="cidade" [virtualScroll]="true"
-            [suggestions]="filteredCidades" (completeMethod)="filterCidades($event)" dropdown="true" field="nome" /> -->
-    <!-- 
-        <select (change)="changeUF()" [(ngModel)]="selectedUF">
-            <option selected value="0">Estado</option>
-            <option *ngFor="let u of ufs, index as i" value="{{i}}">{{u?.sigla}}</option>
-        </select> -->
+            <p-autoComplete (onSelect)="changeCidade()" placeholder="Município" [forceSelection]="true"
+                [(ngModel)]="cidade" [virtualScroll]="true" [suggestions]="filteredCidades"
+                (completeMethod)="filterCidades($event)" dropdown="true" field="nome" />
+            <!-- 
+            <select (change)="changeUF()" [(ngModel)]="selectedUF">
+                <option selected value="0">Estado</option>
+                <option *ngFor="let u of ufs, index as i" value="{{i}}">{{u?.sigla}}</option>
+            </select> 
 
-    <!-- <select (change)="changeCidade()" [(ngModel)]="selectedCidade">
-            <option selected value="0">Cidade</option>
-            <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
-        </select> -->
-    
-    
-    
-    
-    
-</div>
-<div class="map-container">
-    <div class="map-frame">
-        <div id="map"></div>
+            <select (change)="changeCidade()" [(ngModel)]="selectedCidade">
+                <option selected value="0">Cidade</option>
+                <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
+            </select> -->
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <p class="title">Crie um <br>sinal</p>
+                <div class="row">
+                    <label for="nome">O que você deseja sinalizar?</label><br>
+                    <input id="nome" placeholder="Dê um sinal" type="text" formControlName="nome">
+                </div>
+
+                <div class="row">
+                    <label for="tipo">Tipo</label><br>
+                    <select id="tipo" formControlName="tipo"></select>
+                </div>
+
+                <div class="row">
+                    <label for="senha">Digite uma senha</label><br>
+                    <input id="senha" placeholder="Digite 8-16 caracteres" type="password" formControlName="senha">
+                </div>
+
+                <div class="row">
+                    <button type="submit">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+        <div class="map-container">
+            <div class="map-frame">
+                <div id="map"></div>
+            </div>
+        </div>
     </div>
-</div>
+</body>

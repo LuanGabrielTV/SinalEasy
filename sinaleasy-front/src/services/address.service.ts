@@ -32,4 +32,10 @@ export class AddressService {
     return this.httpClient.get<[]>(url);
   }
 
+  getAddress(lat: number, long: number) {
+    let url = this.urlGeo + 'reverse?lat=' + lat + '&lon=' + long + '&api_key=' + this.key;
+    return this.httpClient.get(url);
+  }
+
+
 }

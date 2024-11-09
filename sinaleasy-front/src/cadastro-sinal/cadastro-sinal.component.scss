@@ -1,35 +1,49 @@
 body{
-    margin:none;
-    padding: none;
-}
-
-.map-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 50%;
-    margin: 1%;
-}
-
-.map-frame {
-    border-radius: 15px;
-    height: 96vh;
-}
-
-#map {
-    height: 100%;
-    border-radius: 15px;
-    // margin: 1%;
+    margin:0 ;
+    padding: 0;
 }
 
 .sinal-container{
-    height: 92vh;
-    width:45%;
+    flex: 1;
+}
+
+.map-container{
+    flex: 1;
+}
+
+#map{
+    height: 100vh;
+}
+
+.container{
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    font-family: 'Inter';
+}
+
+.title {
+    font-weight: 800;
+    font-size: 4vh;
+    line-height: 5vh;
+    letter-spacing: -.5px;
+    margin-bottom: 10%;
     position: absolute;
-    left:0;
-    top:0;
-    margin: 1%;
-    border-radius: 15px;
-    padding: 1%;
+    top:10%;
+    left:10%;
+}
+
+label {
+    font-weight: 700;
+    font-size: 1.8vh;
+    letter-spacing: -.2px;
+}
+
+form{
+    
 }

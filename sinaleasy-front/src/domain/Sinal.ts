@@ -5,7 +5,7 @@ export class Sinal{
     data: Date | undefined;
     endereco: string | undefined;
     descricao: string | undefined;
-    tipos: Array<Tipo> | undefined;
+    tipo: Tipo | undefined;
     lat: number | undefined;
     long: number | undefined;
     tamanho: number | undefined;
