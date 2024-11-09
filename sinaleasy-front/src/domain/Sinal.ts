@@ -9,4 +9,5 @@ export class Sinal{
     lat: number | undefined;
     long: number | undefined;
     tamanho: number | undefined;
+    status: string | undefined;
 }

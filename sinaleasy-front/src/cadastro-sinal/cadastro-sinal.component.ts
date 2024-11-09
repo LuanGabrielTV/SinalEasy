@@ -83,6 +83,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.initMap();
+    this.getLocationFromBrowser();
     this.map.on("click", (e) => {
       // this.addMarker(e);
     });
