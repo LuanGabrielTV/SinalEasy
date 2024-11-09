@@ -2,12 +2,12 @@
     <div class="container">
         <div class="sinal-container">
             <!--<p-dropdown [options]="ufs" [(ngModel)]="uf" [checkmark]="true" optionLabel="sigla" [showClear]="true" /> -->
-            <p-autoComplete (onSelect)="changeUF()" placeholder="Estado" [(ngModel)]="uf" [dropdown]="true"
-                [suggestions]="filteredUFs" (completeMethod)="filterUFs($event)" field="sigla" />
+            <p-autoComplete (onSelect)="changeState()" placeholder="Estado" [(ngModel)]="state" [dropdown]="true"
+                [suggestions]="filteredStates" (completeMethod)="filterStates($event)" field="sigla" />
 
-            <p-autoComplete (onSelect)="changeCidade()" placeholder="Município" [forceSelection]="true"
-                [(ngModel)]="cidade" [virtualScroll]="true" [suggestions]="filteredCidades"
-                (completeMethod)="filterCidades($event)" dropdown="true" field="nome" />
+            <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
+                [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
+                (completeMethod)="filterCities($event)" dropdown="true" field="name" />
             <!-- 
             <select (change)="changeUF()" [(ngModel)]="selectedUF">
                 <option selected value="0">Estado</option>

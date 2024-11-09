@@ -17,13 +17,13 @@ export class AddressService {
     this.key = '6728f77b2972b120799548croaf5401';
   }
 
-  getUFs(){
+  getStates(){
     let url = this.urlIBGE + 'estados';
     return this.httpClient.get<[]>(url);
   }
 
-  getCidadesByUF(UF: string){
-    let url = this.urlIBGE + 'estados/' + UF + '/municipios/';
+  getCitiesByState(state: string){
+    let url = this.urlIBGE + 'estados/' + state + '/municipios/';
     return this.httpClient.get<[]>(url);
   }
 

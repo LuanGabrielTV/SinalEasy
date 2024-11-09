@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { Sinal } from '../domain/Sinal';
-import { Cidade } from '../domain/Cidade';
+import { Signal } from '../domain/Signal';
+import { City } from '../domain/City';
 
 
 @Component({
@@ -20,33 +20,33 @@ import { Cidade } from '../domain/Cidade';
 export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   private map!: L.Map;
-  ufs: UF[] | undefined;
-  cidades: Cidade[] | undefined;
-  cidade: Cidade | undefined;
-  uf: UF | undefined;
-  selectedUF: number = -1;
+  states: State[] | undefined;
+  cities: City[] | undefined;
+  city: City | undefined;
+  state: State | undefined;
+  selectedState: number = -1;
   brasiliaCoord: L.LatLng | undefined;
-  filteredCidades: any[] = [];
-  filteredUFs: any[] = [];
+  filteredCities: City[] = [];
+  filteredStates: State[] = [];
   form: FormGroup;
-  sinal: Sinal;
+  signal: Signal;
   marker: L.Marker | undefined;
   address: string;
 
   constructor(private fBuilder: FormBuilder, private addressService: AddressService) {
-    this.sinal = new Sinal();
+    this.signal = new Signal();
     this.form = this.fBuilder.group({
-      'nome': [this.sinal.nome, Validators.compose([
+      'name': [this.signal.name, Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(255),
         Validators.required])],
-      'tipo': [this.sinal.tipo, Validators.compose([
+      'tipo': [this.signal.type, Validators.compose([
         Validators.required])],
-      'data': [this.sinal.data, Validators.compose([
+      'data': [this.signal.date, Validators.compose([
         Validators.required])],
-      'estado': [this.cidade?.estado, Validators.compose([
+      'estado': [this.city?.state, Validators.compose([
         Validators.required])],
-      'cidade': [this.cidade?.nome, Validators.compose([
+      'city': [this.city?.name, Validators.compose([
         Validators.required])]
     });
     this.marker = undefined;
@@ -54,20 +54,22 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.ufs = [];
-    this.cidades = [];
+    this.states = [];
+    this.cities = [];
     this.brasiliaCoord = new L.LatLng(-15.47, -47.56);
-    this.addressService.getUFs().subscribe((response) => {
+    this.loadStates();
+  }
+
+  loadStates() {
+    this.addressService.getStates().subscribe((response) => {
       response.forEach((r) => {
-        let u = new UF();
+        let u = new State();
         u.sigla = r['sigla'];
         u.id = r['id'];
-        u.nome = r['nome'];
-        this.ufs?.push(u);
+        u.name = r['nome'];
+        this.states?.push(u);
       });
     });
-
-
   }
 
 
@@ -90,16 +92,16 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   }
 
-  getLocationFromBrowser(){
+  getLocationFromBrowser() {
     let location = navigator.geolocation.getCurrentPosition((pos) => {
       let coords = new L.LatLng(pos.coords.latitude, pos.coords.longitude);
       this.map.panTo(coords);
       this.addressService.getAddress(pos.coords.latitude, pos.coords.longitude).subscribe((response) => {
         let estado = response['address' as keyof object]['state'];
-        this.ufs?.forEach((e) => {
-          if (e.nome == estado) {
-            this.uf = e;
-            this.loadCidades();
+        this.states?.forEach((e) => {
+          if (e.name == estado) {
+            this.state = e;
+            this.loadCities();
           }
         })
       })
@@ -110,56 +112,59 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  filterCidades(event: AutoCompleteCompleteEvent) {
+  filterCities(event: AutoCompleteCompleteEvent) {
 
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.cidades as any[]).length; i++) {
-      let item = (this.cidades as any[])[i];
-      if (item.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+    for (let i = 0; i < (this.cities as City[]).length; i++) {
+      let item = (this.cities as City[])[i];
+      if (item.name!.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(item);
       }
     }
-    this.filteredCidades = filtered;
+    this.filteredCities = filtered;
   }
 
-  filterUFs(event: AutoCompleteCompleteEvent) {
+  filterStates(event: AutoCompleteCompleteEvent) {
 
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.ufs as any[]).length; i++) {
-      let item = (this.ufs as any[])[i];
-      if (item.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+    for (let i = 0; i < (this.states as any[]).length; i++) {
+      let item = (this.states as any[])[i];
+      if (item.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(item);
       }
     }
-    this.filteredUFs = filtered;
+    this.filteredStates = filtered;
   }
 
-  changeUF() {
-    this.cidade = undefined;
-    this.cidades = [];
+  changeState() {
+    this.city = undefined;
+    this.cities = [];
     this.map.panTo(this.brasiliaCoord!);
-    let address = this.uf?.nome + ', Brazil';
+    let address = this.state?.name + ', Brazil';
     this.goToAdress(address, 7);
-    this.loadCidades();
+    this.loadCities();
   }
 
-  changeCidade() {
-    let address = this.cidade?.nome + ', ' + this.uf?.nome! + ', Brazil';
+  changeCity() {
+    console.log(this.city);
+    let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
+    console.log(address)
     this.goToAdress(address, 13);
   }
 
-  loadCidades() {
-    this.addressService.getCidadesByUF(this.uf?.id!).subscribe((response) => {
+  loadCities() {
+    this.addressService.getCitiesByState(this.state?.id!).subscribe((response) => {
       response.forEach((r) => {
-        let c = new Cidade();
-        c.nome = r['nome'];
+        let c = new City();
+        c.name = r['nome'];
         c.id = r['id'];
-        this.cidades?.push(r);
+        this.cities?.push(c);
       });
+      console.log(this.cities)
     });
   }
 
@@ -184,9 +189,9 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
 }
 
-class UF {
+class State {
   sigla: string | undefined;
   id: string | undefined;
-  nome: string | undefined;
+  name: string | undefined;
 }
 
