@@ -8,12 +8,15 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { Signal } from '../domain/Signal';
 import { City } from '../domain/City';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DividerModule } from 'primeng/divider';
+
 
 
 @Component({
   selector: 'app-cadastro-sinal',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule],
   templateUrl: './cadastro-sinal.component.html',
   styleUrl: './cadastro-sinal.component.scss'
 })
@@ -40,14 +43,16 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         Validators.minLength(2),
         Validators.maxLength(255),
         Validators.required])],
-      'tipo': [this.signal.type, Validators.compose([
+      'type': [this.signal.type, Validators.compose([
         Validators.required])],
-      'data': [this.signal.date, Validators.compose([
+      'date': [this.signal.date, Validators.compose([
         Validators.required])],
-      'estado': [this.city?.state, Validators.compose([
+      'state': [this.city?.state, Validators.compose([
         Validators.required])],
       'city': [this.city?.name, Validators.compose([
-        Validators.required])]
+        Validators.required])],
+      'description': [this.signal?.description, Validators.compose([
+        Validators.required])],
     });
     this.marker = undefined;
     this.address = '';
@@ -100,6 +105,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         let estado = response['address' as keyof object]['state'];
         this.states?.forEach((e) => {
           if (e.name == estado) {
+            this.form.get('state')?.setValue(e);
             this.state = e;
             this.loadCities();
           }
@@ -141,30 +147,30 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   changeState() {
-    this.city = undefined;
+    this.form.get('city')?.reset();
     this.cities = [];
-    this.map.panTo(this.brasiliaCoord!);
-    let address = this.state?.name + ', Brazil';
-    this.goToAdress(address, 7);
+    this.filteredCities = [];
+    console.log(this.cities)
+    console.log(this.filteredCities)
     this.loadCities();
+    this.map.panTo(this.brasiliaCoord!);
+    let address = this.form.get('state')?.value?.name + ', Brazil';
+    this.goToAdress(address, 7);
   }
 
   changeCity() {
-    console.log(this.city);
-    let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
-    console.log(address)
+    let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
     this.goToAdress(address, 13);
   }
 
   loadCities() {
-    this.addressService.getCitiesByState(this.state?.id!).subscribe((response) => {
+    this.addressService.getCitiesByState(this.form.get('state')?.value?.id!).subscribe((response) => {
       response.forEach((r) => {
         let c = new City();
         c.name = r['nome'];
         c.id = r['id'];
         this.cities?.push(c);
       });
-      console.log(this.cities)
     });
   }
 

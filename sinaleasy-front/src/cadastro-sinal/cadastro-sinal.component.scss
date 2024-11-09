@@ -1,30 +1,39 @@
-body{
-    margin:0 ;
+body {
+    margin: -10px;
+    // padding: -10px;
+}
+
+.sinal-container {
+    margin: 0;
     padding: 0;
-}
-
-.sinal-container{
     flex: 1;
 }
 
-.map-container{
+.map-container {
     flex: 1;
+    margin: 0;
 }
 
-#map{
-    height: 100vh;
-}
-
-.container{
-    display: flex;
+#map {
+    height: 99vh;
     margin: 0;
     padding: 0;
 }
 
+.container {
+    display: flex;
+    margin: 0;
+    // padding: -1%;
+    width: 100%;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 * {
     font-family: 'Inter';
+    margin: none;
+    padding: none;
 }
 
 .title {
@@ -32,18 +41,81 @@ body{
     font-size: 4vh;
     line-height: 5vh;
     letter-spacing: -.5px;
-    margin-bottom: 10%;
-    position: absolute;
-    top:10%;
-    left:10%;
+    margin-bottom: 5%;
 }
 
 label {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.8vh;
-    letter-spacing: -.2px;
+    // letter-spacing: -.2px;
+    font-family: 'Figtree';
 }
 
-form{
-    
+form {
+    padding: 2%;
+    padding-top: 0.2%;
+    padding-right: 0.6%;
+    border-radius: 14px;
+    border: 2px solid #f2f2f2;
+    width: 30%;
+    position: absolute;
+    top: 15%;
+    left: 19%;
+}
+
+input,
+select,
+textarea {
+    resize: none;
+    font-size: 1.5vh;
+    width: 100%;
+    background-color: #f2f2f2;
+    padding: 3%;
+    outline: none;
+    border: none;
+    margin-top: 2%;
+    border-radius: 8px;
+}
+
+.row {
+    margin-bottom: 5%;
+    display: flex;
+}
+
+.row>div {
+    width: 100%;
+    margin-right: 5%;
+}
+
+#tipo,
+#data {
+    width: 100%;
+    padding: 5%;
+    border-right: 15px solid transparent;
+}
+
+select>option {
+    color: #555;
+    background-color: rgb(247, 247, 247);
+    background-image: none;
+    font-size: 18px;
+    height: 50px;
+    padding: 15px;
+    border: none;
+    box-shadow: none;
+    border-radius: 14px;
+    outline: none !important;
+}
+
+b {
+    font-weight: normal;
+    font-size: small;
+    color: #555;
+}
+
+::ng-deep {
+    .p-autoComplete {
+        outline: none !important;
+    }
+
 }

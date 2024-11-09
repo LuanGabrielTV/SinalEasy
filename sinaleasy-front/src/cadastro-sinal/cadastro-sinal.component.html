@@ -2,12 +2,9 @@
     <div class="container">
         <div class="sinal-container">
             <!--<p-dropdown [options]="ufs" [(ngModel)]="uf" [checkmark]="true" optionLabel="sigla" [showClear]="true" /> -->
-            <p-autoComplete (onSelect)="changeState()" placeholder="Estado" [(ngModel)]="state" [dropdown]="true"
-                [suggestions]="filteredStates" (completeMethod)="filterStates($event)" field="sigla" />
 
-            <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
-                [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
-                (completeMethod)="filterCities($event)" dropdown="true" field="name" />
+
+
             <!-- 
             <select (change)="changeUF()" [(ngModel)]="selectedUF">
                 <option selected value="0">Estado</option>
@@ -21,18 +18,47 @@
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <p class="title">Crie um <br>sinal</p>
                 <div class="row">
-                    <label for="nome">O que você deseja sinalizar?</label><br>
-                    <input id="nome" placeholder="Dê um sinal" type="text" formControlName="nome">
+                    <div>
+                        <label for="name">Nome</label><br>
+                        <input id="name" placeholder="Dê um sinal" type="text" formControlName="name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="type">Tipo</label><br>
+                        <select id="type" formControlName="type">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="date">Data</label><br>
+                        <input id="date" placeholder="dd-mm-yyyy" type="date" formControlName="date">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="description">Descrição</label><br>
+                        <textarea id="description" placeholder="Descreva a situação" type="text"
+                            formControlName="description"></textarea>
+                    </div>
+                </div>
+
+                <div style="width: 95%;">
+                    <p-divider align="left" type="solid">
+                        <b>Endereço</b>
+                    </p-divider>
                 </div>
 
                 <div class="row">
-                    <label for="tipo">Tipo</label><br>
-                    <select id="tipo" formControlName="tipo"></select>
-                </div>
-
-                <div class="row">
-                    <label for="senha">Digite uma senha</label><br>
-                    <input id="senha" placeholder="Digite 8-16 caracteres" type="password" formControlName="senha">
+                    <div>
+                        <p-autoComplete (onSelect)="changeState()" placeholder="Estado" formControlName="state"
+                            [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
+                            field="sigla" />
+                    </div>
+                    <div>
+                        <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
+                            formControlName="city" [virtualScroll]="true" [suggestions]="filteredCities"
+                            (completeMethod)="filterCities($event)" dropdown="true" field="name" />
+                    </div>
                 </div>
 
                 <div class="row">
