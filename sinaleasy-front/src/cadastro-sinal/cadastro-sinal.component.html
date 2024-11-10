@@ -52,13 +52,14 @@
                     <div>
                         <p-autoComplete (onSelect)="changeState()" placeholder="Estado" formControlName="state"
                             [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
-                            field="sigla" />
+                            field="name" />
                     </div>
                     <div>
                         <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
                             formControlName="city" [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
-                    </div>
+                    </div><br>
+                    <small stye=" flex-basis: 100%;">{{address}}</small>
                 </div>
 
                 <div class="row">

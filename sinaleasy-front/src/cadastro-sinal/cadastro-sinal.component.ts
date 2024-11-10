@@ -26,14 +26,13 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   states: State[] | undefined;
   cities: City[] | undefined;
   city: City | undefined;
-  state: State | undefined;
   selectedState: number = -1;
   brasiliaCoord: L.LatLng | undefined;
   filteredCities: City[] = [];
   filteredStates: State[] = [];
   form: FormGroup;
   signal: Signal;
-  marker: L.Marker | undefined;
+  marker: L.CircleMarker | undefined;
   address: string;
 
   constructor(private fBuilder: FormBuilder, private addressService: AddressService) {
@@ -90,32 +89,40 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.initMap();
-    this.getLocationFromBrowser();
     this.map.on("click", (e) => {
-      // this.addMarker(e);
+      this.addMarker(e);
     });
 
   }
 
-  getLocationFromBrowser() {
-    let location = navigator.geolocation.getCurrentPosition((pos) => {
-      let coords = new L.LatLng(pos.coords.latitude, pos.coords.longitude);
-      this.map.panTo(coords);
-      this.addressService.getAddress(pos.coords.latitude, pos.coords.longitude).subscribe((response) => {
-        let estado = response['address' as keyof object]['state'];
-        this.states?.forEach((e) => {
-          if (e.name == estado) {
-            this.form.get('state')?.setValue(e);
-            this.state = e;
-            this.loadCities();
-          }
-        })
-      })
+  addMarker(e: L.LeafletMouseEvent) {
+    if (this.marker == undefined) {
+      this.marker = L.circleMarker([e.latlng.lat, e.latlng.lng]);
+      this.marker.addTo(this.map);
+    }
+    this.marker.setLatLng(e.latlng);
+    this.marker.redraw();
 
+    this.loadAddress(e.latlng.lat, e.latlng.lng);
+  }
 
-    }, () => {
-      console.log('erro');
+  loadAddress(lat: number, lng: number) {
+    this.addressService.getAddress(lat, lng).subscribe((response) => {
+      let responseAddress = response['address' as keyof Object];
+      let keys = ([Object.keys(responseAddress)[0], Object.keys(responseAddress)[1]])
+      this.address = (responseAddress[keys[0] as keyof Object] as unknown as string) + ', ' + (responseAddress[keys[1] as keyof Object] as unknown as string);
+      this.loadStateFromAddress(response);
     });
+  }
+
+  loadStateFromAddress(response: Object) {
+    let estado = response['address' as keyof object]['state'];
+    this.states?.forEach((e) => {
+      if (e.name == estado) {
+        this.form.get('state')?.setValue(e);
+        this.loadCities();
+      }
+    })
   }
 
   filterCities(event: AutoCompleteCompleteEvent) {
@@ -150,8 +157,6 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     this.form.get('city')?.reset();
     this.cities = [];
     this.filteredCities = [];
-    console.log(this.cities)
-    console.log(this.filteredCities)
     this.loadCities();
     this.map.panTo(this.brasiliaCoord!);
     let address = this.form.get('state')?.value?.name + ', Brazil';
@@ -160,7 +165,9 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   changeCity() {
     let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
-    this.goToAdress(address, 13);
+    if (this.marker == undefined) {
+      this.goToAdress(address, 13);
+    }
   }
 
   loadCities() {
@@ -171,6 +178,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         c.id = r['id'];
         this.cities?.push(c);
       });
+      this.filteredCities = Array.from(this.cities!);
     });
   }
 
