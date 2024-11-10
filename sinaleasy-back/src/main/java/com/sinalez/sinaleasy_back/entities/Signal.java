@@ -17,7 +17,6 @@ public class Signal {
     private String description;
     private TypeOfSignal string;
     private Status status;
-    private float scaleFactor;
-    // tamanho?
+    
 
 }
