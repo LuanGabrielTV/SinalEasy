@@ -48,22 +48,29 @@
                     </p-divider>
                 </div>
 
-                <div class="row">
-                    <div>
+                <div class="row" style="flex-wrap: wrap;">
+                    <div style="flex-basis: 45%;">
                         <p-autoComplete (onSelect)="changeState()" placeholder="Estado" formControlName="state"
                             [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
                             field="name" />
                     </div>
-                    <div>
+                    <div style="flex-basis: 45%;">
                         <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
                             formControlName="city" [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
-                    </div><br>
-                    <small stye=" flex-basis: 100%;">{{address}}</small>
+                    </div>
+                    <small id="address" style="flex-basis: 100%;" *ngIf="this.address.length != 0">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
+                          </svg>
+                        {{address}}
+                    </small>
                 </div>
 
-                <div class="row">
-                    <button type="submit">Cadastrar</button>
+
+                <div class="row" style="width:95%; flex-direction: column-reverse;">
+                    <p-button id="sinalize" label="Sinalize!" severity="contrast"/>
                 </div>
             </form>
         </div>

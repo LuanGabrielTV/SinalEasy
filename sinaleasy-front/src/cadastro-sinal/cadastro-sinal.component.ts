@@ -10,13 +10,15 @@ import { Signal } from '../domain/Signal';
 import { City } from '../domain/City';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
+import { PrimeIcons, MenuItem } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 
 
 @Component({
   selector: 'app-cadastro-sinal',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule],
   templateUrl: './cadastro-sinal.component.html',
   styleUrl: './cadastro-sinal.component.scss'
 })
