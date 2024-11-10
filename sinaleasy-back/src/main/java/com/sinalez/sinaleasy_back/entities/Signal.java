@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Signal implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idSignal;
+    private UUID signalId;
 
     private String name;
     private String description;
