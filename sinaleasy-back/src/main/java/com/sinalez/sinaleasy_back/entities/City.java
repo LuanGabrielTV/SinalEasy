@@ -35,3 +35,4 @@ public class City implements Serializable {
 
 // @Column(columnDefinition = "jsonb")
 // private String geolocation;  // {"latitude": xx.xxxx, "longitude": yy.yyyy}
+

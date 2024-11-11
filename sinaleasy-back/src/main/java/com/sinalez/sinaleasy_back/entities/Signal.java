@@ -1,6 +1,7 @@
 package com.sinalez.sinaleasy_back.entities;
 
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.sinalez.sinaleasy_back.enums.Status;
@@ -34,4 +35,12 @@ public class Signal implements Serializable {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
     
+    // Funcao para atrelar cidade ao sinal
+    public void setCity(City cityOfSignal) {
+        if (cityOfSignal == null) {
+            throw new IllegalArgumentException("Cidade não pode ser nula!");
+        }
+        this.city = cityOfSignal;
+    }
+
 }
