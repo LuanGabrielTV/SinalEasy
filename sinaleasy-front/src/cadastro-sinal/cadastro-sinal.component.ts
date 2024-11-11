@@ -13,6 +13,9 @@ import { DividerModule } from 'primeng/divider';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { State } from '../domain/State';
+import { SignalType } from '../domain/SignalType';
+import { SignalService } from '../services/signal.service';
 
 @Component({
   selector: 'app-cadastro-sinal',
@@ -35,8 +38,10 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   signal: Signal;
   marker: L.CircleMarker | undefined;
   address: string;
+  types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
+  signalTypes = SignalType;
 
-  constructor(private fBuilder: FormBuilder, private addressService: AddressService) {
+  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
@@ -63,6 +68,35 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     this.loadStates();
   }
 
+  ngAfterViewInit() {
+    this.initMap();
+    this.map.on("click", (e) => {
+      this.addMarker(e);
+    });
+
+  }
+
+  initMap() {
+    const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    this.map = L.map('map', {
+      center: [-15.47, -47.56],
+      zoom: 7
+    });
+
+    L.tileLayer(baseMapURl).addTo(this.map);
+  }
+
+  addMarker(e: L.LeafletMouseEvent) {
+    if (this.marker == undefined) {
+      this.marker = L.circleMarker([e.latlng.lat, e.latlng.lng]);
+      this.marker.addTo(this.map);
+    }
+    this.marker.setLatLng(e.latlng);
+    this.marker.redraw();
+
+    this.loadAddress(e.latlng.lat, e.latlng.lng);
+  }
+
   loadStates() {
     this.addressService.getStates().subscribe((response) => {
       response.forEach((r) => {
@@ -75,34 +109,32 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     });
   }
 
+  loadCities() {
+    this.addressService.getCitiesByState(this.form.get('state')?.value?.id!).subscribe((response) => {
+      response.forEach((r) => {
+        let c = new City();
+        c.name = r['nome'];
+        c.id = r['id'];
+        this.cities?.push(c);
+      });
+      this.filteredCities = Array.from(this.cities!);
+    });
+  }
+
+  goToAdress(address: string, level: number) {
+    this.addressService.getCoordinates(address).subscribe((response) => {
+      let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
+      let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);
+      let coord = new L.LatLng(lat, lng);
+      this.map.panTo(coord);
+      this.map.setZoomAround(coord, level);
+    });
+  }
 
   getAddress(lat: number, lng: number) {
     this.addressService.getAddress(lat, lng).subscribe((response) => {
       this.address = (response['display_name' as keyof Object] as unknown as string);
     })
-  }
-
-  onSubmit() {
-    console.log(this.form.valid);
-  }
-
-  ngAfterViewInit() {
-    this.initMap();
-    this.map.on("click", (e) => {
-      this.addMarker(e);
-    });
-
-  }
-
-  addMarker(e: L.LeafletMouseEvent) {
-    if (this.marker == undefined) {
-      this.marker = L.circleMarker([e.latlng.lat, e.latlng.lng]);
-      this.marker.addTo(this.map);
-    }
-    this.marker.setLatLng(e.latlng);
-    this.marker.redraw();
-
-    this.loadAddress(e.latlng.lat, e.latlng.lng);
   }
 
   loadAddress(lat: number, lng: number) {
@@ -163,50 +195,25 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   changeCity() {
-    this.city = this.form.get('city')?.value;
     let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
     if (this.marker == undefined) {
       this.goToAdress(address, 13);
     }
+    this.city = this.form.get('city')?.value;
   }
 
-  loadCities() {
-    this.addressService.getCitiesByState(this.form.get('state')?.value?.id!).subscribe((response) => {
-      response.forEach((r) => {
-        let c = new City();
-        c.name = r['nome'];
-        c.id = r['id'];
-        this.cities?.push(c);
-      });
-      this.filteredCities = Array.from(this.cities!);
-    });
+  onSubmit() {
+    this.signal.address = this.address;
+    this.signal.cityId = this.city?.id;
+    this.signal.date = this.form.get('date')?.value;
+    this.signal.description = this.form.get('description')?.value;
+    this.signal.latitude = this.marker?.getLatLng().lat;
+    this.signal.longitude = this.marker?.getLatLng().lng;
+    this.signal.name = this.form.get('name')?.value;
+    this.signal.numberOfLikes = 0;
+    this.signal.scaleFactor = 1;
+    this.signal.status = 0;
+    this.signal.type = this.signalTypes[this.form.get('type')?.value] as unknown as number;
+    this.signalService.createSignal(this.signal);
   }
-
-  private initMap() {
-    const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    this.map = L.map('map', {
-      center: [-15.47, -47.56],
-      zoom: 7
-    });
-    
-    L.tileLayer(baseMapURl).addTo(this.map);
-  }
-
-  private goToAdress(address: string, level: number) {
-    this.addressService.getCoordinates(address).subscribe((response) => {
-      let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
-      let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);
-      let coord = new L.LatLng(lat, lng);
-      this.map.panTo(coord);
-      this.map.setZoomAround(coord, level);
-    });
-  }
-
 }
-
-class State {
-  sigla: string | undefined;
-  id: string | undefined;
-  name: string | undefined;
-}
-

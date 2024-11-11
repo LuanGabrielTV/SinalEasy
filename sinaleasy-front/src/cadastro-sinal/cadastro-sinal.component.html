@@ -15,7 +15,7 @@
                 <option selected value="0">Cidade</option>
                 <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
             </select> -->
-            <form [formGroup]="form" (change)="onSubmit()" (ngSubmit)="onSubmit()">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <p class="title">Crie um <br>sinal</p>
                 <div class="row">
                     <div>
@@ -27,7 +27,8 @@
                     <div>
                         <label for="type">Tipo</label><br>
                         <select id="type" formControlName="type">
-                            <option value="1">1</option>
+                            <option default value="">Tipo</option>
+                            <option *ngFor="let t of types">{{t}}</option>
                         </select>
                     </div>
                     <div>
