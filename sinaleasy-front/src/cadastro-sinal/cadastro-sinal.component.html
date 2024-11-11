@@ -27,6 +27,7 @@
                     <div>
                         <label for="type">Tipo</label><br>
                         <select id="type" formControlName="type">
+                            <option value="1">1</option>
                         </select>
                     </div>
                     <div>
@@ -68,9 +69,8 @@
                     </small>
                 </div>
 
-
                 <div class="row" style="width:95%; flex-direction: column-reverse;">
-                    <p-button id="sinalize" label="Sinalize!" severity="contrast"/>
+                    <p-button id="sinalize" disabled="this.form.valid" type="submit" label="Sinalize!" severity="contrast"/>
                 </div>
             </form>
         </div>

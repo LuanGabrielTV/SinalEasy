@@ -12,13 +12,12 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DividerModule } from 'primeng/divider';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-
-
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-cadastro-sinal',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule],
+  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, ToastModule],
   templateUrl: './cadastro-sinal.component.html',
   styleUrl: './cadastro-sinal.component.scss'
 })
@@ -86,7 +85,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-
+    
   }
 
   ngAfterViewInit() {
@@ -190,6 +189,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
       center: [-15.47, -47.56],
       zoom: 7
     });
+    
     L.tileLayer(baseMapURl).addTo(this.map);
   }
 

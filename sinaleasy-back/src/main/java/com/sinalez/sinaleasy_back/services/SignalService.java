@@ -30,15 +30,16 @@ public class SignalService {
     public Signal updateSignal(SignalRecordDTO signalRecordDTO, Signal signal) {
         BeanUtils.copyProperties(signalRecordDTO, signal);
         return signalRepository.save(signal);
+        // signal não pode ser removido enquanto houver qualquer curtida
     }
 
     public Signal getSignalById(UUID id) {
         return signalRepository.findById(id).orElseThrow(SignalNotFoundException::new);
     }
 
-    public List<Signal> getSignsByCityId(long id) {
-        return signalRepository.findByCityId(0);
-    }
+    // public List<Signal> getSignsByCityId(long id) {
+        // return signalRepository.findByCityId(0);
+    // }
 
 
 }

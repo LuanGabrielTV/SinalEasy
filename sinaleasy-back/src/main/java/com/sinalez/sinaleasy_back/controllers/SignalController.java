@@ -34,11 +34,11 @@ public class SignalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSignal);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Signal>> getSignsByCity(@PathVariable(value = "id") Integer id) {
-        List<Signal> signs = signalService.getSignsByCityId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(signs);
-    }
+    // @GetMapping("/{id}")
+    // public ResponseEntity<List<Signal>> getSignsByCity(@PathVariable(value = "id") Integer id) {
+    //     List<Signal> signs = signalService.getSignsByCityId(id);
+    //     return ResponseEntity.status(HttpStatus.OK).body(signs);
+    // }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSignalById(@PathVariable(value = "id") UUID id) {
