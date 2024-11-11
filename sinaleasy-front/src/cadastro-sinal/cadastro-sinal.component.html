@@ -15,7 +15,7 @@
                 <option selected value="0">Cidade</option>
                 <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
             </select> -->
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <form [formGroup]="form" (change)="onSubmit()" (ngSubmit)="onSubmit()">
                 <p class="title">Crie um <br>sinal</p>
                 <div class="row">
                     <div>
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="row" style="width:95%; flex-direction: column-reverse;">
-                    <p-button id="sinalize" disabled="this.form.valid" type="submit" label="Sinalize!" severity="contrast"/>
+                    <p-button id="sinalize" [disabled]="!this.form.valid || this.city == undefined" type="submit" label="Sinalize!" severity="contrast"/>
                 </div>
             </form>
         </div>

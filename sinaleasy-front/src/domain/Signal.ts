@@ -10,4 +10,5 @@ export class Signal{
     scaleFactor: number | undefined;
     status: string | undefined;
     numberOfLikes: number | undefined;
+    cityId: number | undefined;
 }

@@ -47,11 +47,9 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         Validators.required])],
       'date': [this.signal.date, Validators.compose([
         Validators.required])],
-      'state': [this.city?.state, Validators.compose([
-        Validators.required])],
-      'city': [this.city?.name, Validators.compose([
-        Validators.required])],
-      'description': [this.signal?.description, Validators.compose([
+      'state': [this.city?.state],
+      'city': [this.city?.name],
+      'description': [this.signal.description, Validators.compose([
         Validators.required])],
     });
     this.marker = undefined;
@@ -85,7 +83,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    
+    console.log(this.form.valid);
   }
 
   ngAfterViewInit() {
@@ -165,6 +163,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   changeCity() {
+    this.city = this.form.get('city')?.value;
     let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
     if (this.marker == undefined) {
       this.goToAdress(address, 13);
