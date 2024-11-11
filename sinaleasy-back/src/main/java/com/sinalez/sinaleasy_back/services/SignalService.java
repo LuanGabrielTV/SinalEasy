@@ -1,28 +1,35 @@
 package com.sinalez.sinaleasy_back.services;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
+import com.sinalez.sinaleasy_back.entities.City;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
+import com.sinalez.sinaleasy_back.repositories.CityRepository;
 import com.sinalez.sinaleasy_back.repositories.SignalRepository;
 
 @Service
 public class SignalService {
     private final SignalRepository signalRepository;
+    private final CityRepository cityRepository;
 
-    public SignalService(SignalRepository signalRepository) {
+    public SignalService(SignalRepository signalRepository, CityRepository cityRepository) {
         this.signalRepository = signalRepository;
+        this.cityRepository = cityRepository;
         // inserir slug?
     }
 
     public Signal createSignal(SignalRecordDTO signalRecordDTO) {
         Signal signal = new Signal();
         BeanUtils.copyProperties(signalRecordDTO, signal);
+        Integer cityIdOfSignal = signalRecordDTO.cityId();
+        City cityOfSignal = cityRepository.findById(cityIdOfSignal)
+            .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+        signal.setCity(cityOfSignal);
         return signalRepository.save(signal);
 
     }
@@ -38,8 +45,7 @@ public class SignalService {
     }
 
     // public List<Signal> getSignsByCityId(long id) {
-        // return signalRepository.findByCityId(0);
+    // return signalRepository.findByCityId(0);
     // }
-
 
 }
