@@ -30,7 +30,6 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   states: State[] | undefined;
   cities: City[] | undefined;
   city: City | undefined;
-  selectedState: number = -1;
   brasiliaCoord: L.LatLng | undefined;
   filteredCities: City[] = [];
   filteredStates: State[] = [];
@@ -126,8 +125,12 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
       let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
       let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);
       let coord = new L.LatLng(lat, lng);
-      this.map.panTo(coord);
-      this.map.setZoomAround(coord, level);
+      // this.map.panTo(coord);
+      // this.map.setZoomAround(coord, level);
+      this.map.flyTo(coord, level, {
+        "animate": true,
+        "duration": 3
+      });
     });
   }
 
@@ -189,7 +192,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     this.cities = [];
     this.filteredCities = [];
     this.loadCities();
-    this.map.panTo(this.brasiliaCoord!);
+    // this.map.panTo(this.brasiliaCoord!);
     let address = this.form.get('state')?.value?.name + ', Brazil';
     this.goToAdress(address, 7);
   }

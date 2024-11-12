@@ -1,0 +1,23 @@
+<body>
+    <div class="container">
+        <div class="row" >
+            <div style="flex-basis: 45%;">
+                <p-autoComplete (onSelect)="changeState()" placeholder="Estado" [(ngModel)]="state"
+                    [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
+                    field="sigla" />
+            </div>
+            <div style="flex-basis: 45%;">
+                
+                <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
+                    [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
+                    (completeMethod)="filterCities($event)" field="name" />
+            </div>
+            
+        </div>
+    </div>
+    <div class="map-container">
+        <div class="map-frame">
+            <div id="map"></div>
+        </div>
+    </div>
+</body>

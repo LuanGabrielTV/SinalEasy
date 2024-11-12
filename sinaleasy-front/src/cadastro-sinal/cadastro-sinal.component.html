@@ -1,20 +1,6 @@
 <body>
     <div class="container">
         <div class="sinal-container">
-            <!--<p-dropdown [options]="ufs" [(ngModel)]="uf" [checkmark]="true" optionLabel="sigla" [showClear]="true" /> -->
-
-
-
-            <!-- 
-            <select (change)="changeUF()" [(ngModel)]="selectedUF">
-                <option selected value="0">Estado</option>
-                <option *ngFor="let u of ufs, index as i" value="{{i}}">{{u?.sigla}}</option>
-            </select> 
-
-            <select (change)="changeCidade()" [(ngModel)]="selectedCidade">
-                <option selected value="0">Cidade</option>
-                <option *ngFor="let c of cidades, index as i" value="{{i}}">{{c.nome}}</option>
-            </select> -->
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <p class="title">Crie um <br>sinal</p>
                 <div class="row">
