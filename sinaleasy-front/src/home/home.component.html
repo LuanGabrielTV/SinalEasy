@@ -1,20 +1,24 @@
 <body>
-    <div class="container">
-        <div class="row" >
-            <div style="flex-basis: 45%;">
-                <p-autoComplete (onSelect)="changeState()" placeholder="Estado" [(ngModel)]="state"
-                    [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
-                    field="sigla" />
+    <div id="header">
+        <img src="Signaleasy.png" id="logo">
+        <div class="container">
+            <div>
+                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
+                    [(ngModel)]="state" [dropdown]="true" [suggestions]="filteredStates"
+                    (completeMethod)="filterStates($event)" field="sigla" />
             </div>
-            <div style="flex-basis: 45%;">
-                
-                <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
-                    [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
+            <div>
+                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
+                    [forceSelection]="true" [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
                     (completeMethod)="filterCities($event)" field="name" />
             </div>
-            
         </div>
     </div>
+    <div class="city" *ngIf="this.selected">
+        <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
+        <p-rating [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
+    </div>
+
     <div class="map-container">
         <div class="map-frame">
             <div id="map"></div>

@@ -31,7 +31,7 @@ body {
 @import url('https://fonts.googleapis.com/css2?family=Alice&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 * {
-    font-family: 'Inter';
+    font-family: 'Figtree';
     margin: none;
     padding: none;
 }
@@ -46,7 +46,7 @@ body {
 
 label {
     font-weight: 600;
-    font-size: 1.8vh;
+    font-size: 1.6vh;
     // letter-spacing: -.2px;
     font-family: 'Figtree';
 }
@@ -70,12 +70,50 @@ textarea {
     resize: none;
     font-size: 1.5vh;
     width: 100%;
-    background-color: #fff;
-    border:1px solid #d2d6d8;
+    background-color: #f2f2f2;
+    border:none;
     padding: 3%;
     outline: none;
     margin-top: 2%;
     border-radius: 8px;
+}
+
+:host {
+    ::ng-deep .p-dropdown-override input {
+        background-color: #f2f2f2;
+        height: 4vh;
+        background-image: none;
+        outline: none;
+        border: none !important;
+        font-size: 1.5vh;
+        font-weight: 400;
+        font-family: 'Figtree';
+    }
+    
+    ::ng-deep .p-dropdown-override input::placeholder {
+        font-family: 'Figtree';
+        font-size: 1.5vh;
+        font-weight: 400;
+    }
+    
+    ::ng-deep .p-dropdown-override input:focus {
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+    }
+    
+    ::ng-deep .p-dropdown {
+        outline: none;
+    }
+
+    ::ng-deep .p-dropdown-override button {
+        background-color: #f2f2f2;
+        height: 4vh;
+        font-family: 'Inter';
+        color: black;
+        background-image: none;
+        border: none !important;
+    }
 }
 
 .row {

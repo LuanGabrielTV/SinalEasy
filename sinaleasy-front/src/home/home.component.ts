@@ -7,11 +7,12 @@ import { AddressService } from '../services/address.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { RatingModule } from 'primeng/rating';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, AutoCompleteModule, ButtonModule],
+  imports: [CommonModule, FormsModule, AutoCompleteModule, ButtonModule, RatingModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -23,6 +24,8 @@ export class HomeComponent implements OnInit {
   filteredCities: City[] = [];
   filteredStates: State[] = [];
   private map!: L.Map;
+  selected = false;
+  rating: number | undefined;
 
   constructor(private addressService: AddressService) { }
 
@@ -40,7 +43,8 @@ export class HomeComponent implements OnInit {
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
       center: [-15.47, -47.56],
-      zoom: 7
+      zoom: 7,
+      zoomControl: false
     });
 
     L.tileLayer(baseMapURl).addTo(this.map);
@@ -110,6 +114,11 @@ export class HomeComponent implements OnInit {
   changeCity() {
     let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
     this.goToAdress(address, 13);
+    this.selected = true;
+    if (this.city?.rating == undefined) {
+      this.city!.rating = 0;
+    }
+    this.rating = this.city?.rating;
   }
 
   goToAdress(address: string, level: number) {

@@ -38,12 +38,12 @@
 
                 <div class="row" style="flex-wrap: wrap;">
                     <div style="flex-basis: 45%;">
-                        <p-autoComplete (onSelect)="changeState()" placeholder="Estado" formControlName="state"
+                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado" formControlName="state"
                             [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
                             field="name" />
                     </div>
                     <div style="flex-basis: 45%;">
-                        <p-autoComplete (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
+                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
                             formControlName="city" [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
                     </div>
