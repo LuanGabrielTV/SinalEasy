@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="city" *ngIf="this.selected">
+    <div class="city" *ngIf="!(this.city == undefined)">
         <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
         <p-rating [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
     </div>
