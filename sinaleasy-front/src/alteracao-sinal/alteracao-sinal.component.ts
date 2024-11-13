@@ -1,46 +1,49 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { AddressService } from '../services/address.service';
+import { Signal } from '../domain/Signal';
 import * as L from 'leaflet';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { animate } from '@angular/animations';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { Signal } from '../domain/Signal';
 import { City } from '../domain/City';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { CityService } from '../services/city.service';
 import { DividerModule } from 'primeng/divider';
-import { PrimeIcons, MenuItem } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
+import { AddressService } from '../services/address.service';
 import { State } from '../domain/State';
 import { SignalType } from '../domain/SignalType';
-import { SignalService } from '../services/signal.service';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule, formatDate } from '@angular/common';
+import { StepsModule } from 'primeng/steps';
+import { MenuItem } from 'primeng/api';
+
 
 @Component({
-  selector: 'app-cadastro-sinal',
+  selector: 'app-alteracao-sinal',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, ToastModule],
-  templateUrl: './cadastro-sinal.component.html',
-  styleUrl: './cadastro-sinal.component.scss'
+  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, StepsModule],
+  templateUrl: './alteracao-sinal.component.html',
+  styleUrl: './alteracao-sinal.component.scss'
 })
-export class CadastroSinalComponent implements OnInit, AfterViewInit {
-
+export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
+  signal: Signal;
+  city: City | undefined;
   private map!: L.Map;
+  form: FormGroup;
   states: State[] | undefined;
   cities: City[] | undefined;
-  city: City | undefined;
-  brasiliaCoord: L.LatLng | undefined;
   filteredCities: City[] = [];
   filteredStates: State[] = [];
-  form: FormGroup;
-  signal: Signal;
   marker: L.CircleMarker | undefined;
   address: string;
   types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
+  statusList = ['Pendente', 'Inicializado', 'Paralisado', 'Finalizado'];
+  items: MenuItem[] | undefined;
   signalTypes = SignalType;
+  status: number;
+  readonly = true;
 
-  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService) {
+  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
@@ -56,44 +59,68 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
       'description': [this.signal.description, Validators.compose([
         Validators.required])],
     });
-    this.marker = undefined;
-    this.address = '';
+    this.address = "";
+    this.status = 0;
   }
 
   ngOnInit() {
+    this.readonly = true;
     this.states = [];
     this.cities = [];
-    this.brasiliaCoord = new L.LatLng(-15.47, -47.56);
-    this.loadStates();
+    this.items = [
+      {
+        label: 'Pendente',
+        command: (event: any) => { this.status = 0  }
+      },
+      {
+        label: 'Inicializado',
+        command: (event: any) => { this.status = 1  }
+      },
+      {
+        label: 'Paralisado',
+        command: (event: any) => { this.status = 2  }
+      },
+      {
+        label: 'Finalizado',
+        command: (event: any) => { this.status = 3  }
+      }
+    ];
+    this.signal = new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 0, 0, 0);
+    this.city = new City(0, 'Timóteo', 'Minas Gerais', 2.5, []);
+    // this.cityService.getCityById(this.signal.);
   }
 
   ngAfterViewInit() {
     this.initMap();
+    this.loadData();
     this.map.on("click", (e) => {
-      this.addMarker(e);
+      this.changeMarker(e);
     });
-
   }
 
-  initMap() {
-    const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    this.map = L.map('map', {
-      center: [-15.47, -47.56],
-      zoom: 7
-    });
-
-    L.tileLayer(baseMapURl).addTo(this.map);
-  }
-
-  addMarker(e: L.LeafletMouseEvent) {
-    if (this.marker == undefined) {
-      this.marker = L.circleMarker([e.latlng.lat, e.latlng.lng]);
-      this.marker.addTo(this.map);
-    }
-    this.marker.setLatLng(e.latlng);
-    this.marker.redraw();
-
+  changeMarker(e: L.LeafletMouseEvent){
+    this.marker!.setLatLng(e.latlng);
+    this.marker!.redraw();
+    this.city = undefined;
+    this.form.get('city')?.reset();
     this.loadAddress(e.latlng.lat, e.latlng.lng);
+  }
+
+  loadData() {
+    this.loadStates();
+    this.form.get('name')?.setValue(this.signal.name);
+    this.form.get('type')?.setValue(this.types[this.signal.type!]);
+    this.form.get('date')?.setValue(formatDate(this.signal.date!, 'yyyy-MM-dd', 'en'));
+    this.form.get('city')?.setValue(this.city);
+    this.form.get('description')?.setValue(this.signal.description);
+    this.address = this.signal.address!;
+    this.status = this.signal.status!;
+    this.form.get('status')?.setValue(this.status);
+    this.marker = new L.CircleMarker(new L.LatLng(this.signal.latitude!, this.signal.longitude!), {
+      radius: 10 * this.signal.scaleFactor!
+    });
+    this.marker.addTo(this.map);
+
   }
 
   loadStates() {
@@ -105,6 +132,13 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         u.name = r['nome'];
         this.states?.push(u);
       });
+      this.states?.forEach((e) => {
+        console.log(e);
+        if (e.name == this.city!.state) {
+          this.form.get('state')?.setValue(e);
+          this.loadCities();
+        }
+      })
     });
   }
 
@@ -116,8 +150,30 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
         c.id = r['id'];
         this.cities?.push(c);
       });
+      console.log(this.form.get('state')?.value)
       this.filteredCities = Array.from(this.cities!);
     });
+  }
+
+  changeState() {
+    this.form.get('city')?.reset();
+    this.cities = [];
+    this.filteredCities = [];
+    this.loadCities();
+    let address = this.form.get('state')?.value?.name + ', Brazil';
+    this.goToAdress(address, 7);
+  }
+
+  changeCity() {
+    let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
+    if (this.marker == undefined) {
+      this.goToAdress(address, 13);
+    }
+    this.city = this.form.get('city')?.value;
+  }
+
+  changeStatus() {
+    this.form.get('status')?.setValue(this.status);
   }
 
   goToAdress(address: string, level: number) {
@@ -187,25 +243,20 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     this.filteredStates = filtered;
   }
 
-  changeState() {
-    this.form.get('city')?.reset();
-    this.cities = [];
-    this.filteredCities = [];
-    this.loadCities();
-    let address = this.form.get('state')?.value?.name + ', Brazil';
-    this.goToAdress(address, 7);
-  }
 
-  changeCity() {
-    let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
-    if (this.marker == undefined) {
-      this.goToAdress(address, 13);
-    }
-    this.city = this.form.get('city')?.value;
+  initMap() {
+    const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    this.map = L.map('map', {
+      center: [this.signal.latitude!, this.signal.longitude!],
+      zoom: 12
+    });
+    let coord = new L.LatLng(this.signal.latitude!, this.signal.longitude!);
+
+    L.tileLayer(baseMapURl).addTo(this.map);
   }
 
   onSubmit() {
-    this.signal = new Signal(this.form.get('name')?.value!, this.signal.date = this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('type')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.id!);
-    this.signalService.createSignal(this.signal);
+
   }
+
 }

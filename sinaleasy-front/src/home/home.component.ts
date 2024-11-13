@@ -8,6 +8,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
+import { Signal } from '../domain/Signal';
+import { SignalType } from '../domain/SignalType';
+import { Status } from '../domain/Status';
 
 @Component({
   selector: 'app-home',
@@ -26,17 +29,23 @@ export class HomeComponent implements OnInit {
   private map!: L.Map;
   selected = false;
   rating: number | undefined;
+  signals: Signal[];
+  signalType = SignalType;
+  status = Status;
 
-  constructor(private addressService: AddressService) { }
+  constructor(private addressService: AddressService) {
+    this.signals = [];
+  }
 
   ngOnInit(): void {
     this.states = [];
     this.cities = [];
     this.loadStates();
   }
-
+  
   ngAfterViewInit() {
     this.initMap();
+    this.loadSignals();
   }
 
   initMap() {
@@ -48,6 +57,17 @@ export class HomeComponent implements OnInit {
     });
 
     L.tileLayer(baseMapURl).addTo(this.map);
+  }
+
+  loadSignals() {
+    this.signals.push(new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 0, 0, 0));
+    this.signals.push(new Signal('Signal 2', new Date(), 'Rua 5', 'Reparo de ponte', 1, -15., -45.67, 1, 0, 0, 0));
+    this.signals.forEach((s) => {
+      s.marker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
+        radius: 10 * s.scaleFactor!
+      });
+      s.marker.addTo(this.map);
+    });
   }
 
   loadStates() {
@@ -126,8 +146,6 @@ export class HomeComponent implements OnInit {
       let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
       let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);
       let coord = new L.LatLng(lat, lng);
-      // this.map.panTo(coord);
-      // this.map.setZoomAround(coord, level);
       this.map.flyTo(coord, level, {
         "animate": true,
         "duration": 3

@@ -15,7 +15,68 @@ body {
 
 #logo {
     height: 2.3vh;
-    margin-left: .5%;
+    // margin-left: .5%;
+}
+
+.type{
+    width: fit-content;
+    display: flex;
+    padding:1%;
+    padding-right:3%;
+    border-radius: 8px;
+    white-space: pre;
+}
+
+.signal{
+    border-radius: 12px;
+    border: 1px solid #f2f2f2;
+    margin-bottom: 4%;
+    padding-left: 4%;
+    width: 92%;
+}
+
+.address, .status{
+    font-size: 1.3vh;
+    margin-right: 4%;
+}
+
+.date{
+    font-size: 1vh;
+}
+
+.Construção{
+    background-color: #fdf8ac;
+}
+
+.Reparo{
+    background-color: #b1eaff;
+}
+
+.Limpeza{
+    background-color: #fdd1fd;
+}
+
+.Meio-ambiente{
+    background-color: #00ff004b;
+}
+
+.Saúde{
+    background-color: #ff99c8;
+}
+
+small{
+    box-sizing: border-box;
+    margin-left:4%;
+}
+
+.divider{
+    width: 10vh;
+}
+
+.type img{
+    border-radius: 20px transparent;
+    transform: scale(0.8);
+
 }
 
 #header {

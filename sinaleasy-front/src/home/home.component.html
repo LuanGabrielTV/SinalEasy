@@ -17,6 +17,17 @@
     <div class="city" *ngIf="!(this.city == undefined)">
         <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
         <p-rating [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
+        <br><br><br>
+        <div class="signal" *ngFor="let s of this.signals">
+            <h3>{{s.name}}</h3>
+            <div class="type" ngClass={{signalType[s.type!]}}>
+                <img src="{{signalType[s.type!]+ '.svg'}}"><small>{{signalType[s.type!]}}</small>
+            </div>
+            <div style="display:flex;justify-content: space-between;">
+                <p class="address">{{s.address}}</p>
+                <p class="status">{{status[s.status!]}}</p>
+            </div>
+        </div>
     </div>
 
     <div class="map-container">
