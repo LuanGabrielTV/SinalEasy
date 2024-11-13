@@ -20,4 +20,9 @@ export class SignalService {
     // checagem da existencia de cidade
     let url = this.url + 'cities/' + signal.cityId;
   }
+
+  updateSignal(signal: Signal) {
+    // checagem da existencia de cidade
+    let url = this.url + 'cities/' + signal.cityId;
+  }
 }

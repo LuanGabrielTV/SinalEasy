@@ -1,6 +1,7 @@
 import * as L from 'leaflet';
 
 export class Signal {
+    id: number | undefined;
     name: string | undefined;
     date: Date | undefined;
     address: string | undefined;
@@ -12,8 +13,6 @@ export class Signal {
     status: number | undefined;
     numberOfLikes: number | undefined;
     cityId: number | undefined;
-    marker: L.CircleMarker | undefined;
-
     constructor(name?: string, date?: Date, address?: string, description?: string, type?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: number) {
         this.name = name;
         this.date = date;

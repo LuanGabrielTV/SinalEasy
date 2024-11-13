@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule, formatDate } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
 import { MenuItem } from 'primeng/api';
+import { SignalService } from '../services/signal.service';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   status: number;
   readonly = true;
 
-  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService) {
+  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
@@ -70,19 +71,19 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     this.items = [
       {
         label: 'Pendente',
-        command: (event: any) => { this.status = 0  }
+        command: (event: any) => { this.status = 0 }
       },
       {
         label: 'Inicializado',
-        command: (event: any) => { this.status = 1  }
+        command: (event: any) => { this.status = 1 }
       },
       {
         label: 'Paralisado',
-        command: (event: any) => { this.status = 2  }
+        command: (event: any) => { this.status = 2 }
       },
       {
         label: 'Finalizado',
-        command: (event: any) => { this.status = 3  }
+        command: (event: any) => { this.status = 3 }
       }
     ];
     this.signal = new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 0, 0, 0);
@@ -98,11 +99,9 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  changeMarker(e: L.LeafletMouseEvent){
+  changeMarker(e: L.LeafletMouseEvent) {
     this.marker!.setLatLng(e.latlng);
     this.marker!.redraw();
-    this.city = undefined;
-    this.form.get('city')?.reset();
     this.loadAddress(e.latlng.lat, e.latlng.lng);
   }
 
@@ -166,9 +165,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
 
   changeCity() {
     let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
-    if (this.marker == undefined) {
-      this.goToAdress(address, 13);
-    }
+    this.goToAdress(address, 13);
     this.city = this.form.get('city')?.value;
   }
 
@@ -181,8 +178,6 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
       let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
       let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);
       let coord = new L.LatLng(lat, lng);
-      // this.map.panTo(coord);
-      // this.map.setZoomAround(coord, level);
       this.map.flyTo(coord, level, {
         "animate": true,
         "duration": 3
@@ -243,12 +238,12 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     this.filteredStates = filtered;
   }
 
-
   initMap() {
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
       center: [this.signal.latitude!, this.signal.longitude!],
-      zoom: 12
+      zoom: 12,
+      zoomControl: false
     });
     let coord = new L.LatLng(this.signal.latitude!, this.signal.longitude!);
 
@@ -256,7 +251,16 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-
+    this.signal.name = this.form.get('name')?.value;
+    this.signal.address = this.address;
+    this.signal.type =  this.signalTypes[this.form.get('type')?.value] as unknown as number;
+    this.signal.date = this.form.get('date')?.value;
+    this.signal.description = this.form.get('description')?.value;
+    this.signal.status = this.form.get('status')?.value;
+    this.signal.cityId = this.city?.id;
+    this.signal.latitude = this.marker?.getLatLng().lat!;
+    this.signal.longitude = this.marker?.getLatLng().lng!;
+    this.signalService.updateSignal(this.signal);
   }
 
 }

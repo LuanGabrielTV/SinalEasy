@@ -168,6 +168,7 @@ small{
     }
 }
 
+
 .city {
     position: absolute;
     right: 0;
@@ -184,6 +185,13 @@ small{
     animation: fadeIn 0.5s;
 }
 
+.selected{
+    opacity: 1;
+}
+
+.unselected{
+    opacity: 0.5;
+}
 
 #title {
     font-weight: 800;

@@ -198,9 +198,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
 
   changeCity() {
     let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
-    if (this.marker == undefined) {
-      this.goToAdress(address, 13);
-    }
+    this.goToAdress(address, 13);
     this.city = this.form.get('city')?.value;
   }
 

@@ -32,9 +32,12 @@ export class HomeComponent implements OnInit {
   signals: Signal[];
   signalType = SignalType;
   status = Status;
+  markers: L.CircleMarker[];
+  selectedIndex: number | undefined;
 
   constructor(private addressService: AddressService) {
     this.signals = [];
+    this.markers = [];
   }
 
   ngOnInit(): void {
@@ -63,10 +66,11 @@ export class HomeComponent implements OnInit {
     this.signals.push(new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 0, 0, 0));
     this.signals.push(new Signal('Signal 2', new Date(), 'Rua 5', 'Reparo de ponte', 1, -15., -45.67, 1, 0, 0, 0));
     this.signals.forEach((s) => {
-      s.marker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
+      let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
         radius: 10 * s.scaleFactor!
       });
-      s.marker.addTo(this.map);
+      this.markers.push(m);
+      m.addTo(this.map);
     });
   }
 
@@ -139,6 +143,15 @@ export class HomeComponent implements OnInit {
       this.city!.rating = 0;
     }
     this.rating = this.city?.rating;
+  }
+
+  selectSignal(index: number | undefined){
+    this.selectedIndex = index;
+    let coord = new L.LatLng(this.markers[index!].getLatLng().lat, this.markers[index!].getLatLng().lng);
+    this.map.flyTo(coord, 15, {
+      "animate": true,
+      "duration": 3
+    });
   }
 
   goToAdress(address: string, level: number) {
