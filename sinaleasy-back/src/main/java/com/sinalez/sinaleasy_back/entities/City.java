@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 public class City implements Serializable {
     @Id
-    private Integer cityId;
+    private String cityId;
 
     private String name;
     private String state;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
-import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
+// import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;
 
 @Service
@@ -34,7 +34,7 @@ public class CityService {
         return cityRepository.findAll();
     }
 
-    public City getCityById(Integer id) {
+    public City getCityById(String id) {
         return cityRepository.findById(id).orElse(null);
        //  return cityRepository.findById(id).orElseThrow(CityNotFoundException::new);
     }

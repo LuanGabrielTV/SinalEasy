@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.sinalez.sinaleasy_back.entities.City;
 
 @Repository
-public interface CityRepository extends JpaRepository<City, Integer> {
+public interface CityRepository extends JpaRepository<City, String> {
     Optional<City> findByName(String name);
 }

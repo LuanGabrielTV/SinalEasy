@@ -26,7 +26,7 @@ public class SignalService {
     public Signal createSignal(SignalRecordDTO signalRecordDTO) {
         Signal signal = new Signal();
         BeanUtils.copyProperties(signalRecordDTO, signal);
-        Integer cityIdOfSignal = signalRecordDTO.cityId();
+        String cityIdOfSignal = signalRecordDTO.cityId();
         City cityOfSignal = cityRepository.findById(cityIdOfSignal)
             .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
         signal.setCity(cityOfSignal);

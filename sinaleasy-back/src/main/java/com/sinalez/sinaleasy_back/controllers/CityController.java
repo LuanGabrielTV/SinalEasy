@@ -35,7 +35,7 @@ public class CityController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getCityById(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<Object> getCityById(@PathVariable(value = "id") String id) {
         City city = cityService.getCityById(id);
         return ResponseEntity.status(HttpStatus.OK).body(city);
     }
