@@ -19,10 +19,17 @@ public class CityService {
     public City createCity(CityRecordDTO cityRecordDTO) {
         City city = new City();
         BeanUtils.copyProperties(cityRecordDTO, city);
+    
+        if (city.getCityId() == null) {
+            // Pra verificar se o city foi realmente enviado
+            throw new IllegalArgumentException("O ID da cidade nãnao foi enviado.");
+        }
+    
         return cityRepository.save(city);
     }
 
     public City getCityById(Integer id) {
-        return cityRepository.findById(id).orElseThrow(CityNotFoundException::new);
+        return cityRepository.findById(id).orElse(null);
+       //  return cityRepository.findById(id).orElseThrow(CityNotFoundException::new);
     }
 }
