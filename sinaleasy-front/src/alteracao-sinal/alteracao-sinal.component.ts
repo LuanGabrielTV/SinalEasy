@@ -146,7 +146,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
       response.forEach((r) => {
         let c = new City();
         c.name = r['nome'];
-        c.id = r['id'];
+        c.cityId = r['id'];
         this.cities?.push(c);
       });
       console.log(this.form.get('state')?.value)
@@ -257,7 +257,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     this.signal.date = this.form.get('date')?.value;
     this.signal.description = this.form.get('description')?.value;
     this.signal.status = this.form.get('status')?.value;
-    this.signal.cityId = this.city?.id;
+    this.signal.cityId = this.city?.cityId;
     this.signal.latitude = this.marker?.getLatLng().lat!;
     this.signal.longitude = this.marker?.getLatLng().lng!;
     this.signalService.updateSignal(this.signal);

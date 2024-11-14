@@ -20,31 +20,30 @@ export class SignalService {
   constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient) { }
 
   createSignal(signal: Signal) {
-    try {
-      this.cityService.getCityById(signal.cityId!).subscribe(
-        res => console.log('HTTP response', res),
-        err => this.createCity(signal),
-        () => console.log('HTTP request completed.')
-      );
-    } catch (error) {
-      // this.cityService.createCity();
-    }
+    console.log(signal)
+    this.cityService.getCityById(signal.cityId!).subscribe((res) => {
+      if (res == null) {
+        this.createCity(signal);
+        let url = this.url + 'signs/';
+        return this.httpClient.post<City>(this.url, JSON.stringify(signal), this.httpOptions);
+      }
+    });
   }
 
-  private createCity(signal:Signal) {
-    this.addressService.getCityById(signal.cityId!).subscribe((res) =>{
-      let city:City = new City();
-      city.id = (res['id' as keyof Object] as Object) as number;
+  private createCity(signal: Signal) {
+    this.addressService.getCityById(signal.cityId!).subscribe((res) => {
+      let city: City = new City();
+      city.cityId = (res['id' as keyof Object] as Object) as number;
       city.name = (res['nome' as keyof Object] as Object) as string;
       city.state = (res['microrregiao' as keyof Object]['mesorregiao' as keyof Object]["UF" as keyof Object]["sigla" as keyof Object] as Object) as string;
       city.rating = 0;
       city.signals = [];
-      this.cityService.createCity(city).subscribe((res)=>{
-        console.log(res);
+      this.cityService.createCity(city).subscribe((res) => {
+        return;
       });
     })
   }
-  
+
 
   updateSignal(signal: Signal) {
     // checagem da existencia de cidade

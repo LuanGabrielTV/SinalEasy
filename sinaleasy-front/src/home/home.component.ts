@@ -91,7 +91,7 @@ export class HomeComponent implements OnInit {
       response.forEach((r) => {
         let c = new City();
         c.name = r['nome'];
-        c.id = r['id'];
+        c.cityId = r['id'];
         this.cities?.push(c);
       });
       this.filteredCities = Array.from(this.cities!);
