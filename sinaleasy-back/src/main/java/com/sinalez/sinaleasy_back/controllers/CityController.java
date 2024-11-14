@@ -1,5 +1,7 @@
 package com.sinalez.sinaleasy_back.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +38,12 @@ public class CityController {
     public ResponseEntity<Object> getCityById(@PathVariable(value = "id") Integer id) {
         City city = cityService.getCityById(id);
         return ResponseEntity.status(HttpStatus.OK).body(city);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Object> getCities() {
+        List<City> cities = cityService.getCities();
+        return ResponseEntity.status(HttpStatus.OK).body(cities);
     }
 
 

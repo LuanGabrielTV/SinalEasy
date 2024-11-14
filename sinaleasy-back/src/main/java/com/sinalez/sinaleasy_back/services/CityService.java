@@ -1,5 +1,7 @@
 package com.sinalez.sinaleasy_back.services;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,10 @@ public class CityService {
         }
     
         return cityRepository.save(city);
+    }
+
+    public List<City> getCities(){
+        return cityRepository.findAll();
     }
 
     public City getCityById(Integer id) {
