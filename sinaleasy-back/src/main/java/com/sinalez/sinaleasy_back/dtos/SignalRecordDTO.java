@@ -17,7 +17,7 @@ public record SignalRecordDTO(
     Integer typeOfSignal,
     String cityId,
     LocalDate date,
-    Integer numberOfLikes
-    
+    Integer numberOfLikes,
+    Integer Status
 ) {}
 
