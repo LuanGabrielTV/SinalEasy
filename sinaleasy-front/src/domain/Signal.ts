@@ -12,8 +12,9 @@ export class Signal {
     scaleFactor: number | undefined;
     status: number | undefined;
     numberOfLikes: number | undefined;
-    cityId: number | undefined;
-    constructor(name?: string, date?: Date, address?: string, description?: string, type?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: number) {
+    cityId: string | undefined;
+    
+    constructor(name?: string, date?: Date, address?: string, description?: string, type?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: string) {
         this.name = name;
         this.date = date;
         this.address = address;

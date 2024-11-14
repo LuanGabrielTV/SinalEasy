@@ -28,7 +28,7 @@ export class AddressService {
     return this.httpClient.get<[]>(url);
   }
 
-  getCityById(id:number){
+  getCityById(id:string){
     let url = this.urlIBGE + 'municipios/' + id;
     return this.httpClient.get(url);
   }

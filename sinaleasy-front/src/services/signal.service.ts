@@ -25,7 +25,8 @@ export class SignalService {
       if (res == null) {
         this.createCity(signal);
         let url = this.url + 'signs/';
-        return this.httpClient.post<City>(this.url, JSON.stringify(signal), this.httpOptions);
+        console.log(JSON.stringify(signal))
+        return this.httpClient.post<City>(this.url, JSON.stringify(signal), this.httpOptions).subscribe();
       }
     });
   }
@@ -33,7 +34,7 @@ export class SignalService {
   private createCity(signal: Signal) {
     this.addressService.getCityById(signal.cityId!).subscribe((res) => {
       let city: City = new City();
-      city.cityId = (res['id' as keyof Object] as Object) as number;
+      city.cityId = String((res['id' as keyof Object] as Object) as number);
       city.name = (res['nome' as keyof Object] as Object) as string;
       city.state = (res['microrregiao' as keyof Object]['mesorregiao' as keyof Object]["UF" as keyof Object]["sigla" as keyof Object] as Object) as string;
       city.rating = 0;

@@ -113,7 +113,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
       response.forEach((r) => {
         let c = new City();
         c.name = r['nome'];
-        c.cityId = r['id'];
+        c.cityId = String(r['id']);
         this.cities?.push(c);
       });
       this.filteredCities = Array.from(this.cities!);
@@ -203,7 +203,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    this.signal = new Signal(this.form.get('name')?.value!, this.signal.date = this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('type')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
+    this.signal = new Signal(this.form.get('name')?.value!, this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('type')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
     this.signalService.createSignal(this.signal);
   }
 }

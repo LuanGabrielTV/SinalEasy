@@ -63,8 +63,6 @@ export class HomeComponent implements OnInit {
   }
 
   loadSignals() {
-    this.signals.push(new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 0, 0, 0));
-    this.signals.push(new Signal('Signal 2', new Date(), 'Rua 5', 'Reparo de ponte', 1, -15., -45.67, 1, 0, 0, 0));
     this.signals.forEach((s) => {
       let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
         radius: 10 * s.scaleFactor!
