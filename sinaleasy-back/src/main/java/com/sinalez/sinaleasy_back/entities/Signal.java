@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sinalez.sinaleasy_back.enums.Status;
 import com.sinalez.sinaleasy_back.enums.TypeOfSignal;
 
@@ -31,6 +32,7 @@ public class Signal implements Serializable {
     private TypeOfSignal typeOfSignal;
     private Status status;
 
+    @JsonIgnoreProperties("signs")
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
