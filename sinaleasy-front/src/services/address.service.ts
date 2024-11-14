@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { City } from '../domain/City';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,11 @@ export class AddressService {
   getCitiesByState(state: string){
     let url = this.urlIBGE + 'estados/' + state + '/municipios/';
     return this.httpClient.get<[]>(url);
+  }
+
+  getCityById(id:number){
+    let url = this.urlIBGE + 'municipios/' + id;
+    return this.httpClient.get(url);
   }
 
   getCoordinates(address: string) {
