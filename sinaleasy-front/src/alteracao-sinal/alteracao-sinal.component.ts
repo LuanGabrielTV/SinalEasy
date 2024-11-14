@@ -86,7 +86,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
         command: (event: any) => { this.status = 3 }
       }
     ];
-    this.signal = new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 0, 0, 0);
+    this.signal = new Signal('Signal 1', new Date(), 'Rua 4', 'Construção de ponte', 0, -15.47, -45.67, 1, 3, 0, 0);
     this.city = new City(0, 'Timóteo', 'Minas Gerais', 2.5, []);
     // this.cityService.getCityById(this.signal.);
   }

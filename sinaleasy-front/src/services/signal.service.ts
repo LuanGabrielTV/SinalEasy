@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Signal } from '../domain/Signal';
 import { AddressService } from './address.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { CityService } from './city.service';
+import { tap, catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +16,16 @@ export class SignalService {
   };
 
 
-  constructor(private addressService: AddressService, private httpClient: HttpClient) { }
+  constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient) { }
 
   createSignal(signal: Signal) {
-    // checagem da existencia de cidade
-    let url = this.url + 'cities/' + signal.cityId;
+    this.cityService.getCityById(signal.cityId!).subscribe((res)=>{
+      console.log(res);
+    });
+  }
+
+  private createCity(error: HttpErrorResponse){
+
   }
 
   updateSignal(signal: Signal) {
