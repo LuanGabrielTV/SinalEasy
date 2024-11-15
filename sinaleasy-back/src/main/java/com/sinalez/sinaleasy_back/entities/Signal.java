@@ -29,8 +29,8 @@ public class Signal implements Serializable {
 
     private String name;
     private String description;
-    private TypeOfSignal typeOfSignal;
-    private Status status;
+    private Integer typeOfSignal;
+    private Integer status;
 
     @JsonIgnoreProperties("signs")
     @ManyToOne

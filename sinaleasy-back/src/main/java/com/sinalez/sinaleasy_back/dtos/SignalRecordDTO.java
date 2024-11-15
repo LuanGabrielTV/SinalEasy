@@ -22,6 +22,6 @@ public record SignalRecordDTO(
     @NotBlank String cityId,
     LocalDate date,
     Integer numberOfLikes,
-    Integer Status
+    Integer status
 ) {}
 
