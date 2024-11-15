@@ -26,7 +26,7 @@ export class SignalService {
         this.createCity(signal);
         let url = this.url + 'signs/';
         console.log(JSON.stringify(signal))
-        this.httpClient.post(this.url, JSON.stringify(signal), this.httpOptions).subscribe((res)=>{
+        this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions).subscribe((res)=>{
           console.log(res);
         });
       }
