@@ -36,18 +36,11 @@ public class SignalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSignal);
     }
 
-    // @GetMapping("/{id}")
-    // public ResponseEntity<List<Signal>> getSignsByCity(@PathVariable(value = "id") Integer id) {
-    //     List<Signal> signs = signalService.getSignsByCityId(id);
-    //     return ResponseEntity.status(HttpStatus.OK).body(signs);
-    // }
-
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSignalById(@PathVariable(value = "id") UUID id) {
         Signal signal = signalService.getSignalById(id);
         return ResponseEntity.status(HttpStatus.OK).body(signal);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updatePassenger
@@ -58,6 +51,12 @@ public class SignalController {
     ) {
         Signal updatedSignal = signalService.updateSignal(signalRecordDTO, signalService.getSignalById(id));
         return ResponseEntity.status(HttpStatus.OK).body(updatedSignal);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<Signal>> getSignsByCityId(@PathVariable(value = "id") String id) {
+        List<Signal> signs = signalService.getSignsByCityId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(signs);
     }
 
 }

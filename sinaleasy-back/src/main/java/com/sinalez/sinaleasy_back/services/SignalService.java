@@ -49,8 +49,8 @@ public class SignalService {
         return signalRepository.findAll();
     }
 
-    // public List<Signal> getSignsByCityId(long id) {
-    // return signalRepository.findByCityId(0);
-    // }
+    public List<Signal> getSignsByCityId(String cityId) {
+        return signalRepository.findByCityCityId(cityId);
+    }
 
 }

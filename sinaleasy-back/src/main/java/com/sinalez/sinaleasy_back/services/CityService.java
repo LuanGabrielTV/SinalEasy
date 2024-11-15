@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.entities.Signal;
 // import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;
 
@@ -24,7 +25,7 @@ public class CityService {
     
         if (city.getCityId() == null) {
             // Pra verificar se o city foi realmente enviado
-            throw new IllegalArgumentException("O ID da cidade nãnao foi enviado.");
+            throw new IllegalArgumentException("O ID da cidade não foi enviado.");
         }
     
         return cityRepository.save(city);
@@ -38,4 +39,5 @@ public class CityService {
         return cityRepository.findById(id).orElse(null);
        //  return cityRepository.findById(id).orElseThrow(CityNotFoundException::new);
     }
+
 }
