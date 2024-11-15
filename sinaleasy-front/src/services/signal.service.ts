@@ -20,16 +20,15 @@ export class SignalService {
   constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient) { }
 
   createSignal(signal: Signal) {
-    console.log(signal)
-    this.cityService.getCityById(signal.cityId!).subscribe((res) => {
+    this.cityService.getCityById(signal.cityId!).subscribe(async (res) => {
       if (res == null) {
-        this.createCity(signal);
+        await this.createCity(signal);
+      }else{
         let url = this.url + 'signs/';
-        console.log(JSON.stringify(signal))
-        this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions).subscribe((res)=>{
-          console.log(res);
+        this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions).subscribe((res) => {
         });
       }
+
     });
   }
 
@@ -42,7 +41,9 @@ export class SignalService {
       city.rating = 0;
       city.signals = [];
       this.cityService.createCity(city).subscribe((res) => {
-        return;
+        let url = this.url + 'signs/';
+        this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions).subscribe((res) => {
+        });
       });
     })
   }
