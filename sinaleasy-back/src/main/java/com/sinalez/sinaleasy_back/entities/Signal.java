@@ -1,12 +1,9 @@
 package com.sinalez.sinaleasy_back.entities;
 
 import java.io.Serializable;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sinalez.sinaleasy_back.enums.Status;
-import com.sinalez.sinaleasy_back.enums.TypeOfSignal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
