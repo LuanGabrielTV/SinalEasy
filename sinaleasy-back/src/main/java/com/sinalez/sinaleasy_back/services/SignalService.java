@@ -1,5 +1,6 @@
 package com.sinalez.sinaleasy_back.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -42,6 +43,10 @@ public class SignalService {
 
     public Signal getSignalById(UUID id) {
         return signalRepository.findById(id).orElseThrow(SignalNotFoundException::new);
+    }
+
+    public List<Signal> getSigns() {
+        return signalRepository.findAll();
     }
 
     // public List<Signal> getSignsByCityId(long id) {

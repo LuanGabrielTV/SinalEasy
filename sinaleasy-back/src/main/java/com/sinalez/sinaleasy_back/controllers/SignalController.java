@@ -48,6 +48,7 @@ public class SignalController {
         return ResponseEntity.status(HttpStatus.OK).body(signal);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<Object> updatePassenger
     

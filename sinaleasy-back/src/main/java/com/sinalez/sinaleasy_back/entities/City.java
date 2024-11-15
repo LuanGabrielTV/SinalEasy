@@ -3,6 +3,8 @@ package com.sinalez.sinaleasy_back.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -23,6 +25,7 @@ public class City implements Serializable {
     private Integer rating;
 
     // O @OneToMany(mappedBy = "city") indica que a relacao eh mantida pela propriedade city na entidade Signal
+    @JsonBackReference
     @OneToMany(mappedBy = "city") 
     private List<Signal> signs;
 }
