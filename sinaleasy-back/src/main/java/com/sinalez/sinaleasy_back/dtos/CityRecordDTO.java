@@ -1,5 +1,6 @@
 package com.sinalez.sinaleasy_back.dtos;
 
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
