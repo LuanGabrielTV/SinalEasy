@@ -106,6 +106,10 @@ small{
     animation: fadeIn 3s;
 }
 
+.fadeIn{
+    animation: fadeIn 0.5s;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

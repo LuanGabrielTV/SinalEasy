@@ -70,7 +70,7 @@ public class SignalController {
     //     return ResponseEntity.status(HttpStatus.OK).body(signs);
     // }
 
-    @GetMapping("/{id}")
+    @GetMapping("/city/{id}")
     public ResponseEntity<List<SignalRecordDTO>> getSignsByCityId(@PathVariable(value = "id") String id) {
         List<Signal> signals = signalService.getSignsByCityId(id);
         List<SignalRecordDTO> signalDTOs = signals.stream().map(signalMapper::toDTO).toList();

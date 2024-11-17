@@ -23,7 +23,7 @@ export class SignalService {
     this.cityService.getCityById(signal.cityId!).subscribe(async (res) => {
       if (res == null) {
         await this.createCity(signal);
-      }else{
+      } else {
         let url = this.url + 'signs/';
         this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions).subscribe((res) => {
         });
@@ -48,9 +48,13 @@ export class SignalService {
     })
   }
 
-
   updateSignal(signal: Signal) {
     // checagem da existencia de cidade
     let url = this.url + 'cities/' + signal.cityId;
+  }
+
+  getSignalsByCity(cityId: string) {
+    let url = this.url + 'signs/city/' + cityId;
+    return this.httpClient.get(url, this.httpOptions);
   }
 }

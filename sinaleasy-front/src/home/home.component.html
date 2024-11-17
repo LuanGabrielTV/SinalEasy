@@ -18,7 +18,7 @@
         <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
         <p-rating [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
         <br><br><br>
-        <div class="signal" (click)="selectSignal(i)" [ngClass]="{'unselected': this.selectedIndex != i && this.selectedIndex != undefined, 'selected': this.selectedIndex == i && this.selectedIndex != undefined}" *ngFor="let s of this.signals, index as i">
+        <div class="signal fadeIn" (click)="selectSignal(i)" [ngClass]="{'unselected': this.selectedIndex != i && this.selectedIndex != undefined, 'selected': this.selectedIndex == i && this.selectedIndex != undefined}" *ngFor="let s of this.signals, index as i">
             <h3>{{s.name}}</h3>
             <div class="type" ngClass={{signalType[s.type!]}}>
                 <img src="{{signalType[s.type!]+ '.svg'}}"><small>{{signalType[s.type!]}}</small>

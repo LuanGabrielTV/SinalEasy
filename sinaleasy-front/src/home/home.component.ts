@@ -11,6 +11,8 @@ import { RatingModule } from 'primeng/rating';
 import { Signal } from '../domain/Signal';
 import { SignalType } from '../domain/SignalType';
 import { Status } from '../domain/Status';
+import { SignalService } from '../services/signal.service';
+import { CityService } from '../services/city.service';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +37,7 @@ export class HomeComponent implements OnInit {
   markers: L.CircleMarker[];
   selectedIndex: number | undefined;
 
-  constructor(private addressService: AddressService) {
+  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService) {
     this.signals = [];
     this.markers = [];
   }
@@ -45,10 +47,9 @@ export class HomeComponent implements OnInit {
     this.cities = [];
     this.loadStates();
   }
-  
+
   ngAfterViewInit() {
     this.initMap();
-    this.loadSignals();
   }
 
   initMap() {
@@ -63,13 +64,24 @@ export class HomeComponent implements OnInit {
   }
 
   loadSignals() {
-    this.signals.forEach((s) => {
-      let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
-        radius: 10 * s.scaleFactor!
-      });
-      this.markers.push(m);
-      m.addTo(this.map);
-    });
+    this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
+      if (city != null) {
+        this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs)=>{
+          this.signals = signs as unknown as Signal[];
+          console.log(this.signals)
+          this.signals.forEach((s) => {
+            let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
+              radius: 10 * s.scaleFactor!
+            });
+            m.bindTooltip(s.name!);
+            this.markers.push(m);
+            m.addTo(this.map);
+          });
+        })
+      }
+    }));
+    // console.log(this.signals)
+   
   }
 
   loadStates() {
@@ -82,6 +94,7 @@ export class HomeComponent implements OnInit {
         this.states?.push(u);
       });
     });
+    this.filteredStates = Array.from(this.states!);
   }
 
   loadCities() {
@@ -134,16 +147,24 @@ export class HomeComponent implements OnInit {
   }
 
   changeCity() {
+    this.signals = [];
+    this.markers.forEach((m)=>{
+      m.remove();
+    })
+    this.markers = [];
     let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
-    this.goToAdress(address, 13);
     this.selected = true;
     if (this.city?.rating == undefined) {
       this.city!.rating = 0;
     }
     this.rating = this.city?.rating;
+    this.goToAdress(address, 13);
+    setTimeout(()=>{
+      this.loadSignals();
+    },3000);
   }
 
-  selectSignal(index: number | undefined){
+  selectSignal(index: number | undefined) {
     this.selectedIndex = index;
     let coord = new L.LatLng(this.markers[index!].getLatLng().lat, this.markers[index!].getLatLng().lng);
     this.map.flyTo(coord, 15, {
