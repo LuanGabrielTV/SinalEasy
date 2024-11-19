@@ -9,15 +9,23 @@ body {
     flex: 1;
 }
 
-.map-container {
-    flex: 1;
-    margin: 0;
-}
-
 #map {
-    height: 99vh;
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100vh;
     margin: 0;
     padding: 0;
+    animation: fadeIn 3s;
+    z-index: 10;
+}
+
+#logo{
+    position: absolute;
+    z-index: 20;
+    top:4%;
+    left:2%;
+    height: 2.3vh;
 }
 
 .container {

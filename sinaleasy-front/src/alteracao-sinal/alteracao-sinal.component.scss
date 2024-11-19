@@ -9,16 +9,30 @@ body {
     flex: 1;
 }
 
+
+#logo{
+    position: absolute;
+    z-index: 20;
+    top:4%;
+    left:2%;
+    height: 2.3vh;
+}
+
 .map-container {
-    flex: 1;
-    margin: 0;
-    z-index: 1;
+    // flex: 1;
+    // margin: 0;
+    // z-index: 1;
 }
 
 #map {
-    height: 99vh;
+    position: absolute;
+    left: 0;
+    width: 50%;
+    height: 100vh;
     margin: 0;
     padding: 0;
+    animation: fadeIn 3s;
+    z-index: 10;
 }
 
 .container {
@@ -53,6 +67,7 @@ label {
 }
 
 form {
+
     padding: 2%;
     padding-top: 0.2%;
     padding-right: 0.6%;
@@ -61,6 +76,7 @@ form {
     width: 30%;
     position: absolute;
     top: 15%;
+    right: 19%;
     margin-left: 2%;
     height: 75vh;
 }
@@ -132,12 +148,7 @@ textarea {
 
     ::ng-deep .p-steps-override .p-steps-item::before {
         color: red;
-    }
-
-    // ::ng-deep li{
-    //     background-color: red;
-    // }
-
+    } 
 }
 
 .row {
@@ -161,8 +172,7 @@ textarea {
     font-weight: 800;
     font-size: 4vh;
     line-height: 5vh;
-    letter-spacing: -.5px;
-    // margin-bottom: 5%;
+    letter-spacing: -.5px; 
     margin-top: 5%;
     border: none;
     border-bottom: 2px solid #f2f2f2;

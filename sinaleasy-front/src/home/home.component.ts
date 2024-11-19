@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { City } from '../domain/City';
 import { State } from '../domain/State';
@@ -13,12 +13,12 @@ import { SignalType } from '../domain/SignalType';
 import { Status } from '../domain/Status';
 import { SignalService } from '../services/signal.service';
 import { CityService } from '../services/city.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, AutoCompleteModule, ButtonModule, RatingModule],
+  imports: [CommonModule, FormsModule, AutoCompleteModule, ButtonModule, RatingModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
   cities: City[] | undefined;
   filteredCities: City[] = [];
   filteredStates: State[] = [];
-  private map: L.Map | undefined;
   selected = false;
   rating: number | undefined;
   signals: Signal[];
@@ -37,13 +36,13 @@ export class HomeComponent implements OnInit {
   status = Status;
   markers: L.CircleMarker[];
   selectedIndex: number | undefined;
+  @ViewChild('mapContainer')
+  private mapContainer!: ElementRef;
+  private map: L.Map | undefined;
 
   constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private router: Router) {
     this.signals = [];
     this.markers = [];
-    this.router.routeReuseStrategy.shouldReuseRoute = () => {
-      return false;
-    }
   }
 
 
@@ -58,11 +57,8 @@ export class HomeComponent implements OnInit {
   }
 
   initMap() {
-    if(document.getElementsByClassName('map-frame')[0].innerHTML.length > 1000){
-      window.location.reload();
-    }
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    this.map = L.map('map', {
+    this.map = L.map(this.mapContainer.nativeElement, {
       center: [-15.47, -47.56],
       zoom: 7,
       zoomControl: false
@@ -87,8 +83,6 @@ export class HomeComponent implements OnInit {
         })
       }
     }));
-    console.log(this.signals)
-
   }
 
   loadStates() {
@@ -131,7 +125,7 @@ export class HomeComponent implements OnInit {
   }
 
   filterStates(event: AutoCompleteCompleteEvent) {
-
+    
     let filtered: any[] = [];
     let query = event.query;
 
@@ -197,7 +191,10 @@ export class HomeComponent implements OnInit {
   }
 
   editSignal(s: Signal){
-    console.log(s.signalId)
-    this.router.navigate(['/alteracao-sinal'],{ queryParams: { signalId: s.signalId } });
+    this.router.navigate(
+      ['/alteracao-sinal'],
+      { queryParams: { signalId: s.signalId } }
+    );
+    // this.router.navigate(['/alteracao-sinal'],{ queryParams: { signalId: s.signalId } });
   }
 }

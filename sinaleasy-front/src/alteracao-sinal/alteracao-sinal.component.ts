@@ -258,7 +258,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   goHome(){
-    this.router.navigateByUrl('/');
+    this.router.navigate(['/']);
   }
 
   onSubmit() {

@@ -1,9 +1,9 @@
 <body>
-    <button pButton pRipple class="p-button-success addButton" (click)="goToCadastroSignal()">
+    <a class="addButton" routerLink="/cadastro-sinal">
         <img src="signal.png">
-    </button>
+    </a>
+    <img src="Signaleasy.png" routerLink="/" id="logo">
     <div id="header">
-        <img src="Signaleasy.png" id="logo">
         <div class="container">
             <div>
                 <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
@@ -51,7 +51,7 @@
     </div>
     <div class="map-container">
         <div class="map-frame">
-            <div id="map"></div>
+            <div id="map" #mapContainer></div>
         </div>
     </div>
 </body>
