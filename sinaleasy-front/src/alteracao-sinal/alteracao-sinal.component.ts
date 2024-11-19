@@ -45,7 +45,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   status: number;
   readonly = true;
 
-  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private route: ActivatedRoute, private router:Router) {
+  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private route: ActivatedRoute, private router: Router) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
@@ -94,9 +94,10 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(params => {
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
-        this.cityService.getCityById(this.signal.cityId!).subscribe((res)=>{
+        this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
           this.city = res;
           this.initMap();
+          this.loadStates();
           this.loadData();
         })
       });
@@ -111,7 +112,6 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   loadData() {
-    this.loadStates();
     this.form.get('name')?.setValue(this.signal.name);
     this.form.get('typeOfSignal')?.setValue(this.types[this.signal.typeOfSignal!]);
     this.form.get('date')?.setValue(formatDate(this.signal.date!, 'yyyy-MM-dd', 'en'));
@@ -124,7 +124,6 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
       radius: 10 * this.signal.scaleFactor!
     });
     this.marker.addTo(this.map);
-
   }
 
   loadStates() {
@@ -258,6 +257,10 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     L.tileLayer(baseMapURl).addTo(this.map);
   }
 
+  goHome(){
+    this.router.navigateByUrl('/');
+  }
+
   onSubmit() {
     this.signal.name = this.form.get('name')?.value;
     this.signal.address = this.address;
@@ -269,7 +272,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     this.signal.latitude = this.marker?.getLatLng().lat!;
     this.signal.longitude = this.marker?.getLatLng().lng!;
     this.signalService.updateSignal(this.signal);
-    this.router.navigateByUrl('/');
+    this.goHome();
   }
 
 }

@@ -176,10 +176,17 @@ b {
 .voltar{
     background: none;
     border:none;
+    position: absolute;
+    top:-8%;
+    left: 0;
+}
+
+
+.voltar:hover svg{
+    transform: scale(0.9);
+    transition: 0.3s;
 }
 
 .voltar svg{
     height: 4vh;
-    position: absolute;
-    left:-15%;
 }

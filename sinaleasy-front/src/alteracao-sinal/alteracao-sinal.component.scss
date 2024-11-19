@@ -208,3 +208,20 @@ b {
     right: 6.5%;
     bottom: 5%;
 }
+
+.voltar{
+    background: none;
+    border:none;
+    position: absolute;
+    left:0;
+    top:-8%;
+}
+
+.voltar:hover svg{
+    transform: scale(0.9);
+    transition: 0.3s;
+}
+
+.voltar svg{
+    height: 4vh;
+}

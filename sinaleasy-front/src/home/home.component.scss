@@ -215,7 +215,7 @@ small{
     position: absolute;
     bottom: 3%;
     right:1%;
-    padding:0.6%;
+    padding:0.8%;
     z-index: 10;
     // box-shadow: 0 0 10px #003ab823;
 }
@@ -228,4 +228,21 @@ small{
 .addButton:hover img{
     transform: rotate(180deg);
     transition: 0.5s;
+}
+
+.editButton svg{
+    height: 1.5vh;
+    width: 1.5vh;
+
+}
+
+.editButton{
+    width: 2vh;
+    background:none;
+    border:none;
+}
+
+.editButton:hover svg{
+    transform: scale(1.1);
+    transition: 0.3s;
 }
