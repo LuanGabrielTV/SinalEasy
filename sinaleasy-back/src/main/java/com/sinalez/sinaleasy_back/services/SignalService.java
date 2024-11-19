@@ -38,6 +38,7 @@ public class SignalService {
     public Signal updateSignal(SignalRecordDTO signalRecordDTO, Signal signal) {
         BeanUtils.copyProperties(signalRecordDTO, signal);
         return signalRepository.save(signal);
+        // não pode mudar cidade em um sinal já existente
         // signal não pode ser removido enquanto houver qualquer curtida
     }
 

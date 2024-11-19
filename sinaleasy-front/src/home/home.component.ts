@@ -13,6 +13,7 @@ import { SignalType } from '../domain/SignalType';
 import { Status } from '../domain/Status';
 import { SignalService } from '../services/signal.service';
 import { CityService } from '../services/city.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit {
   cities: City[] | undefined;
   filteredCities: City[] = [];
   filteredStates: State[] = [];
-  private map!: L.Map;
+  private map: L.Map | undefined;
   selected = false;
   rating: number | undefined;
   signals: Signal[];
@@ -37,10 +38,14 @@ export class HomeComponent implements OnInit {
   markers: L.CircleMarker[];
   selectedIndex: number | undefined;
 
-  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService) {
+  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private router: Router) {
     this.signals = [];
     this.markers = [];
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    }
   }
+
 
   ngOnInit(): void {
     this.states = [];
@@ -53,20 +58,22 @@ export class HomeComponent implements OnInit {
   }
 
   initMap() {
+    if(document.getElementsByClassName('map-frame')[0].innerHTML.length > 1000){
+      window.location.reload();
+    }
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
       center: [-15.47, -47.56],
       zoom: 7,
       zoomControl: false
     });
-
     L.tileLayer(baseMapURl).addTo(this.map);
   }
 
   loadSignals() {
     this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
       if (city != null) {
-        this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs)=>{
+        this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs) => {
           this.signals = signs as unknown as Signal[];
           console.log(this.signals)
           this.signals.forEach((s) => {
@@ -75,13 +82,13 @@ export class HomeComponent implements OnInit {
             });
             m.bindTooltip(s.name!);
             this.markers.push(m);
-            m.addTo(this.map);
+            m.addTo(this.map!);
           });
         })
       }
     }));
-    // console.log(this.signals)
-   
+    console.log(this.signals)
+
   }
 
   loadStates() {
@@ -148,29 +155,33 @@ export class HomeComponent implements OnInit {
 
   changeCity() {
     this.signals = [];
-    this.markers.forEach((m)=>{
+    this.markers.forEach((m) => {
       m.remove();
     })
     this.markers = [];
     let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
-    this.selected = true;
     if (this.city?.rating == undefined) {
       this.city!.rating = 0;
     }
     this.rating = this.city?.rating;
+    this.selected = true;
     this.goToAdress(address, 13);
-    setTimeout(()=>{
+    setTimeout(() => {
       this.loadSignals();
-    },3000);
+    }, 3000);
   }
 
   selectSignal(index: number | undefined) {
     this.selectedIndex = index;
     let coord = new L.LatLng(this.markers[index!].getLatLng().lat, this.markers[index!].getLatLng().lng);
-    this.map.flyTo(coord, 15, {
+    this.map!.flyTo(coord, 15, {
       "animate": true,
       "duration": 3
     });
+  }
+
+  goToCadastroSignal() {
+    this.router.navigateByUrl('/cadastro-sinal');
   }
 
   goToAdress(address: string, level: number) {
@@ -178,10 +189,15 @@ export class HomeComponent implements OnInit {
       let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
       let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);
       let coord = new L.LatLng(lat, lng);
-      this.map.flyTo(coord, level, {
+      this.map!.flyTo(coord, level, {
         "animate": true,
         "duration": 3
       });
     });
+  }
+
+  editSignal(s: Signal){
+    console.log(s.signalId)
+    this.router.navigate(['/alteracao-sinal'],{ queryParams: { signalId: s.signalId } });
   }
 }

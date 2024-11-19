@@ -15,8 +15,8 @@
                 </div>
                 <div class="row">
                     <div>
-                        <label for="type">Tipo</label><br>
-                        <select id="type" formControlName="type">
+                        <label for="typeOfSignal">Tipo</label><br>
+                        <select id="typeOfSignal" formControlName="typeOfSignal">
                             <option default value="">Tipo</option>
                             <option *ngFor="let t of types">{{t}}</option>
                         </select>
@@ -43,12 +43,12 @@
                 <div class="row" style="flex-wrap: wrap;">
                     <div style="flex-basis: 45%;">
                         <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
-                            formControlName="state" [dropdown]="true" [suggestions]="filteredStates"
+                            formControlName="state" readonly="true" [dropdown]="true" [suggestions]="filteredStates"
                             (completeMethod)="filterStates($event)" field="name" />
                     </div>
                     <div style="flex-basis: 45%;">
                         <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()"
-                            placeholder="Município" [forceSelection]="true" formControlName="city"
+                            placeholder="Município" readonly="true" [forceSelection]="true" formControlName="city"
                             [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
                     </div>

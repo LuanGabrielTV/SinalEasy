@@ -10,6 +10,7 @@ import com.sinalez.sinaleasy_back.entities.Signal;
 public interface SignalMapper {
     @Mapping(target = "scaleFactor", constant = "1")
     @Mapping(target = "numberOfLikes", constant = "1")
+    @Mapping(target = "cityId", source = "signal.city.cityId")
     SignalRecordDTO toDTO(Signal signal);
 
     @Mapping(target = "city", ignore = true)

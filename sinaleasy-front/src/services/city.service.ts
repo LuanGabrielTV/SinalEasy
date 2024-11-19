@@ -18,7 +18,7 @@ export class CityService {
 
   getCityById(id: string) {
     let url = this.url + id;
-    return this.httpClient.get(url);
+    return this.httpClient.get<City>(url);
   }
 
   createCity(city: City){

@@ -17,6 +17,7 @@ import { CommonModule, formatDate } from '@angular/common';
 import { StepsModule } from 'primeng/steps';
 import { MenuItem } from 'primeng/api';
 import { SignalService } from '../services/signal.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -44,14 +45,14 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   status: number;
   readonly = true;
 
-  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService) {
+  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private route: ActivatedRoute, private router:Router) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(255),
         Validators.required])],
-      'type': [this.signal.type, Validators.compose([
+      'typeOfSignal': [this.signal.typeOfSignal, Validators.compose([
         Validators.required])],
       'date': [this.signal.date, Validators.compose([
         Validators.required])],
@@ -86,27 +87,33 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
         command: (event: any) => { this.status = 3 }
       }
     ];
-    // this.cityService.getCityById(this.signal.);
+
   }
 
   ngAfterViewInit() {
-    this.initMap();
-    this.loadData();
-    this.map.on("click", (e) => {
-      this.changeMarker(e);
+    this.route.queryParams.subscribe(params => {
+      this.signalService.getSignalById(params['signalId']).subscribe((res) => {
+        this.signal = res;
+        this.cityService.getCityById(this.signal.cityId!).subscribe((res)=>{
+          this.city = res;
+          this.initMap();
+          this.loadData();
+        })
+      });
     });
+
   }
 
   changeMarker(e: L.LeafletMouseEvent) {
-    this.marker!.setLatLng(e.latlng);
-    this.marker!.redraw();
+    this.marker?.setLatLng(e.latlng);
+    this.marker?.redraw();
     this.loadAddress(e.latlng.lat, e.latlng.lng);
   }
 
   loadData() {
     this.loadStates();
     this.form.get('name')?.setValue(this.signal.name);
-    this.form.get('type')?.setValue(this.types[this.signal.type!]);
+    this.form.get('typeOfSignal')?.setValue(this.types[this.signal.typeOfSignal!]);
     this.form.get('date')?.setValue(formatDate(this.signal.date!, 'yyyy-MM-dd', 'en'));
     this.form.get('city')?.setValue(this.city);
     this.form.get('description')?.setValue(this.signal.description);
@@ -130,8 +137,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
         this.states?.push(u);
       });
       this.states?.forEach((e) => {
-        console.log(e);
-        if (e.name == this.city!.state) {
+        if (e.sigla == this.city!.state) {
           this.form.get('state')?.setValue(e);
           this.loadCities();
         }
@@ -147,7 +153,6 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
         c.cityId = r['id'];
         this.cities?.push(c);
       });
-      console.log(this.form.get('state')?.value)
       this.filteredCities = Array.from(this.cities!);
     });
   }
@@ -237,13 +242,18 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   initMap() {
+    if (document.getElementsByClassName('map-frame')[0].innerHTML.length > 1000) {
+      window.location.reload();
+    }
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
       center: [this.signal.latitude!, this.signal.longitude!],
       zoom: 12,
       zoomControl: false
     });
-    let coord = new L.LatLng(this.signal.latitude!, this.signal.longitude!);
+    this.map.on("click", (e) => {
+      this.changeMarker(e);
+    });
 
     L.tileLayer(baseMapURl).addTo(this.map);
   }
@@ -251,14 +261,15 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   onSubmit() {
     this.signal.name = this.form.get('name')?.value;
     this.signal.address = this.address;
-    this.signal.type =  this.signalTypes[this.form.get('type')?.value] as unknown as number;
+    this.signal.typeOfSignal = this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number;
     this.signal.date = this.form.get('date')?.value;
     this.signal.description = this.form.get('description')?.value;
-    this.signal.status = this.form.get('status')?.value;
+    this.signal.status = this.status;
     this.signal.cityId = this.city?.cityId;
     this.signal.latitude = this.marker?.getLatLng().lat!;
     this.signal.longitude = this.marker?.getLatLng().lng!;
     this.signalService.updateSignal(this.signal);
+    this.router.navigateByUrl('/');
   }
 
 }

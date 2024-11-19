@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AddressService } from '../services/address.service';
 import * as L from 'leaflet';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { State } from '../domain/State';
 import { SignalType } from '../domain/SignalType';
 import { SignalService } from '../services/signal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-sinal',
@@ -40,14 +41,14 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
   signalTypes = SignalType;
 
-  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService) {
+  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService, private router:Router) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
         Validators.minLength(2),
         Validators.maxLength(255),
         Validators.required])],
-      'type': [this.signal.type, Validators.compose([
+      'typeOfSignal': [this.signal.typeOfSignal, Validators.compose([
         Validators.required])],
       'date': [this.signal.date, Validators.compose([
         Validators.required])],
@@ -72,10 +73,13 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
     this.map.on("click", (e) => {
       this.addMarker(e);
     });
-
+    this.form.get('date')?.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
   }
 
   initMap() {
+    if(document.getElementsByClassName('map-frame')[0].innerHTML.length > 1000){
+      window.location.reload();
+    }
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
       center: [-15.47, -47.56],
@@ -203,7 +207,12 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    this.signal = new Signal(this.form.get('name')?.value!, this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('type')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
+    this.signal = new Signal(this.form.get('name')?.value!, this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
     this.signalService.createSignal(this.signal);
+    this.goHome();
+  }
+
+  goHome(){
+    this.router.navigateByUrl('/');
   }
 }

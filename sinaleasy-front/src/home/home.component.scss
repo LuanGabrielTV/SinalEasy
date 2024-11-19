@@ -203,3 +203,29 @@ small{
     letter-spacing: -.5px;
     margin-bottom: 2%;
 }
+
+.addButton img{
+    height: 2vh;
+}
+
+.addButton{
+    background-color: white;
+    border-radius: 50%;
+    border: none;
+    position: absolute;
+    bottom: 3%;
+    right:1%;
+    padding:0.6%;
+    z-index: 10;
+    // box-shadow: 0 0 10px #003ab823;
+}
+
+.addButton:hover{
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+
+.addButton:hover img{
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
