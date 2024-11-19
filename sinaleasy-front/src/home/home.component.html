@@ -45,7 +45,7 @@
             </div>
             <div style="display:flex;justify-content: space-between;">
                 <p class="address">{{s.address}}</p>
-                <p class="status">{{status[s.status!]}}</p>
+                <p class="status" [class]="status[s.status!]">{{status[s.status!]}}</p>
             </div>
         </div>
     </div>
