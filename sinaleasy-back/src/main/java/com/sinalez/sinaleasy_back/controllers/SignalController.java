@@ -37,8 +37,8 @@ public class SignalController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSignalById(@PathVariable(value = "id") UUID id) {
         Signal signal = signalService.getSignalById(id);
-        SignalRecordDTO signalRecordDTO = signalMapper.toDTO(signal);
-        return ResponseEntity.status(HttpStatus.OK).body(signalRecordDTO);
+        SignalRecordDTO signalResponseDTO = signalMapper.toDTO(signal);
+        return ResponseEntity.status(HttpStatus.OK).body(signalResponseDTO);
     }
     
     // @GetMapping("/{id}")

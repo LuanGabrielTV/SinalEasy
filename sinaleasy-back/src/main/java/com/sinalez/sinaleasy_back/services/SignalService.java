@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
 import com.sinalez.sinaleasy_back.entities.Signal;
+import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;
 import com.sinalez.sinaleasy_back.repositories.SignalRepository;
@@ -29,7 +30,7 @@ public class SignalService {
         BeanUtils.copyProperties(signalRecordDTO, signal);
         String cityIdOfSignal = signalRecordDTO.cityId();
         City cityOfSignal = cityRepository.findById(cityIdOfSignal)
-            .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+            .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
         return signalRepository.save(signal);
 
@@ -38,7 +39,7 @@ public class SignalService {
     public Signal updateSignal(SignalRecordDTO signalRecordDTO, Signal signal) {
         BeanUtils.copyProperties(signalRecordDTO, signal);
         String cityIdOfSignal = signalRecordDTO.cityId();
-        City cityOfSignal = cityRepository.findById(cityIdOfSignal).orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+        City cityOfSignal = cityRepository.findById(cityIdOfSignal).orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
         return signalRepository.save(signal);
 
