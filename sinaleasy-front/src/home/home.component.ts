@@ -14,6 +14,7 @@ import { Status } from '../domain/Status';
 import { SignalService } from '../services/signal.service';
 import { CityService } from '../services/city.service';
 import { Router, RouterModule } from '@angular/router';
+import { HomeService } from '../services/home.service';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
   private mapContainer!: ElementRef;
   private map: L.Map | undefined;
 
-  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private router: Router) {
+  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private homeService: HomeService, private router: Router) {
     this.signals = [];
     this.markers = [];
   }
@@ -54,6 +55,21 @@ export class HomeComponent implements OnInit {
 
   ngAfterViewInit() {
     this.initMap();
+    this.reloadLatestValues();
+  }
+
+  reloadLatestValues() {
+    let latestCity: City | undefined = this.homeService.getLatestCity();
+    let latestState: State | undefined = this.homeService.getLatestState();
+    if (latestCity != undefined && latestState != undefined) {
+      this.city = latestCity;
+      this.state = latestState;
+      let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
+      this.goToAdress(address, 13);
+      setTimeout(() => {
+        this.loadSignals();
+      }, 3000);
+    }
   }
 
   initMap() {
@@ -125,7 +141,7 @@ export class HomeComponent implements OnInit {
   }
 
   filterStates(event: AutoCompleteCompleteEvent) {
-    
+
     let filtered: any[] = [];
     let query = event.query;
 
@@ -143,6 +159,7 @@ export class HomeComponent implements OnInit {
     this.cities = [];
     this.filteredCities = [];
     this.loadCities();
+    this.homeService.setLatestState(this.state!);
     let address = this.state?.name! + ', Brazil';
     this.goToAdress(address, 7);
   }
@@ -159,6 +176,7 @@ export class HomeComponent implements OnInit {
     }
     this.rating = this.city?.rating;
     this.selected = true;
+    this.homeService.setLatestCity(this.city!);
     this.goToAdress(address, 13);
     setTimeout(() => {
       this.loadSignals();
@@ -190,7 +208,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  editSignal(s: Signal){
+  editSignal(s: Signal) {
     this.router.navigate(
       ['/alteracao-sinal'],
       { queryParams: { signalId: s.signalId } }
