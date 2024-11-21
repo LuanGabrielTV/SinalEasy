@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.mappers.CityMapper;
 import com.sinalez.sinaleasy_back.services.CityService;
 
 import jakarta.validation.Valid;
@@ -23,21 +24,31 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:4200")
 public class CityController {
     private final CityService cityService;
+    private final CityMapper cityMapper;
 
-    public CityController(CityService cityService) {
+    public CityController(CityService cityService, CityMapper cityMapper) {
         this.cityService = cityService;
+        this.cityMapper = cityMapper;
     }
 
+    // @PostMapping("/")
+    // public ResponseEntity<City> createCity(@RequestBody @Valid CityRecordDTO cityRecordDTO) {
+    //     City createdCity = cityService.createCity(cityRecordDTO);
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(createdCity);
+    // }
+
     @PostMapping("/")
-    public ResponseEntity<City> createCity(@RequestBody @Valid CityRecordDTO cityRecordDTO) {
+    public ResponseEntity<CityRecordDTO> createCity(@RequestBody @Valid CityRecordDTO cityRecordDTO) {
         City createdCity = cityService.createCity(cityRecordDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCity);
+        CityRecordDTO cityResponseDTO = cityMapper.toDTO(createdCity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cityResponseDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCityById(@PathVariable(value = "id") String id) {
         City city = cityService.getCityById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(city);
+        CityRecordDTO cityResponseDTO = cityMapper.toDTO(city);
+        return ResponseEntity.status(HttpStatus.OK).body(cityResponseDTO);
     }
 
     @GetMapping("/")
@@ -45,7 +56,6 @@ public class CityController {
         List<City> cities = cityService.getCities();
         return ResponseEntity.status(HttpStatus.OK).body(cities);
     }
-
 
 
 }
