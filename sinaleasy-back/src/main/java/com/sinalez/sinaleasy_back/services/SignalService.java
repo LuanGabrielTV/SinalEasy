@@ -37,7 +37,11 @@ public class SignalService {
 
     public Signal updateSignal(SignalRecordDTO signalRecordDTO, Signal signal) {
         BeanUtils.copyProperties(signalRecordDTO, signal);
+        String cityIdOfSignal = signalRecordDTO.cityId();
+        City cityOfSignal = cityRepository.findById(cityIdOfSignal).orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+        signal.setCity(cityOfSignal);
         return signalRepository.save(signal);
+
         // não pode mudar cidade em um sinal já existente
         // signal não pode ser removido enquanto houver qualquer curtida
     }

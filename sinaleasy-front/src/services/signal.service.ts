@@ -40,7 +40,9 @@ export class SignalService {
 
   updateSignal(signal: Signal) {
     let url = this.url + 'signs/' + signal.signalId;
-    return this.httpClient.put(url, JSON.stringify(signal), this.httpOptions).subscribe();
+    return this.cityService.getCityById(signal.cityId!)
+      .pipe(
+        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(_ => this.httpClient.put<Signal>(url, JSON.stringify(signal), this.httpOptions)));
   }
 
   getSignalsByCity(cityId: string) {

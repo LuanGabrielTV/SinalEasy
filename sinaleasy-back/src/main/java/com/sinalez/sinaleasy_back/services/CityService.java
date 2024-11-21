@@ -26,7 +26,7 @@ public class CityService {
             // Pra verificar se o city foi realmente enviado
             throw new IllegalArgumentException("O ID da cidade não foi enviado.");
         }
-    
+        
         return cityRepository.save(city);
     }
 
@@ -38,5 +38,7 @@ public class CityService {
         return cityRepository.findById(id).orElse(null);
        //  return cityRepository.findById(id).orElseThrow(CityNotFoundException::new);
     }
+
+    
 
 }
