@@ -13,9 +13,9 @@ public interface SignalMapper {
     @Mapping(target = "cityId", source = "signal.city.cityId")
     SignalRecordDTO toDTO(Signal signal);
 
-    @Mapping(target = "city", ignore = true)
-    @Mapping(target = "signalId", ignore = true)
-    Signal fromDTO(SignalRecordDTO signalRecordDTO);
+    // @Mapping(target = "city", ignore = true)
+    // @Mapping(target = "signalId", ignore = true)
+    // Signal fromDTO(SignalRecordDTO signalRecordDTO);
 }
 
 
