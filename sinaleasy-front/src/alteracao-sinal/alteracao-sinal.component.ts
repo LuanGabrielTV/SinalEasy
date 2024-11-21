@@ -106,7 +106,9 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   changeMarker(e: L.LeafletMouseEvent) {
+    this.marker?.remove();
     this.marker?.setLatLng(e.latlng);
+    this.marker?.addTo(this.map);
     this.marker?.redraw();
     this.loadAddress(e.latlng.lat, e.latlng.lng);
   }
@@ -157,15 +159,19 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   changeState() {
+    this.marker?.remove();
     this.form.get('city')?.reset();
     this.cities = [];
     this.filteredCities = [];
     this.loadCities();
     let address = this.form.get('state')?.value?.name + ', Brazil';
+    this.address = "";
     this.goToAdress(address, 7);
   }
 
   changeCity() {
+    this.marker?.remove();
+    this.address = "";
     let address = this.form.get('city')?.value?.name + ', ' + this.form.get('state')?.value?.name! + ', Brazil';
     this.goToAdress(address, 13);
     this.city = this.form.get('city')?.value;

@@ -44,12 +44,12 @@
                 <div class="row" style="flex-wrap: wrap;">
                     <div style="flex-basis: 45%;">
                         <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
-                            formControlName="state" readonly="true" [dropdown]="true" [suggestions]="filteredStates"
+                            formControlName="state"[dropdown]="true" [suggestions]="filteredStates"
                             (completeMethod)="filterStates($event)" field="name" />
                     </div>
                     <div style="flex-basis: 45%;">
                         <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()"
-                            placeholder="Município" readonly="true" [forceSelection]="true" formControlName="city"
+                            placeholder="Município" [forceSelection]="true" formControlName="city"
                             [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
                     </div>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="row" style="width:95%; flex-direction: column-reverse;">
-                    <p-button id="sinalize" [disabled]="!this.form.valid || this.city == undefined" type="submit"
+                    <p-button id="sinalize" [disabled]="!this.form.valid || this.city == undefined || this.address==''" type="submit"
                         label="Confirmar" severity="contrast" />
                 </div>
             </form>
