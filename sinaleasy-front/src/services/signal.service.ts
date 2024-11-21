@@ -27,7 +27,6 @@ export class SignalService {
   }
 
   private createCity(signal: Signal) {
-    console.log(signal)
     return this.addressService.getCityById(signal.cityId!).pipe((switchMap(res => {
       let city: City = new City();
       city.cityId = String((res['id' as keyof Object] as Object) as number);
@@ -40,6 +39,7 @@ export class SignalService {
   }
   
   updateSignal(signal: Signal) {
+    console.log(signal)
     let url = this.url + 'signs/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
@@ -53,7 +53,6 @@ export class SignalService {
 
   getSignalById(signalId: string) {
     let url = this.url + 'signs/' + signalId;
-    console.log(url)
     return this.httpClient.get<Signal>(url, this.httpOptions);
   }
 }

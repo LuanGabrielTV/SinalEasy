@@ -223,6 +223,12 @@ small {
     transition: 0.2s;
 }
 
+.warning{
+    font-size: small;
+    color:gray;
+    font-style: italic;
+}
+
 .selectedMarker{
     transform: scale(10);
 }

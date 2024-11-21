@@ -51,14 +51,20 @@ export class HomeComponent implements OnInit {
     this.states = [];
     this.cities = [];
     this.loadStates();
+    this.reloadLatestValues();
+
   }
 
   ngAfterViewInit() {
     this.initMap();
-    this.reloadLatestValues();
+    if(this.city != undefined){
+      this.loadSignals();
+    }
+    this.filteredStates = [];
+    this.filteredCities = [];
   }
 
-  focusOnSignal(signal: Signal, index: number){
+  focusOnSignal(signal: Signal, index: number) {
     let coord = new L.LatLng(signal.latitude!, signal.longitude!);
     this.map!.flyTo(coord, 13, {
       "animate": true,
@@ -68,7 +74,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  unfocusOffSignal(index: number){
+  unfocusOffSignal(index: number) {
     this.markers[index].toggleTooltip();
   }
 
@@ -80,7 +86,7 @@ export class HomeComponent implements OnInit {
       this.state = latestState;
       let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
       this.flyToAddress(address, 13, false, 0);
-      this.loadSignals();
+      this.loadCities();
     }
   }
 
@@ -99,7 +105,6 @@ export class HomeComponent implements OnInit {
       if (city != null) {
         this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs) => {
           this.signals = signs as unknown as Signal[];
-          console.log(this.signals)
           this.signals.forEach((s) => {
             let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
               radius: 10 * s.scaleFactor!,
@@ -107,7 +112,9 @@ export class HomeComponent implements OnInit {
             });
             m.bindTooltip(s.name!);
             this.markers.push(m);
-            m.addTo(this.map!);
+            setTimeout(() => {
+              m.addTo(this.map!);
+            }, 2500);
           });
         })
       }
@@ -115,7 +122,9 @@ export class HomeComponent implements OnInit {
   }
 
   loadStates() {
+    this.states = [];
     this.addressService.getStates().subscribe((response) => {
+      console.log(response);
       response.forEach((r) => {
         let u = new State();
         u.sigla = r['sigla'];
@@ -124,10 +133,10 @@ export class HomeComponent implements OnInit {
         this.states?.push(u);
       });
     });
-    this.filteredStates = Array.from(this.states!);
   }
 
   loadCities() {
+    this.cities = [];
     this.addressService.getCitiesByState(this.state?.id!).subscribe((response) => {
       response.forEach((r) => {
         let c = new City();
@@ -157,13 +166,15 @@ export class HomeComponent implements OnInit {
 
     let filtered: any[] = [];
     let query = event.query;
-
+    console.log(query)
+    this.filteredStates = [];
     for (let i = 0; i < (this.states as any[]).length; i++) {
       let item = (this.states as any[])[i];
       if (item.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(item);
       }
     }
+    console.log(this.states);
     this.filteredStates = filtered;
   }
 
@@ -190,10 +201,9 @@ export class HomeComponent implements OnInit {
     this.rating = this.city?.rating;
     this.selected = true;
     this.homeService.setLatestCity(this.city!);
+    this.loadSignals();
     this.flyToAddress(address, 13, true, 2);
-    setTimeout(() => {
-      this.loadSignals();
-    }, 2500);
+
   }
 
   selectSignal(index: number | undefined) {
@@ -209,7 +219,7 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('/cadastro-sinal');
   }
 
-  flyToAddress(address: string, level: number, animate:boolean, duration: number) {
+  flyToAddress(address: string, level: number, animate: boolean, duration: number) {
     this.addressService.getCoordinates(address).subscribe((response) => {
       let lat = ((response as object[])[0]['lat' as keyof Object] as unknown as number);
       let lng = ((response as object[])[0]['lon' as keyof Object] as unknown as number);

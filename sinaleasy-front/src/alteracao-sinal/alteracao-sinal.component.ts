@@ -268,6 +268,7 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
+    console.log(this.city);
     this.signal.name = this.form.get('name')?.value;
     this.signal.address = this.address;
     this.signal.typeOfSignal = this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number;

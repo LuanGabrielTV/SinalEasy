@@ -8,7 +8,7 @@ import com.sinalez.sinaleasy_back.entities.City;
 
 @Mapper(componentModel = "spring")
 public interface CityMapper {
-    @Mapping(target = "cityId", ignore = true)
+    // @Mapping(target = "cityId", ignore = true)
     CityRecordDTO toDTO(City city);
 
     
