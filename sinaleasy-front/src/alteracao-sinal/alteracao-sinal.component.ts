@@ -271,8 +271,9 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
     this.signal.cityId = this.city?.cityId;
     this.signal.latitude = this.marker?.getLatLng().lat!;
     this.signal.longitude = this.marker?.getLatLng().lng!;
-    this.signalService.updateSignal(this.signal);
-    this.goHome();
+    this.signalService.updateSignal(this.signal).subscribe(_=>{
+      this.goHome();
+    });
   }
 
 }

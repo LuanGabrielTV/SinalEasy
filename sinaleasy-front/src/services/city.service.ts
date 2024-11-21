@@ -20,7 +20,7 @@ export class CityService {
     let url = this.url + id;
     return this.httpClient.get<City>(url);
   }
-
+  
   createCity(city: City){
     console.log(JSON.stringify(city));
     return this.httpClient.post<City>(this.url, JSON.stringify(city), this.httpOptions);

@@ -27,6 +27,7 @@ export class SignalService {
   }
 
   private createCity(signal: Signal) {
+    console.log(signal)
     return this.addressService.getCityById(signal.cityId!).pipe((switchMap(res => {
       let city: City = new City();
       city.cityId = String((res['id' as keyof Object] as Object) as number);
@@ -37,17 +38,16 @@ export class SignalService {
       return this.cityService.createCity(city);
     })))
   }
-
+  
   updateSignal(signal: Signal) {
     let url = this.url + 'signs/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
-        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(_ => this.httpClient.put<Signal>(url, JSON.stringify(signal), this.httpOptions)));
+        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(city => this.httpClient.put<Signal>(url, JSON.stringify(signal), this.httpOptions)));
   }
 
   getSignalsByCity(cityId: string) {
     let url = this.url + 'signs/city/' + cityId;
-    console.log(url)
     return this.httpClient.get(url, this.httpOptions);
   }
 
