@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +22,9 @@ public class City implements Serializable {
     @Id
     private String cityId;
 
-    private String name;
-    private String state;
-    private Integer rating;
+    @NotBlank private String name;
+    @NotBlank private String state;
+    @NotNull private Integer rating;
 
     // O @OneToMany(mappedBy = "city") indica que a relacao eh mantida pela propriedade city na entidade Signal
     @JsonBackReference
