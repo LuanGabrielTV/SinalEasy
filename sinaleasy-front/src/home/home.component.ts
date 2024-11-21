@@ -58,6 +58,14 @@ export class HomeComponent implements OnInit {
     this.reloadLatestValues();
   }
 
+  focusOnSignal(signal: Signal){
+    let coord = new L.LatLng(signal.latitude!, signal.longitude!);
+    this.map!.flyTo(coord, 15, {
+      "animate": true,
+      "duration": 1
+    });
+  }
+
   reloadLatestValues() {
     let latestCity: City | undefined = this.homeService.getLatestCity();
     let latestState: State | undefined = this.homeService.getLatestState();
