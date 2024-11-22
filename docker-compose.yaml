@@ -1,20 +1,21 @@
 # Todas as recorrencias de "Volumes:..." devem ser descomentadas ao ir para producao
+
 services:
   postgres-db:
     image: postgres:latest
     ports:
       - "5433:5432" # Porta do host (5433) para a porta do container (5432)
     environment:
-      - POSTGRES_DB=sinaleasy
-      - POSTGRES_USER=sinaleasy-db_owner
-      - POSTGRES_PASSWORD=INSERIR_SENHA_PROVEDOR_BANCO
+      - POSTGRES_DB=${DB_URL}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     # volumes:
     #   - postgres-data:/var/lib/postgresql/data
     
   spring-app:
     image: backend-sinaleasy:latest
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "sinaleasy-db_owner", "-d", "sinaleasy"]
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 10s
       retries: 5
     container_name: spring-app
@@ -24,9 +25,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/sinaleasy
-      SPRING_DATASOURCE_USERNAME: sinaleasy-db_owner
-      SPRING_DATASOURCE_PASSWORD: INSERIR_SENHA_PROVEDOR
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - postgres-db
     
@@ -36,7 +37,7 @@ services:
       dockerfile: Dockerfile
       container_name: angular-app
     ports:
-      - "4200:80" # Porta do host (4200) pra porta padrao do Nginx no container
+      - "4200:80" # Porta do host (4200) pra porta padrão do Nginx no container
     depends_on:
       - spring-app
 

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SinaleasyBackApplication<sinaleasy-back>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sinalez.sinaleasy_back.SinaleasyBackApplication",
+            "projectName": "sinaleasy-back",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
