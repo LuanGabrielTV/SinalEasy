@@ -18,6 +18,7 @@ export class CityService {
 
   getCityById(id: string) {
     let url = this.url + id;
+    console.log(url)
     return this.httpClient.get<City>(url);
   }
   

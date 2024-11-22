@@ -17,6 +17,7 @@ import { State } from '../domain/State';
 import { SignalType } from '../domain/SignalType';
 import { SignalService } from '../services/signal.service';
 import { Router, RouterModule } from '@angular/router';
+import { HomeService } from '../services/home.service';
 
 @Component({
   selector: 'app-cadastro-sinal',
@@ -43,7 +44,7 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
   signalTypes = SignalType;
 
-  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService, private router: Router) {
+  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService, private homeService: HomeService, private router: Router) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
@@ -208,6 +209,8 @@ export class CadastroSinalComponent implements OnInit, AfterViewInit {
   onSubmit() {
     this.signal = new Signal(this.form.get('name')?.value!, this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
     this.signalService.createSignal(this.signal).subscribe(_ => {
+      this.homeService.setLatestCity(this.city!);
+      this.homeService.setLatestState(this.form.get('state')?.value);
       this.goHome();
     });
   }

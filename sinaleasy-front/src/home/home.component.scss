@@ -188,7 +188,7 @@ small {
         font-size: 1.5vh;
         font-weight: 400;
     }
-
+ 
     ::ng-deep .p-dropdown-override input:focus {
         box-shadow: none;
         -webkit-box-shadow: none;
@@ -212,6 +212,26 @@ small {
     }
 }
 
+.signal:hover h3{
+    color:#0095FF;
+    transition: 0.2s;
+}
+
+.signal:hover{
+    // border: 1px solid #a4d9ff;
+    background-color: #fcfcfc;
+    transition: 0.2s;
+}
+
+.warning{
+    font-size: small;
+    color:gray;
+    font-style: italic;
+}
+
+.selectedMarker{
+    transform: scale(10);
+}
 
 .city {
     position: absolute;
