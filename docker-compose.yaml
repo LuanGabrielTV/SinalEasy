@@ -15,7 +15,7 @@ services:
   spring-app:
     image: backend-sinaleasy:latest
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}", "-d", "${DB_URL}"]
       interval: 10s
       retries: 5
     container_name: spring-app
@@ -32,10 +32,10 @@ services:
       - postgres-db
     
   angular-app:
+    image: frontend-sinaleasy:latest
     build:
       context: ./sinaleasy-front
       dockerfile: Dockerfile
-      container_name: angular-app
     ports:
       - "4200:80" # Porta do host (4200) pra porta padrão do Nginx no container
     depends_on:
