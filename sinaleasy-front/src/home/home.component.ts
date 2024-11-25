@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { City } from '../domain/City';
 import { State } from '../domain/State';
@@ -105,20 +105,25 @@ export class HomeComponent implements OnInit {
       if (city != null) {
         this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs) => {
           this.signals = signs as unknown as Signal[];
-          this.signals.forEach((s) => {
-            let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
-              radius: 10 * s.scaleFactor!,
-              className: 'marker'
-            });
-            m.bindTooltip(s.name!);
-            this.markers.push(m);
-            setTimeout(() => {
-              m.addTo(this.map!);
-            }, 2500);
-          });
+          this.drawMarkers(this.signals);
         })
       }
     }));
+  }
+
+  drawMarkers(signalList: Signal[]){
+    this.markers = [];
+    signalList.forEach((s) => {
+      let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
+        radius: 10 * s.scaleFactor!,
+        className: 'marker'
+      });
+      m.bindTooltip(s.name!);
+      this.markers.push(m);
+      setTimeout(() => {
+        m.addTo(this.map!);
+      }, 2500);
+    });
   }
 
   loadStates() {
