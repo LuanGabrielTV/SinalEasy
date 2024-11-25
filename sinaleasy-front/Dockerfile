@@ -8,7 +8,7 @@ RUN npm run build:production
 
 # Servindo os arquivos com Nginx
 FROM nginx:stable-alpine
-COPY --from=build /app/dist/sinaleasy-front /usr/share/nginx/html
+COPY --from=build /app/dist/sinaleasy-front/browser /usr/share/nginx/html
 # Porta 80 eh para o ngix (prod). Em dev, o ng deve ser utilizado, que eh lido na porta 4200
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
