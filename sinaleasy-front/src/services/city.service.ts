@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class CityService {
 
-  url = 'http://localhost:8080/api/cities/';
+  url = 'https://backend-sinaleasy.onrender.com/api/cities/';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', })
   };
