@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/signs")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://sinaleasy-4xr2.onrender.com")
 public class SignalController {
     private final SignalService signalService;
     private final SignalMapper signalMapper;
