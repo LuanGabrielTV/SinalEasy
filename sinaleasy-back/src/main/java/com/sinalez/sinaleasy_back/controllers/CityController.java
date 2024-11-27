@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/cities")
-@CrossOrigin(origins = "https://sinaleasy-4xr2.onrender.com")
+@CrossOrigin
 public class CityController {
     private final CityService cityService;
     private final CityMapper cityMapper;
