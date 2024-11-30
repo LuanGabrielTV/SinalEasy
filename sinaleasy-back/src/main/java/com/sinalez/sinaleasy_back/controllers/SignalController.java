@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
-import com.sinalez.sinaleasy_back.services.SignalService;
+import com.sinalez.sinaleasy_back.services.logic.SignalService;
 
 import jakarta.validation.Valid;
 
@@ -83,7 +83,9 @@ public class SignalController {
     @GetMapping("/city/{id}")
     public ResponseEntity<List<SignalRecordDTO>> getSignsByCityId(@PathVariable(value = "id") String id) {
         List<Signal> signals = signalService.getSignsByCityId(id);
-        List<SignalRecordDTO> signalDTOs = signals.stream().map(signalMapper::toDTO).toList();
+        List<SignalRecordDTO> signalDTOs = signals.stream()
+            .map(signalMapper::toDTO)
+            .toList();
         return ResponseEntity.status(HttpStatus.OK).body(signalDTOs);
     }
 
