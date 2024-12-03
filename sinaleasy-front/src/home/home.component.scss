@@ -7,14 +7,6 @@
     padding: none;
 }
 
-#logo {
-    position: absolute;
-    z-index: 20;
-    top: 4%;
-    left: 2%;
-    height: 2.3vh;
-}
-
 .type {
     width: fit-content;
     display: flex;
@@ -26,10 +18,10 @@
 
 .signal {
     border-radius: 12px;
-    border: 1px solid #f2f2f2;
+    border: 1.5px solid #f2f2f2;
     margin-bottom: 4%;
     padding-left: 4%;
-    width: 92%;
+    width: 96%;
 }
 
 .address,
@@ -43,23 +35,23 @@
 }
 
 .Construção {
-    background-color: #fdf8ac;
+    border: 2px solid #ffd6a5;
 }
 
 .Reparo {
-    background-color: #b1eaff;
+    border: 2px solid #7bdff2;
 }
 
 .Limpeza {
-    background-color: #fdd1fd;
+    border: 2px solid #fdffb6;
 }
 
 .Meio-ambiente {
-    background-color: #00ff004b;
+    border: 2px solid #00e271;
 }
 
 .Saúde {
-    background-color: #ff99c8;
+    border: 2px solid #ffadad;
 }
 
 small {
@@ -99,7 +91,7 @@ small {
     animation: blink 1s infinite;
 }
 
-.Finalizado{
+.Finalizado {
     font-size: 1.3vh;
     margin-right: 4%;
     font-weight: bold;
@@ -107,14 +99,20 @@ small {
 }
 
 @keyframes blink {
-    0%{
+    0% {
         opacity: 0.2;
-    };
-    50%{
+    }
+
+    ;
+
+    50% {
         opacity: 1;
-    };
-    100%{
-        opacity: 0.2;   
+    }
+
+    ;
+
+    100% {
+        opacity: 0.2;
     }
 }
 
@@ -158,7 +156,7 @@ small {
 
     to {
         opacity: 1;
-        filter: saturate(1);
+        filter: saturate(1.5);
     }
 }
 
@@ -188,7 +186,7 @@ small {
         font-size: 1.5vh;
         font-weight: 400;
     }
- 
+
     ::ng-deep .p-dropdown-override input:focus {
         box-shadow: none;
         -webkit-box-shadow: none;
@@ -212,24 +210,27 @@ small {
     }
 }
 
-.signal:hover h3{
-    color:#0095FF;
+.signal:hover h3 {
+    color: #0095FF;
     transition: 0.2s;
 }
 
-.signal:hover{
+.signal:hover {
     // border: 1px solid #a4d9ff;
-    background-color: #fcfcfc;
+    // background-color: #fcfcfc;
     transition: 0.2s;
+    transform: translateX(-2px);
+    transform: translateY(-2px);
 }
 
-.warning{
+.warning {
     font-size: small;
-    color:gray;
+    color: gray;
     font-style: italic;
+    margin-left: 2%;
 }
 
-.selectedMarker{
+.selectedMarker {
     transform: scale(10);
 }
 
@@ -237,15 +238,16 @@ small {
     position: absolute;
     right: 0;
     top: 10%;
-    width: 28%;
+    width: 30%;
     // padding: 1%;
     margin: 1%;
     background-color: white;
     border-radius: 14px;
     z-index: 11;
     // border: 1px solid #e9e9e9;
-    padding-left: 2%;
-    padding-bottom: 2%;
+    padding-left: 1%;
+    padding-bottom: 1%;
+    padding-top: 1%;
     animation: fadeIn 0.5s;
     max-height: 70vh;
     overflow-y: scroll;
@@ -285,6 +287,13 @@ small {
     font-size: 3vh;
     letter-spacing: -.5px;
     margin-bottom: 2%;
+    margin-left: 2%;
+    -top: 3%;
+}
+
+#rating {
+    margin-left: 2%;
+
 }
 
 .addButton img {
@@ -339,4 +348,63 @@ small {
 .editButton:hover svg {
     transform: scale(1.1);
     transition: 0.3s;
+}
+
+.likeButton {
+    background: none;
+    float: right;
+    margin-right: 4%;
+    border: none;
+    color: #d6d6d6;
+}
+
+.likeButton svg {
+    height: 3vh;
+    width: 3vh;
+    stroke-width: 1px;
+}
+
+.likeButton:hover {
+    color: #1DAEEF;
+    transition: .2s;
+}
+
+.likedButton {
+    background: none;
+    float: right;
+    margin-right: 4%;
+    border: none;
+    color: #1DAEEF;
+}
+
+.likedButton svg {
+    height: 3vh;
+    width: 3vh;
+    stroke-width: 1.5px;
+    fill: #8ADBFF;
+    animation: pop .5s;
+}
+
+@keyframes pop {
+    0% {
+
+        transform: scale(1);
+        
+        transform: rotate(0);
+    }
+
+    ;
+
+    50% {
+        transform: scale(1.2);
+        transform-origin: 0% 100%;
+        transform: rotate(-15deg);
+    }
+
+    ;
+
+    100% {
+        transform: scale(1);
+        transform: rotate(0);
+    }
 }

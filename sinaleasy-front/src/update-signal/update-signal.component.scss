@@ -9,21 +9,6 @@ body {
     flex: 1;
 }
 
-
-#logo{
-    position: absolute;
-    z-index: 20;
-    top:4%;
-    left:2%;
-    height: 2.3vh;
-}
-
-.map-container {
-    // flex: 1;
-    // margin: 0;
-    // z-index: 1;
-}
-
 #map {
     position: absolute;
     left: 0;
@@ -38,7 +23,6 @@ body {
 .container {
     display: flex;
     margin: 0;
-    // padding: -1%;
     width: 100%;
 }
 
@@ -235,3 +219,4 @@ b {
 .voltar svg{
     height: 4vh;
 }
+

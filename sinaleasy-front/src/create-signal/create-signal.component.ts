@@ -20,13 +20,13 @@ import { Router, RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
 
 @Component({
-  selector: 'app-cadastro-sinal',
+  selector: 'app-create-signal',
   standalone: true,
   imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, ToastModule, RouterModule],
-  templateUrl: './cadastro-sinal.component.html',
-  styleUrl: './cadastro-sinal.component.scss'
+  templateUrl: './create-signal.component.html',
+  styleUrl: './create-signal.component.scss'
 })
-export class CadastroSinalComponent implements OnInit, AfterViewInit {
+export class CreateSignalComponent implements OnInit, AfterViewInit {
 
   @ViewChild('mapContainer')
   private mapContainer!: ElementRef;

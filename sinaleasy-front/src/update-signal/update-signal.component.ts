@@ -21,13 +21,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-alteracao-sinal',
+  selector: 'app-update-signal',
   standalone: true,
   imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, StepsModule],
-  templateUrl: './alteracao-sinal.component.html',
-  styleUrl: './alteracao-sinal.component.scss'
+  templateUrl: './update-signal.component.html',
+  styleUrl: './update-signal.component.scss'
 })
-export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
+export class UpdateSignalComponent implements OnInit, AfterViewInit {
   signal: Signal;
   city: City | undefined;
   private map!: L.Map;
@@ -92,6 +92,10 @@ export class AlteracaoSinalComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.route.queryParams.subscribe(params => {
+      if(params['signalId'] == null || params['signalId']==undefined){
+        this.goHome();
+        return;
+      }
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
         this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {

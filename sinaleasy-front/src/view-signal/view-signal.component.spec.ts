@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlteracaoSinalComponent } from './alteracao-sinal.component';
+import { ViewSignalComponent } from './view-signal.component';
 
-describe('AlteracaoSinalComponent', () => {
-  let component: AlteracaoSinalComponent;
-  let fixture: ComponentFixture<AlteracaoSinalComponent>;
+describe('ViewSignalComponent', () => {
+  let component: ViewSignalComponent;
+  let fixture: ComponentFixture<ViewSignalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AlteracaoSinalComponent]
+      imports: [ViewSignalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AlteracaoSinalComponent);
+    fixture = TestBed.createComponent(ViewSignalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
