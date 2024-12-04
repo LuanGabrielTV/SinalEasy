@@ -11,7 +11,7 @@
                     (completeMethod)="filterStates($event)" field="name" />
             </div>
             <div>
-                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
+                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" (ngModelChange)="changeCity()" placeholder="Município"
                     [forceSelection]="true" [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
                     (completeMethod)="filterCities($event)" field="name" />
             </div>
@@ -52,7 +52,7 @@
                         </g>
                     </svg>
                 </button>
-                <button class='likeButton' (click)="likeSignal(s)"
+                <button class='likeButton' (click)="likeSignal(s, i)"
                     [ngClass]="{'likedButton': s.liked, 'likeButton': !s.liked}">
                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

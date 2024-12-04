@@ -162,6 +162,10 @@ textarea {
     ::ng-deep .p-dialog-override{
         height:32vh;
     }
+
+    ::ng-deep .p-rating{
+        height:5vh;
+    }
 }
 
 .row {

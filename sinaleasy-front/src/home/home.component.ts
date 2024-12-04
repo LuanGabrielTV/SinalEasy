@@ -177,7 +177,6 @@ export class HomeComponent implements OnInit {
         filtered.push(item);
       }
     }
-    console.log(this.states);
     this.filteredStates = filtered;
   }
 
@@ -202,7 +201,6 @@ export class HomeComponent implements OnInit {
       this.city!.rating = 0;
     }
     this.rating = this.city?.rating;
-    this.selected = true;
     this.homeService.setLatestCity(this.city!);
     this.loadSignals();
     this.flyToAddress(address, 13, true, 2);
@@ -248,12 +246,15 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  likeSignal(s: Signal) {
+  likeSignal(s: Signal, i:number) {
+
     s.liked = !s.liked;
     let index = this.changedVotes.indexOf(s.signalId!);
     if (index == -1) {
+      this.markers[i].setRadius(this.markers[i].getRadius()+2);
       this.changedVotes.push(s.signalId!);
     }else{
+      this.markers[i].setRadius(this.markers[i].getRadius()-2);
       this.changedVotes.splice(index,1)
     }
     console.log(this.changedVotes);

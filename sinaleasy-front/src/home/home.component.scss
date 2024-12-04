@@ -301,7 +301,8 @@ small {
     // padding-bottom:-1%;
     text-decoration: none;
     z-index: 20;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.048);
+    box-shadow: 0pt 0pt 4pt 4pt rgba(0, 0, 0, 0.012);
+
 }
 
 .addButton img {
@@ -312,7 +313,7 @@ small {
 
 .addButton:hover {
     // transform: scale(1.05);
-    transition: 0.5s;
+
 }
 
 .addButton:hover img {
@@ -371,6 +372,10 @@ small {
     // stroke-width: 1.5px;
     fill: #8ADBFF;
     animation: like .5s;
+}
+
+.popMarker{
+    background-color: red;
 }
 
 .viewButton {
