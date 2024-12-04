@@ -18,12 +18,15 @@ import { StepsModule } from 'primeng/steps';
 import { MenuItem } from 'primeng/api';
 import { SignalService } from '../services/signal.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { DialogModule } from 'primeng/dialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RatingModule } from 'primeng/rating';
+import { SignalRating } from '../domain/SignalRating';
 
 @Component({
   selector: 'app-update-signal',
   standalone: true,
-  imports: [FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, StepsModule],
+  imports: [RatingModule, InputTextareaModule, DialogModule, FormsModule, CommonModule, AutoCompleteModule, DropdownModule, InputTextModule, ReactiveFormsModule, DividerModule, ButtonModule, StepsModule],
   templateUrl: './update-signal.component.html',
   styleUrl: './update-signal.component.scss'
 })
@@ -32,6 +35,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   city: City | undefined;
   private map!: L.Map;
   form: FormGroup;
+  ratingForm: FormGroup;
   states: State[] | undefined;
   cities: City[] | undefined;
   filteredCities: City[] = [];
@@ -43,10 +47,12 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   items: MenuItem[] | undefined;
   signalTypes = SignalType;
   status: number;
-  readonly = true;
+  visible = false;
+  signalRating: SignalRating;
 
   constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private route: ActivatedRoute, private router: Router) {
     this.signal = new Signal();
+    this.signalRating = new SignalRating();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
         Validators.minLength(2),
@@ -61,12 +67,15 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
       'description': [this.signal.description, Validators.compose([
         Validators.required])],
     });
+    this.ratingForm = this.fBuilder.group({
+      'rating': [this.signalRating.rating, Validators.required],
+      'ratingDescription': [this.signalRating.description]
+    })
     this.address = "";
     this.status = 0;
   }
 
   ngOnInit() {
-    this.readonly = true;
     this.states = [];
     this.cities = [];
     this.items = [
@@ -98,6 +107,9 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
       }
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
+        if(this.signal.status == 3){
+          this.goHome();
+        }
         this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
           this.city = res;
           this.initMap();
@@ -130,6 +142,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
       radius: 10 * this.signal.scaleFactor!
     });
     this.marker.addTo(this.map);
+
   }
 
   loadStates() {
@@ -282,9 +295,22 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
     this.signal.cityId = this.city?.cityId;
     this.signal.latitude = this.marker?.getLatLng().lat!;
     this.signal.longitude = this.marker?.getLatLng().lng!;
-    this.signalService.updateSignal(this.signal).subscribe(_=>{
-      this.goHome();
-    });
+    if(this.signal.status == 3){
+      this.visible = true;
+    }else{
+      this.signalService.updateSignal(this.signal).subscribe(_=>{
+        this.goHome();
+      });
+    }
+  }
+
+  rate(){
+    this.signalRating.signalId = this.signal.signalId;
+    this.signalRating.rating = this.ratingForm.get('rating')?.value;
+    this.signalRating.date = new Date();
+    this.signalRating.description = this.ratingForm.get('ratingDescription')?.value;
+
+    // criar avaliacao e fazer update de sinal
   }
 
 }

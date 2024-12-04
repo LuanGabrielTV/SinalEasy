@@ -30,6 +30,56 @@ body .p-component {
 }
 
 #map{
-   // filter: saturate(1.5);
-   filter:  saturate(1.5);
+   filter:saturate(1.5);
+   animation: fadeIn 3s;
+}
+
+@keyframes fadeIn {
+   from {
+       opacity: 0;
+       filter: saturate(0);
+   }
+
+   ;
+
+   to {
+       opacity: 1;
+       filter: saturate(1.5);
+   }
+}
+
+.Paralisado {
+   color: #f82959;
+}
+
+.Pendente {
+   color: #FFCA4D;
+}
+
+.Iniciado {
+   color: #02CA95;
+   animation: blink 1s infinite;
+}
+
+.Finalizado {
+   color: #0095FF;
+}
+
+
+@keyframes blink {
+   0% {
+       opacity: 0.2;
+   }
+
+   ;
+
+   50% {
+       opacity: 1;
+   }
+
+   ;
+
+   100% {
+       opacity: 0.2;
+   }
 }

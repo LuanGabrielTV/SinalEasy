@@ -46,12 +46,12 @@ body {
 label {
     font-weight: 600;
     font-size: 1.6vh;
+    color:black;
     // letter-spacing: -.2px;
     font-family: 'Figtree';
 }
 
-form {
-
+#form {
     padding: 2%;
     padding-top: 0.2%;
     padding-right: 0.6%;
@@ -63,6 +63,26 @@ form {
     right: 19%;
     margin-left: 2%;
     height: 75vh;
+}
+
+#ratingForm{
+    padding: 0;
+    margin: 0;
+}
+
+#ratingDescription{
+    resize: none;
+    font-size: 1.5vh;
+    background-color: #f2f2f2;
+    border:none;
+    outline: none;
+    width: 104%;
+    margin-top: 2%;
+    border-radius: 8px;
+}
+
+#rating{
+    margin: auto;
 }
 
 input,
@@ -133,6 +153,15 @@ textarea {
     ::ng-deep .p-steps-override .p-steps-item::before {
         color: red;
     } 
+
+    ::ng-deep .p-dialog-override .p-dialog-header{
+        color:black;
+        font-family: 'Figtree';
+    }
+
+    ::ng-deep .p-dialog-override{
+        height:32vh;
+    }
 }
 
 .row {
@@ -188,6 +217,10 @@ b {
         outline: none !important;
     }
 
+    .p-dialog{
+        color:red;
+    }
+
 }
 
 #address {
@@ -195,7 +228,7 @@ b {
     color: #555;
 }
 
-#sinalize {
+.confirm {
     padding: -1%;
     float: right;
     position: absolute;

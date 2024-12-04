@@ -8,6 +8,7 @@ import { City } from '../domain/City';
 import * as L from 'leaflet';
 import { CommonModule, formatDate } from '@angular/common';
 import { TimelineModule } from 'primeng/timeline';
+import { Status } from '../domain/Status';
 
 @Component({
   selector: 'app-view-signal',
@@ -24,8 +25,8 @@ export class ViewSignalComponent {
   marker: L.CircleMarker | undefined;
   private map!: L.Map;
   types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
-  statusList = ['Pendente', 'Inicializado', 'Paralisado', 'Finalizado'];
   data: any;
+  status = Status;
   events: any[] | undefined;
 
   constructor(private fBuilder: FormBuilder, private cityService: CityService, private signalService: SignalService, private route: ActivatedRoute, private router: Router) {
@@ -69,7 +70,7 @@ export class ViewSignalComponent {
     this.form.get('state')?.setValue(this.city!.state);
     this.form.get('description')?.setValue(this.signal.description);
     this.form.get('address')?.setValue(this.signal.address!);
-    this.form.get('status')?.setValue(this.statusList[this.signal.status!]);
+    this.form.get('status')?.setValue(this.status[this.signal.status!]);
     this.marker = new L.CircleMarker(new L.LatLng(this.signal.latitude!, this.signal.longitude!), {
       radius: 10 * this.signal.scaleFactor!
     });
