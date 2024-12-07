@@ -1,6 +1,7 @@
 package com.sinalez.sinaleasy_back.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -22,8 +23,10 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull private UUID userId;
-    @NotBlank private String login;
-    @NotBlank private String password;
-    @NotBlank private String email;
+    @NotBlank private String userLogin;
+    @NotBlank private String userPassword;
+    @NotBlank private String userEmail;
+
+    @NotBlank private List<Signal> userSigns;
 
 }
