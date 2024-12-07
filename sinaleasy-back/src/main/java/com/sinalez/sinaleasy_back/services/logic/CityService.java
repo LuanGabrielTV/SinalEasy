@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.services;
+package com.sinalez.sinaleasy_back.services.logic;
 
 import java.util.List;
 
