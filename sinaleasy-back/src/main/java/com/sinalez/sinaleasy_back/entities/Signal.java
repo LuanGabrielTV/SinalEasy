@@ -50,7 +50,6 @@ public class Signal implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Funcao para atrelar cidade ao sinal
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {
             throw new IllegalArgumentException("Cidade não pode ser nula!");

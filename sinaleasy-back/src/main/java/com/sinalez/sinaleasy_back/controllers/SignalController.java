@@ -82,11 +82,21 @@ public class SignalController {
 
     @GetMapping("/city/{id}")
     public ResponseEntity<List<SignalRecordDTO>> getSignsByCityId(@PathVariable(value = "id") String id) {
-        List<Signal> signals = signalService.getSignsByCityId(id);
-        List<SignalRecordDTO> signalDTOs = signals.stream()
+        List<Signal> signs = signalService.getSignsByCityId(id);
+        List<SignalRecordDTO> signsResponseDTO = signs.stream()
             .map(signalMapper::toDTO)
             .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(signalDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+    }
+
+    @GetMapping("/signal/{id}")
+    public ResponseEntity<List<SignalRecordDTO>> getSignsByUserId(@PathVariable(value = "id") UUID id) {
+        List<Signal> signs = signalService.getSignsByUserId(id);
+        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+            .map(signalMapper::toDTO)
+            .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+
     }
 
 }

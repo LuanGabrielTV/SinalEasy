@@ -22,7 +22,6 @@ public class SignalService {
     public SignalService(SignalRepository signalRepository, CityRepository cityRepository) {
         this.signalRepository = signalRepository;
         this.cityRepository = cityRepository;
-        // inserir slug?
     }
 
     public Signal createSignal(SignalRecordDTO signalRecordDTO) {
@@ -42,9 +41,6 @@ public class SignalService {
         City cityOfSignal = cityRepository.findById(cityIdOfSignal).orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
         return signalRepository.save(signal);
-
-        // não pode mudar cidade em um sinal já existente
-        // signal não pode ser removido enquanto houver qualquer curtida
     }
 
     public Signal getSignalById(UUID id) {
@@ -57,6 +53,10 @@ public class SignalService {
 
     public List<Signal> getSignsByCityId(String cityId) {
         return signalRepository.findByCityCityId(cityId);
+    }
+
+    public List<Signal> getSignsByUserId(UUID userId) {
+        return signalRepository.findByUserUserId(userId);
     }
 
 }
