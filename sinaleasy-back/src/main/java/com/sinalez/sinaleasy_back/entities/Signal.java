@@ -45,6 +45,11 @@ public class Signal implements Serializable {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    @JsonIgnoreProperties("signs")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     // Funcao para atrelar cidade ao sinal
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {
