@@ -1,5 +1,5 @@
 <body>
-    <img src="Signaleasy.png" routerLink="/" id="logo">
+    <img src="logo.png" routerLink="/" id="logo">
     <div class="container">
         <div class="map-container">
             <div class="map-frame">
@@ -7,8 +7,16 @@
             </div>
         </div>
         <div class="sinal-container">
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 17L7 7M7 7V16M7 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></a>
+            <form id="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+                <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M17 17L7 7M7 7V16M7 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </g>
+                    </svg></a>
                 <div class="row">
                     <div>
                         <input id="name" placeholder="Dê um sinal" type="text" formControlName="name">
@@ -44,7 +52,7 @@
                 <div class="row" style="flex-wrap: wrap;">
                     <div style="flex-basis: 45%;">
                         <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
-                            formControlName="state"[dropdown]="true" [suggestions]="filteredStates"
+                            formControlName="state" [dropdown]="true" [suggestions]="filteredStates"
                             (completeMethod)="filterStates($event)" field="name" />
                     </div>
                     <div style="flex-basis: 45%;">
@@ -72,10 +80,31 @@
                     </div>
                 </div>
                 <div class="row" style="width:95%; flex-direction: column-reverse;">
-                    <p-button id="sinalize" [disabled]="!this.form.valid || this.city == undefined || this.address==''" type="submit"
+                    <p-button class="confirm"
+                        [disabled]="!this.form.valid || this.city == undefined || this.address==''" type="submit"
                         label="Confirmar" severity="contrast" />
                 </div>
             </form>
         </div>
+        <p-dialog styleClass="p-dialog-override" [modal]="true" header="Avalie o serviço prestado" [(visible)]="visible"
+            [style]="{ width: '25rem', color:'red' }">
+            <form id="ratingForm" [formGroup]="ratingForm">
+                <div class="row">
+                    <p-rating id="rating" formControlName="rating" [cancel]="false" />
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="ratingDescription">Descrição</label><br>
+                        <textarea id="ratingDescription" placeholder="Descreva a avaliação (opcional)" type="text"
+                            formControlName="ratingDescription"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <p-button class="confirm" [style]="{marginBottom: '10%'}"
+                        [disabled]="!this.ratingForm.valid" (click)="rate()" label="Confirmar"
+                        severity="contrast" />
+                </div>
+            </form>
+        </p-dialog>
     </div>
 </body>
