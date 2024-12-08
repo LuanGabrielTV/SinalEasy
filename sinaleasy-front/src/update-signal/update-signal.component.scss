@@ -16,7 +16,7 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    animation: fadeIn 3s;
+    // animation: fadeIn 3s;
     z-index: 10;
 }
 
@@ -46,7 +46,7 @@ body {
 label {
     font-weight: 600;
     font-size: 1.6vh;
-    color:black;
+    color: black;
     // letter-spacing: -.2px;
     font-family: 'Figtree';
 }
@@ -65,23 +65,23 @@ label {
     height: 75vh;
 }
 
-#ratingForm{
+#ratingForm {
     padding: 0;
     margin: 0;
 }
 
-#ratingDescription{
+#ratingDescription {
     resize: none;
     font-size: 1.5vh;
     background-color: #f2f2f2;
-    border:none;
+    border: none;
     outline: none;
     width: 104%;
     margin-top: 2%;
     border-radius: 8px;
 }
 
-#rating{
+#rating {
     margin: auto;
 }
 
@@ -136,11 +136,22 @@ textarea {
         background-image: none;
     }
 
+    ::ng-deep .p-steps-override .p-menuitem-link {
+        padding-top: 5%;
+    }
+
+    ::ng-deep .p-steps-override {
+        width: 80%;
+        margin-left: 10%;
+    }
+
+
     ::ng-deep .p-steps-override .p-steps-title {
         color: black;
         font-family: 'Figtree';
         // font-weight: 400;
         font-size: small;
+        letter-spacing: 0.6px;
     }
 
     ::ng-deep .p-steps-override .p-steps-number {
@@ -150,22 +161,42 @@ textarea {
         border: none;
     }
 
-    ::ng-deep .p-steps-override .p-steps-item::before {
-        color: red;
-    } 
+    ::ng-deep .p-steps-override .p-steps-number:hover {
+        color: #0095FF;
+        background-color: #e8f6ff;
+        transform: scale(1.1);
+        transition: 0.2s;
+    }
 
-    ::ng-deep .p-dialog-override .p-dialog-header{
-        color:black;
+    ::ng-deep .p-steps-override .p-steps-item::before {
+        // background-color: red;
+        // height: 5vh;
+        border: none;
+        border: 0.2px dashed #f2f2f2;
+    }
+
+    ::ng-deep .p-dialog-override .p-dialog-header {
+        color: black;
         font-family: 'Figtree';
     }
 
-    ::ng-deep .p-dialog-override{
-        height:32vh;
+    ::ng-deep .p-dialog-override {
+        height: 34vh;
     }
 
-    ::ng-deep .p-rating{
-        height:5vh;
+    ::ng-deep .p-rating {
+        height: 5vh;
     }
+}
+
+#header {
+    color: black;
+    font-family: 'Figtree';
+}
+
+
+.icon {
+    height: 2vh;
 }
 
 .row {
@@ -189,8 +220,9 @@ textarea {
     font-weight: 800;
     font-size: 4vh;
     line-height: 5vh;
-    letter-spacing: -.5px; 
+    letter-spacing: -.5px;
     margin-top: 5%;
+    padding-left: 0;
     border: none;
     border-bottom: 2px solid #f2f2f2;
     border-radius: 0;
@@ -221,8 +253,8 @@ b {
         outline: none !important;
     }
 
-    .p-dialog{
-        color:red;
+    .p-dialog {
+        color: red;
     }
 
 }
@@ -240,20 +272,19 @@ b {
     bottom: 5%;
 }
 
-.voltar{
+.voltar {
     background: none;
-    border:none;
+    border: none;
     position: absolute;
-    left:0;
-    top:-8%;
+    left: 0;
+    top: -8%;
 }
 
-.voltar:hover svg{
+.voltar:hover svg {
     transform: scale(0.9);
     transition: 0.3s;
 }
 
-.voltar svg{
+.voltar svg {
     height: 4vh;
 }
-

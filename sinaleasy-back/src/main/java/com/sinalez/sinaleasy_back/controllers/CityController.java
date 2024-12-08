@@ -21,7 +21,8 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/cities")
-@CrossOrigin
+// @CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class CityController {
     private final CityService cityService;
     private final CityMapper cityMapper;
