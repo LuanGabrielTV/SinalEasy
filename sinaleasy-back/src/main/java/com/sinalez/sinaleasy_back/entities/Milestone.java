@@ -28,7 +28,7 @@ public class Milestone {
     LocalDate statusUpdateTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "signal_id", nullable = false)
     private Signal signal;
 
 
