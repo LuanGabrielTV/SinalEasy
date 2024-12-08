@@ -18,9 +18,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(UserRecordDTO userRecordDTO) {
+    public User createUser(UserRecordDTO userRequestDTO) {
         User user = new User();
-        BeanUtils.copyProperties(userRecordDTO, user);
+        BeanUtils.copyProperties(userRequestDTO, user);
         return userRepository.save(user);
     }
 

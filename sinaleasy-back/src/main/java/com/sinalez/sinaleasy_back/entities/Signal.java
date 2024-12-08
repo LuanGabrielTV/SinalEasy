@@ -2,16 +2,20 @@ package com.sinalez.sinaleasy_back.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
@@ -50,11 +54,23 @@ public class Signal implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "milestone_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Milestone> signalMilestones;
+
+
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {
             throw new IllegalArgumentException("Cidade não pode ser nula!");
         }
         this.city = cityOfSignal;
+    }
+
+    public void setSignalMilestone(Milestone milestone) {
+        if(milestone == null) {
+            throw new IllegalArgumentException("Novo status não pode ser nulo!");
+        }
+        this.signalMilestones.add(milestone);
     }
 
 }
