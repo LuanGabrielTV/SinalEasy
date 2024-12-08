@@ -30,6 +30,4 @@ public class Milestone {
     @ManyToOne
     @JoinColumn(name = "signal_id", nullable = false)
     private Signal signal;
-
-
 }

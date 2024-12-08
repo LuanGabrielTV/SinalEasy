@@ -51,12 +51,13 @@ public class Signal implements Serializable {
 
     @JsonIgnoreProperties("signs")
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "milestone_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true) //pq nao funciona
     private List<Milestone> signalMilestones;
+
 
 
     public void setCity(City cityOfSignal) {
