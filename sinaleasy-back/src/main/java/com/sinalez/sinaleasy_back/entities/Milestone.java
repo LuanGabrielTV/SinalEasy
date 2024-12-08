@@ -19,10 +19,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Milestone {
-    private static final long serialVersionUID = 1L;
+    // private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID milestonelId;
+    private UUID milestoneId;
 
     @NotNull int status;
     LocalDate statusUpdateTime;
@@ -30,6 +30,4 @@ public class Milestone {
     @ManyToOne
     @JoinColumn(name = "signal_id", nullable = false)
     private Signal signal;
-
-
 }

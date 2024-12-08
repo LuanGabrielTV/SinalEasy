@@ -12,7 +12,6 @@ import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.entities.User;
 
 public interface UserRepository extends JpaRepository<User, UUID>{
-    // UserDetails findByLogin(String login);
-    Optional<Signal> findByEmail(String email);
+
     
 }
