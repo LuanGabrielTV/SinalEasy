@@ -1,4 +1,5 @@
 import * as L from 'leaflet';
+import { Milestone } from './Milestone';
 
 export class Signal {
     signalId: string | undefined;
@@ -14,8 +15,9 @@ export class Signal {
     numberOfLikes: number | undefined;
     cityId: string | undefined;
     liked: boolean | undefined;
+    mliestones: Array<Milestone> | undefined;
     
-    constructor(name?: string, date?: Date, address?: string, description?: string, typeOfSignal?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: string, signalId?: string, liked?: boolean) {
+    constructor(name?: string, date?: Date, address?: string, description?: string, typeOfSignal?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: string, signalId?: string, liked?: boolean, milestones?: Array<Milestone>) {
         this.name = name;
         this.date = date;
         this.address = address;
@@ -29,6 +31,7 @@ export class Signal {
         this.cityId = cityId;
         this.signalId = signalId;
         this.liked = liked;
+        this.mliestones = milestones;
     }
 
 }

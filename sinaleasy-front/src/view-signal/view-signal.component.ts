@@ -51,7 +51,7 @@ export class ViewSignalComponent {
       }
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
-        console.log(this.signal)
+        console.log(res)
         this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
           this.city = res;
           this.initMap();

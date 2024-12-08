@@ -45,7 +45,7 @@ public class SignalService {
             .findById(cityIdOfSignal)
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
-
+        
         addMilestoneIfStatusChanged(signal, signalRequestDTO.status());
 
         return signalRepository.save(signal);
@@ -53,7 +53,6 @@ public class SignalService {
 
     private void addMilestoneIfStatusChanged(Signal signal, int newStatus) {
         int currentStatus = signal.getStatus();
-
         if (currentStatus != newStatus) {
             Milestone milestone = new Milestone();
             milestone.setStatus(newStatus);
