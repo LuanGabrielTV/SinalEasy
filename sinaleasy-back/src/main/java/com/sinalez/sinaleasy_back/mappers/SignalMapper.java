@@ -2,6 +2,7 @@ package com.sinalez.sinaleasy_back.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
@@ -16,7 +17,10 @@ public interface SignalMapper {
     // @Mapping(target = "city", ignore = true)
     // @Mapping(target = "signalId", ignore = true)
     // Signal fromDTO(SignalRecordDTO signalRecordDTO);
+
+    // @Mapping(target = "city", ignore = true)
+    // @Mapping(target = "signalId", ignore = true)
+    // @Mapping(target = "signalMilestones", ignore = true)
+    // Signal updateFromDTO(SignalRecordDTO signalRecordDTO, @MappingTarget Signal signal);
+
 }
-
-
-

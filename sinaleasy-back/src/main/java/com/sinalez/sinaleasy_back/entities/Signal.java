@@ -58,8 +58,6 @@ public class Signal implements Serializable {
     @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true) //pq nao funciona
     private List<Milestone> signalMilestones;
 
-
-
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {
             throw new IllegalArgumentException("Cidade não pode ser nula!");

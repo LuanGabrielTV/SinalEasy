@@ -1,5 +1,6 @@
 export class Milestone {
-    date: Date | undefined;
+    milestoneId: string | undefined;
+    statusUpdateTime: Date | undefined;
     status: number | undefined;
 
 }
