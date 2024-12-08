@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sinalez.sinaleasy_back.dtos.MilestoneRecordDTO;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
 import com.sinalez.sinaleasy_back.entities.Milestone;
@@ -39,21 +38,22 @@ public class SignalService {
     }
 
     public Signal updateSignal(SignalRecordDTO signalRequestDTO, Signal signal) {
-        BeanUtils.copyProperties(signalRequestDTO, signal);
-        String cityIdOfSignal = signalRequestDTO.cityId();
+        String cityIdOfNewSignal = signalRequestDTO.cityId();
         City cityOfSignal = cityRepository
-            .findById(cityIdOfSignal)
+            .findById(cityIdOfNewSignal)
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
-
         addMilestoneIfStatusChanged(signal, signalRequestDTO.status());
 
+        // BeanUtils.copyProperties(signalRequestDTO, signal);
+        BeanUtils.copyProperties(signalRequestDTO, signal, "signalId", "signalMilestones", "city");
+        
         return signalRepository.save(signal);
     }
+    
 
     private void addMilestoneIfStatusChanged(Signal signal, int newStatus) {
         int currentStatus = signal.getStatus();
-
         if (currentStatus != newStatus) {
             Milestone milestone = new Milestone();
             milestone.setStatus(newStatus);
@@ -61,6 +61,7 @@ public class SignalService {
             milestone.setSignal(signal);
             signal.setSignalMilestone(milestone);
             signal.setStatus(newStatus);
+
         }
     }
 

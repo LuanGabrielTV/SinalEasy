@@ -40,6 +40,15 @@ public class SignalController {
         SignalRecordDTO signalResponseDTO = signalMapper.toDTO(signal);
         return ResponseEntity.status(HttpStatus.OK).body(signalResponseDTO);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<List<SignalRecordDTO>> getSigns() {
+        List<Signal> signs = signalService.getSigns();
+        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+            .map(signalMapper::toDTO)
+            .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+    }
     
     // @GetMapping("/{id}")
     // public ResponseEntity<Object> getSignalById(@PathVariable(value = "id") UUID id) {
