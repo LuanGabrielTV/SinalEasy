@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
 import com.sinalez.sinaleasy_back.mappers.CityMapper;
-import com.sinalez.sinaleasy_back.services.CityService;
+import com.sinalez.sinaleasy_back.services.logic.CityService;
 
 import jakarta.validation.Valid;
 
@@ -32,15 +32,9 @@ public class CityController {
         this.cityMapper = cityMapper;
     }
 
-    // @PostMapping("/")
-    // public ResponseEntity<City> createCity(@RequestBody @Valid CityRecordDTO cityRecordDTO) {
-    //     City createdCity = cityService.createCity(cityRecordDTO);
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(createdCity);
-    // }
-
     @PostMapping("/")
-    public ResponseEntity<CityRecordDTO> createCity(@RequestBody @Valid CityRecordDTO cityRecordDTO) {
-        City createdCity = cityService.createCity(cityRecordDTO);
+    public ResponseEntity<CityRecordDTO> createCity(@RequestBody @Valid CityRecordDTO cityRequestDTO) {
+        City createdCity = cityService.createCity(cityRequestDTO);
         CityRecordDTO cityResponseDTO = cityMapper.toDTO(createdCity);
         return ResponseEntity.status(HttpStatus.CREATED).body(cityResponseDTO);
     }

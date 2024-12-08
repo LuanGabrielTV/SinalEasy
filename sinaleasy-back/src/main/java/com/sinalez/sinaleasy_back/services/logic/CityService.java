@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.services;
+package com.sinalez.sinaleasy_back.services.logic;
 
 import java.util.List;
 
@@ -29,12 +29,12 @@ public class CityService {
     //     return cityRepository.save(city);
     // }
 
-    public City createCity(CityRecordDTO cityRecordDTO) {
-        if(cityRecordDTO.cityId() == null) {
+    public City createCity(CityRecordDTO cityRequestDTO) {
+        if(cityRequestDTO.cityId() == null) {
             throw new CityIdNotFoundException();
         }
         City city = new City();
-        BeanUtils.copyProperties(cityRecordDTO, city);
+        BeanUtils.copyProperties(cityRequestDTO, city);
         return cityRepository.save(city);
     }
 
