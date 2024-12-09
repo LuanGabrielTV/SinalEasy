@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -26,9 +27,8 @@ public class City implements Serializable {
     @NotBlank private String state;
     @NotNull private Integer rating;
 
-    // O @OneToMany(mappedBy = "city") indica que a relacao eh mantida pela propriedade city na entidade Signal
     @JsonBackReference
-    @OneToMany(mappedBy = "city") 
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Signal> signs;
 }
 

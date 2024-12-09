@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, signal, ViewChild } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { City } from '../domain/City';
 import { State } from '../domain/State';
@@ -40,10 +40,12 @@ export class HomeComponent implements OnInit {
   @ViewChild('mapContainer')
   private mapContainer!: ElementRef;
   private map: L.Map | undefined;
+  private changedVotes: string[];
 
   constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private homeService: HomeService, private router: Router) {
     this.signals = [];
     this.markers = [];
+    this.changedVotes = [];
   }
 
 
@@ -57,7 +59,7 @@ export class HomeComponent implements OnInit {
 
   ngAfterViewInit() {
     this.initMap();
-    if(this.city != undefined){
+    if (this.city != undefined) {
       this.loadSignals();
     }
     this.filteredStates = [];
@@ -66,17 +68,12 @@ export class HomeComponent implements OnInit {
 
   focusOnSignal(signal: Signal, index: number) {
     let coord = new L.LatLng(signal.latitude!, signal.longitude!);
-    this.map!.flyTo(coord, 13, {
+    this.map!.flyTo(coord, this.map?.getZoom(), {
       "animate": true,
       "duration": 1
     });
-    this.markers[index].toggleTooltip();
   }
 
-
-  unfocusOffSignal(index: number) {
-    this.markers[index].toggleTooltip();
-  }
 
   reloadLatestValues() {
     let latestCity: City | undefined = this.homeService.getLatestCity();
@@ -105,20 +102,26 @@ export class HomeComponent implements OnInit {
       if (city != null) {
         this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs) => {
           this.signals = signs as unknown as Signal[];
-          this.signals.forEach((s) => {
-            let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
-              radius: 10 * s.scaleFactor!,
-              className: 'marker'
-            });
-            m.bindTooltip(s.name!);
-            this.markers.push(m);
-            setTimeout(() => {
-              m.addTo(this.map!);
-            }, 2500);
-          });
+          this.drawMarkers(this.signals);
         })
       }
     }));
+
+  }
+
+  drawMarkers(signalList: Signal[]) {
+    this.markers = [];
+    signalList.forEach((s) => {
+      let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
+        radius: 10 * s.scaleFactor!,
+        className: 'marker'
+      });
+      m.bindTooltip(s.name!);
+      this.markers.push(m);
+      setTimeout(() => {
+        m.addTo(this.map!);
+      }, 2500);
+    });
   }
 
   loadStates() {
@@ -174,7 +177,6 @@ export class HomeComponent implements OnInit {
         filtered.push(item);
       }
     }
-    console.log(this.states);
     this.filteredStates = filtered;
   }
 
@@ -199,7 +201,6 @@ export class HomeComponent implements OnInit {
       this.city!.rating = 0;
     }
     this.rating = this.city?.rating;
-    this.selected = true;
     this.homeService.setLatestCity(this.city!);
     this.loadSignals();
     this.flyToAddress(address, 13, true, 2);
@@ -216,7 +217,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToCadastroSignal() {
-    this.router.navigateByUrl('/cadastro-sinal');
+    this.router.navigateByUrl('/create-signal');
   }
 
   flyToAddress(address: string, level: number, animate: boolean, duration: number) {
@@ -233,9 +234,38 @@ export class HomeComponent implements OnInit {
 
   editSignal(s: Signal) {
     this.router.navigate(
-      ['/alteracao-sinal'],
+      ['/update-signal'],
       { queryParams: { signalId: s.signalId } }
     );
-    // this.router.navigate(['/alteracao-sinal'],{ queryParams: { signalId: s.signalId } });
+  }
+
+  viewSignal(s: Signal) {
+    this.router.navigate(
+      ['/view-signal'],
+      { queryParams: { signalId: s.signalId } }
+    );
+  }
+
+  likeSignal(s: Signal, i:number) {
+
+    s.liked = !s.liked;
+    let index = this.changedVotes.indexOf(s.signalId!);
+    if (index == -1) {
+      this.markers[i].setRadius(this.markers[i].getRadius()+2);
+      this.changedVotes.push(s.signalId!);
+    }else{
+      this.markers[i].setRadius(this.markers[i].getRadius()-2);
+      this.changedVotes.splice(index,1)
+    }
+    console.log(this.changedVotes);
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  updateLikes() {
+    console.log(this.changedVotes)
+  }
+  
+  ngOnDestroy(){
+    console.log(this.changedVotes)
   }
 }

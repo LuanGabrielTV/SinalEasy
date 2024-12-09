@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CadastroSinalComponent } from './cadastro-sinal.component';
+import { CreateSignalComponent } from './create-signal.component';
 
-describe('CadastroSinalComponent', () => {
-  let component: CadastroSinalComponent;
-  let fixture: ComponentFixture<CadastroSinalComponent>;
+describe('CreateSignalComponent', () => {
+  let component: CreateSignalComponent;
+  let fixture: ComponentFixture<CreateSignalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CadastroSinalComponent]
+      imports: [CreateSignalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CadastroSinalComponent);
+    fixture = TestBed.createComponent(CreateSignalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

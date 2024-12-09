@@ -1,8 +1,8 @@
 <body>
-    <a class="addButton" routerLink="/cadastro-sinal">
-        <img src="signal.png">
+    <a class="addButton" routerLink="/create-signal">
+        <img src="icon.png">
     </a>
-    <img src="Signaleasy.png" routerLink="/" id="logo">
+    <img src="logo.png" routerLink="/" id="logo">
     <div id="header">
         <div class="container">
             <div>
@@ -11,7 +11,7 @@
                     (completeMethod)="filterStates($event)" field="name" />
             </div>
             <div>
-                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
+                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" (ngModelChange)="changeCity()" placeholder="Município"
                     [forceSelection]="true" [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
                     (completeMethod)="filterCities($event)" field="name" />
             </div>
@@ -19,14 +19,14 @@
     </div>
     <div class="city" *ngIf="!(this.city == undefined)">
         <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
-        <p-rating [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
+        <p-rating id="rating" [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
         <br><br><br>
         <p class='warning' *ngIf="this.signals.length==0">Opa! Essa cidade não tem nenhum sinal.</p>
-        <div (mouseenter)="focusOnSignal(s, i)" (mouseleave)="unfocusOffSignal(i)" class="signal fadeIn"
+        <div (mouseenter)="focusOnSignal(s, i)" class="signal fadeIn"
             [ngClass]="{'unselected': this.selectedIndex != i && this.selectedIndex != undefined, 'selected': this.selectedIndex == i && this.selectedIndex != undefined}"
             *ngFor="let s of this.signals, index as i">
             <h3>{{s.name}}
-                <button class='editButton' (click)="editSignal(s)">
+                <button class='editButton' *ngIf="s.status!=3" (click)="editSignal(s)">
                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -37,6 +37,31 @@
                             <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M17.2156 2.82088C17.7412 2.29528 18.4541 2 19.1974 2C19.9407 2 20.6535 2.29528 21.1791 2.82088C21.7047 3.34648 22 4.05934 22 4.80265C22 5.54596 21.7047 6.25883 21.1791 6.78443L20.396 7.56757C20.0055 7.9581 19.3723 7.9581 18.9818 7.56757L16.4324 5.01824C16.0419 4.62771 16.0419 3.99455 16.4324 3.60402L17.2156 2.82088ZM15.0182 6.43245C14.6277 6.04192 13.9945 6.04192 13.604 6.43245L9.14269 10.8938C9.01453 11.0219 8.92362 11.1825 8.87966 11.3583L8.02988 14.7575C7.94468 15.0982 8.04453 15.4587 8.29291 15.7071C8.54129 15.9555 8.90178 16.0553 9.24256 15.9701L12.6417 15.1204C12.8175 15.0764 12.9781 14.9855 13.1062 14.8573L17.5676 10.396C17.9581 10.0055 17.9581 9.37231 17.5676 8.98179L15.0182 6.43245Z"
                                 fill="#000000"></path>
+                        </g>
+                    </svg>
+                </button>
+                <button class="viewButton"(click)="viewSignal(s)">
+                    <svg fill="#000000" width="64px" height="64px" viewBox="0 0 256.00098 256.00098" id="Flat"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M232.47656,215.51563l-40.67773-40.67774a96.10791,96.10791,0,1,0-16.97168,16.96973l40.67871,40.67871a12.0001,12.0001,0,1,0,16.9707-16.9707ZM43.99707,116a72,72,0,1,1,72,72A72.08124,72.08124,0,0,1,43.99707,116Z">
+                            </path>
+                        </g>
+                    </svg>
+                </button>
+                <button class='likeButton' (click)="likeSignal(s, i)"
+                    [ngClass]="{'likedButton': s.liked, 'likeButton': !s.liked}">
+                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
                         </g>
                     </svg>
                 </button>

@@ -2,6 +2,7 @@ package com.sinalez.sinaleasy_back.dtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public record SignalRecordDTO(
@@ -16,7 +17,8 @@ public record SignalRecordDTO(
     String cityId,
     LocalDate date,
     Integer numberOfLikes,
-    Integer status
+    Integer status,
+    List<MilestoneRecordDTO> signalMilestones
 
 ) {}
 

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityIdNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
+import com.sinalez.sinaleasy_back.exceptions.customExceptions.UserNotFoundException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
@@ -26,8 +27,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(CityIdNotFoundException.class)
     private ResponseEntity<RestErrorMessage> cityIdNotFoundException(CityIdNotFoundException exception) {
-        RestErrorMessage threaResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(threaResponse);
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(threatResponse);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    private ResponseEntity<RestErrorMessage> userNotFoundException(UserNotFoundException exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.NOT_FOUND,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(threatResponse);
     }
     
 }

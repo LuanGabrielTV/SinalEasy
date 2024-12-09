@@ -13,5 +13,5 @@ import com.sinalez.sinaleasy_back.entities.Signal;
 public interface SignalRepository extends JpaRepository<Signal, UUID> {
     Optional<Signal> findByName(String name);
     List<Signal> findByCityCityId(String cityId);
-    
+    List<Signal> findByUserUserId(UUID userId);
 }

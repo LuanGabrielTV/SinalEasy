@@ -9,6 +9,5 @@ import com.sinalez.sinaleasy_back.entities.City;
 public interface CityMapper {
     CityRecordDTO toDTO(City city);
 
-    
 }
 

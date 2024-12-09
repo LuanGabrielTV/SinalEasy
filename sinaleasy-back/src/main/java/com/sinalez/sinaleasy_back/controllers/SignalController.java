@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
-import com.sinalez.sinaleasy_back.services.SignalService;
+import com.sinalez.sinaleasy_back.services.logic.SignalService;
 
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/api/signs")
+// @CrossOrigin
 @CrossOrigin(origins = "http://localhost:4200")
 public class SignalController {
     private final SignalService signalService;
@@ -40,6 +41,15 @@ public class SignalController {
         SignalRecordDTO signalResponseDTO = signalMapper.toDTO(signal);
         return ResponseEntity.status(HttpStatus.OK).body(signalResponseDTO);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<List<SignalRecordDTO>> getSigns() {
+        List<Signal> signs = signalService.getSigns();
+        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+            .map(signalMapper::toDTO)
+            .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+    }
     
     // @GetMapping("/{id}")
     // public ResponseEntity<Object> getSignalById(@PathVariable(value = "id") UUID id) {
@@ -48,43 +58,43 @@ public class SignalController {
     // }
 
     @PostMapping("/")
-    public ResponseEntity<SignalRecordDTO> createSignal(@RequestBody @Valid SignalRecordDTO signalRecordDTO) {
-        Signal createdSignal = signalService.createSignal(signalRecordDTO);
+    public ResponseEntity<SignalRecordDTO> createSignal(@RequestBody @Valid SignalRecordDTO signalRequestDTO) {
+        Signal createdSignal = signalService.createSignal(signalRequestDTO);
         SignalRecordDTO signalResponseDTO = signalMapper.toDTO(createdSignal);
         return ResponseEntity.status(HttpStatus.CREATED).body(signalResponseDTO);
         
     }
-
-    // public ResponseEntity<SignalResponseDTO> createSignal(@RequestBody @Valid SignalRecordDTO signalRecordDTO) {
-    //     Signal createdSignal = signalService.createSignal(signalRecordDTO);
-    //     SignalResponseDTO responseDTO = modelMapper.map(createdSignal, SignalResponseDTO.class);
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-    // }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateSignal
     
     (
         @PathVariable(value = "id") UUID id, 
-        @RequestBody @Valid SignalRecordDTO signalRecordDTO
+        @RequestBody @Valid SignalRecordDTO signalRequestDTO
     ) {
-        Signal updatedSignal = signalService.updateSignal(signalRecordDTO, signalService.getSignalById(id));
+        Signal updatedSignal = signalService.updateSignal(signalRequestDTO, signalService.getSignalById(id));
         SignalRecordDTO signalResponseDTO = signalMapper.toDTO(updatedSignal);
         return ResponseEntity.status(HttpStatus.OK).body(signalResponseDTO);
     }
 
-    // @GetMapping("/{id}")
-    // public ResponseEntity<List<Signal>> getSignsByCityId(@PathVariable(value = "id") String id) {
-    //     List<Signal> signs = signalService.getSignsByCityId(id);
-
-    //     return ResponseEntity.status(HttpStatus.OK).body(signs);
-    // }
 
     @GetMapping("/city/{id}")
     public ResponseEntity<List<SignalRecordDTO>> getSignsByCityId(@PathVariable(value = "id") String id) {
-        List<Signal> signals = signalService.getSignsByCityId(id);
-        List<SignalRecordDTO> signalDTOs = signals.stream().map(signalMapper::toDTO).toList();
-        return ResponseEntity.status(HttpStatus.OK).body(signalDTOs);
+        List<Signal> signs = signalService.getSignsByCityId(id);
+        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+            .map(signalMapper::toDTO)
+            .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+    }
+
+    @GetMapping("/signal/{id}")
+    public ResponseEntity<List<SignalRecordDTO>> getSignsByUserId(@PathVariable(value = "id") UUID id) {
+        List<Signal> signs = signalService.getSignsByUserId(id);
+        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+            .map(signalMapper::toDTO)
+            .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+
     }
 
 }

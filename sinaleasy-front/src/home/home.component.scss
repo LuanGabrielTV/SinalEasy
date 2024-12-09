@@ -7,14 +7,6 @@
     padding: none;
 }
 
-#logo {
-    position: absolute;
-    z-index: 20;
-    top: 4%;
-    left: 2%;
-    height: 2.3vh;
-}
-
 .type {
     width: fit-content;
     display: flex;
@@ -26,16 +18,22 @@
 
 .signal {
     border-radius: 12px;
-    border: 1px solid #f2f2f2;
+    border: 1.5px solid #f2f2f2;
     margin-bottom: 4%;
     padding-left: 4%;
-    width: 92%;
+    width: 96%;
 }
 
 .address,
 .status {
     font-size: 1.3vh;
     margin-right: 4%;
+    margin-top:5%;
+}
+
+.address {
+    // font-weight: 500;
+    opacity: 1;
 }
 
 .date {
@@ -43,23 +41,23 @@
 }
 
 .Construção {
-    background-color: #fdf8ac;
+    background: #ffe4a9;
 }
 
 .Reparo {
-    background-color: #b1eaff;
+    background: #9fd4ff;
 }
 
 .Limpeza {
-    background-color: #fdd1fd;
+    border: 2px solid #f7aef8;
 }
 
 .Meio-ambiente {
-    background-color: #00ff004b;
+    background: #abfc2a80;
 }
 
 .Saúde {
-    background-color: #ff99c8;
+    background: #ffbcd8;
 }
 
 small {
@@ -81,43 +79,26 @@ small {
     font-size: 1.3vh;
     margin-right: 4%;
     font-weight: bold;
-    color: #ff595e;
 }
 
 .Pendente {
     font-size: 1.3vh;
     margin-right: 4%;
     font-weight: bold;
-    color: #ffbb00;
 }
 
 .Iniciado {
     font-size: 1.3vh;
     margin-right: 4%;
     font-weight: bold;
-    color: #8ac926;
     animation: blink 1s infinite;
 }
 
-.Finalizado{
+.Finalizado {
     font-size: 1.3vh;
     margin-right: 4%;
     font-weight: bold;
-    color: #1982c4;
 }
-
-@keyframes blink {
-    0%{
-        opacity: 0.2;
-    };
-    50%{
-        opacity: 1;
-    };
-    100%{
-        opacity: 0.2;   
-    }
-}
-
 
 
 #header {
@@ -130,6 +111,8 @@ small {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0pt 0pt 4pt 4pt rgba(0, 0, 0, 0.012);
+
 }
 
 #map {
@@ -140,7 +123,7 @@ small {
     height: 90vh;
     margin: 0;
     padding: 0;
-    animation: fadeIn 3s;
+    // animation: fadeIn 3s;
     z-index: 10;
 }
 
@@ -158,7 +141,7 @@ small {
 
     to {
         opacity: 1;
-        filter: saturate(1);
+        filter: saturate(1.5);
     }
 }
 
@@ -188,7 +171,7 @@ small {
         font-size: 1.5vh;
         font-weight: 400;
     }
- 
+
     ::ng-deep .p-dropdown-override input:focus {
         box-shadow: none;
         -webkit-box-shadow: none;
@@ -212,24 +195,27 @@ small {
     }
 }
 
-.signal:hover h3{
-    color:#0095FF;
+.signal:hover h3 {
+    color: #0095FF;
     transition: 0.2s;
 }
 
-.signal:hover{
+.signal:hover {
     // border: 1px solid #a4d9ff;
-    background-color: #fcfcfc;
+    // background-color: #fcfcfc;
     transition: 0.2s;
+    transform: translateX(-2px);
+    transform: translateY(-2px);
 }
 
-.warning{
+.warning {
     font-size: small;
-    color:gray;
+    color: gray;
     font-style: italic;
+    margin-left: 2%;
 }
 
-.selectedMarker{
+.selectedMarker {
     transform: scale(10);
 }
 
@@ -237,18 +223,20 @@ small {
     position: absolute;
     right: 0;
     top: 10%;
-    width: 28%;
+    width: 30%;
     // padding: 1%;
     margin: 1%;
     background-color: white;
     border-radius: 14px;
     z-index: 11;
     // border: 1px solid #e9e9e9;
-    padding-left: 2%;
-    padding-bottom: 2%;
+    padding-left: 1%;
+    padding-bottom: 1%;
+    padding-top: 1%;
     animation: fadeIn 0.5s;
     max-height: 70vh;
     overflow-y: scroll;
+    box-shadow: 0pt 0pt 4pt 4pt rgba(0, 0, 0, 0.012);
 }
 
 .city::-webkit-scrollbar {
@@ -285,10 +273,18 @@ small {
     font-size: 3vh;
     letter-spacing: -.5px;
     margin-bottom: 2%;
+    margin-left: 2%;
+    -top: 3%;
+}
+
+#rating {
+    margin-left: 2%;
+
 }
 
 .addButton img {
-    height: 2vh;
+    height: 3vh;
+    position: absolute;
 }
 
 .addButton {
@@ -297,15 +293,16 @@ small {
     position: absolute;
     bottom: 3%;
     right: 1%;
-    vertical-align: middle;
-    padding-top: 0.8%;
+    // vertical-align: middle;
+    padding-top: 0.7%;
     padding-right: 0.7%;
     padding-left: 0.7%;
-    padding-bottom: 0.55%;
+    padding-bottom: 0.45%;
     // padding-bottom:-1%;
     text-decoration: none;
     z-index: 20;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.048);
+    box-shadow: 0pt 0pt 4pt 4pt rgba(0, 0, 0, 0.012);
+
 }
 
 .addButton img {
@@ -315,12 +312,12 @@ small {
 }
 
 .addButton:hover {
-    transform: scale(1.05);
-    transition: 0.5s;
+    // transform: scale(1.05);
+
 }
 
 .addButton:hover img {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
     transition: 0.5s;
 }
 
@@ -339,4 +336,109 @@ small {
 .editButton:hover svg {
     transform: scale(1.1);
     transition: 0.3s;
+}
+
+.likeButton {
+    background: none;
+    float: right;
+    margin-right: 2%;
+    border: none;
+    color: #d6d6d6;
+}
+
+
+.likeButton svg {
+    height: 3vh;
+    width: 3vh;
+    stroke-width: 1px;
+}
+
+.likeButton:hover {
+    color: #1DAEEF;
+    transition: .2s;
+}
+
+.likedButton {
+    background: none;
+    float: right;
+    margin-right: 2%;
+    border: none;
+    color: #1DAEEF;
+}
+
+.likedButton svg {
+    height: 3vh;
+    width: 3vh;
+    // stroke-width: 1.5px;
+    fill: #8ADBFF;
+    animation: like .5s;
+}
+
+.popMarker{
+    background-color: red;
+}
+
+.viewButton {
+    background: none;
+    // float: right;
+    // margin-right: 4%;
+    border: none;
+}
+
+.viewButton:hover svg {
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+.viewButton svg {
+    height: 1.5vh;
+    width: 1.5vh;
+}
+
+@keyframes like {
+    0% {
+
+        transform: scale(1);
+
+        transform: rotate(0);
+    }
+
+    ;
+
+    50% {
+        transform: scale(1.2);
+        transform-origin: 0% 100%;
+        transform: rotate(-15deg);
+    }
+
+    ;
+
+    100% {
+        transform: scale(1);
+        transform: rotate(0);
+    }
+}
+
+@keyframes unlike {
+    0% {
+
+        transform: scale(1);
+
+        transform: rotate(0);
+    }
+
+    ;
+
+    50% {
+        transform: scale(1.2);
+        transform-origin: 0% 100%;
+        transform: rotate(15deg);
+    }
+
+    ;
+
+    100% {
+        transform: scale(1);
+        transform: rotate(0);
+    }
 }

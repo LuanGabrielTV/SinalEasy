@@ -11,6 +11,7 @@ import { City } from '../domain/City';
 })
 export class SignalService {
 
+  // url = 'https://backend-sinaleasy-xdau.onrender.com/api/';
   url = 'http://localhost:8080/api/';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', })

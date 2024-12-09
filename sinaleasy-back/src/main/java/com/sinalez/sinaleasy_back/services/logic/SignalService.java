@@ -1,5 +1,6 @@
-package com.sinalez.sinaleasy_back.services;
+package com.sinalez.sinaleasy_back.services.logic;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.entities.Milestone;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
@@ -22,13 +24,12 @@ public class SignalService {
     public SignalService(SignalRepository signalRepository, CityRepository cityRepository) {
         this.signalRepository = signalRepository;
         this.cityRepository = cityRepository;
-        // inserir slug?
     }
 
-    public Signal createSignal(SignalRecordDTO signalRecordDTO) {
+    public Signal createSignal(SignalRecordDTO signalRequestDTO) {
         Signal signal = new Signal();
-        BeanUtils.copyProperties(signalRecordDTO, signal);
-        String cityIdOfSignal = signalRecordDTO.cityId();
+        BeanUtils.copyProperties(signalRequestDTO, signal);
+        String cityIdOfSignal = signalRequestDTO.cityId();
         City cityOfSignal = cityRepository.findById(cityIdOfSignal)
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
@@ -36,15 +37,32 @@ public class SignalService {
 
     }
 
-    public Signal updateSignal(SignalRecordDTO signalRecordDTO, Signal signal) {
-        BeanUtils.copyProperties(signalRecordDTO, signal);
-        String cityIdOfSignal = signalRecordDTO.cityId();
-        City cityOfSignal = cityRepository.findById(cityIdOfSignal).orElseThrow(CityNotFoundException::new);
+    public Signal updateSignal(SignalRecordDTO signalRequestDTO, Signal signal) {
+        String cityIdOfNewSignal = signalRequestDTO.cityId();
+        City cityOfSignal = cityRepository
+            .findById(cityIdOfNewSignal)
+            .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
-        return signalRepository.save(signal);
+        addMilestoneIfStatusChanged(signal, signalRequestDTO.status());
 
-        // não pode mudar cidade em um sinal já existente
-        // signal não pode ser removido enquanto houver qualquer curtida
+        // BeanUtils.copyProperties(signalRequestDTO, signal);
+        BeanUtils.copyProperties(signalRequestDTO, signal, "signalId", "signalMilestones", "city");
+        
+        return signalRepository.save(signal);
+    }
+    
+
+    private void addMilestoneIfStatusChanged(Signal signal, int newStatus) {
+        int currentStatus = signal.getStatus();
+        if (currentStatus != newStatus) {
+            Milestone milestone = new Milestone();
+            milestone.setStatus(newStatus);
+            milestone.setStatusUpdateTime(LocalDate.now());
+            milestone.setSignal(signal);
+            signal.setSignalMilestone(milestone);
+            signal.setStatus(newStatus);
+
+        }
     }
 
     public Signal getSignalById(UUID id) {
@@ -57,6 +75,10 @@ public class SignalService {
 
     public List<Signal> getSignsByCityId(String cityId) {
         return signalRepository.findByCityCityId(cityId);
+    }
+
+    public List<Signal> getSignsByUserId(UUID userId) {
+        return signalRepository.findByUserUserId(userId);
     }
 
 }
