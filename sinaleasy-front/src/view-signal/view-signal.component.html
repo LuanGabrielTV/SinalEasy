@@ -4,7 +4,15 @@
 
         <div class="sinal-container">
             <div class="card">
-                <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 17L7 7M7 7V16M7 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></a>
+                <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M17 17L7 7M7 7V16M7 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </g>
+                    </svg></a>
                 <p-timeline styleClass="p-timeline-override" [value]="events">
                     <ng-template pTemplate="content" let-event>
                         <small class="p-text-secondary">{{ event.date }}</small>
@@ -14,10 +22,10 @@
                     </ng-template>
                 </p-timeline>
             </div>
-            
-            <form [formGroup]="form" > 
+
+            <form [formGroup]="form">
                 <div>
-                    <p id="status" [class]="status[signal.status!]" >{{this.status[this.signal.status!]}}</p>
+                    <p id="status" [class]="status[signal.status!]">{{this.status[this.signal.status!]}}</p>
                     <div class="row" style="margin-top: -5%;">
                         <div>
                             <input id="name" readonly type="text" formControlName="name">
@@ -41,8 +49,7 @@
                 <div class="row">
                     <div>
                         <label for="description">Descrição</label><br>
-                        <textarea readonly id="description" type="text"
-                            formControlName="description"></textarea>
+                        <textarea readonly id="description" type="text" formControlName="description"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -67,7 +74,12 @@
                         {{this.signal.address}}
                     </small>
                 </div>
-            </form> 
+            </form>
+            <div class="grade-card" *ngIf="this.signal.signalGrade != null">
+                <h4>Avaliação do autor</h4>
+                <p-rating id="grade" [disabled]="true" [ngModel]="this.signal.signalGrade.rating" />
+                <p>"{{this.signal.signalGrade.description}}"</p>
+            </div>
         </div>
         <div class="map-container">
             <div class="map-frame">

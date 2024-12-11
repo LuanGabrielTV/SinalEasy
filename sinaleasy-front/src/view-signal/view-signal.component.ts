@@ -9,11 +9,12 @@ import * as L from 'leaflet';
 import { CommonModule, formatDate } from '@angular/common';
 import { TimelineModule } from 'primeng/timeline';
 import { Status } from '../domain/Status';
+import { RatingModule } from 'primeng/rating';
 
 @Component({
   selector: 'app-view-signal',
   standalone: true,
-  imports: [TimelineModule, FormsModule, ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [TimelineModule, FormsModule, ReactiveFormsModule, CommonModule, RouterModule, RatingModule],
   templateUrl: './view-signal.component.html',
   styleUrl: './view-signal.component.scss'
 })

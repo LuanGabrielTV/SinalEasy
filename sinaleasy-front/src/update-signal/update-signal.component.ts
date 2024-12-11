@@ -308,7 +308,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
     this.grade.rating = this.gradeForm.get('grade')?.value;
     this.grade.date = new Date();
     this.grade.description = this.gradeForm.get('gradeDescription')?.value;
-    this.signal.grade = this.grade;
+    this.signal.signalGrade = this.grade;
     console.log(this.signal);
     this.signalService.updateSignal(this.signal).subscribe(_=>{
       this.goHome();

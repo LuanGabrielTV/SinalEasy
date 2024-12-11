@@ -17,9 +17,9 @@ export class Signal {
     cityId: string | undefined;
     liked: boolean | undefined;
     signalMilestones: Array<Milestone> | undefined;
-    grade: Grade | undefined;
+    signalGrade: Grade | undefined;
     
-    constructor(name?: string, date?: Date, address?: string, description?: string, typeOfSignal?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: string, signalId?: string, liked?: boolean, signalMilestones?: Array<Milestone>, grade?: Grade) {
+    constructor(name?: string, date?: Date, address?: string, description?: string, typeOfSignal?: number, latitude?: number, longitude?: number, scaleFactor?: number, status?: number, numberOfLikes?: number, cityId?: string, signalId?: string, liked?: boolean, signalMilestones?: Array<Milestone>, signalGrade?: Grade) {
         this.name = name;
         this.date = date;
         this.address = address;
@@ -34,7 +34,7 @@ export class Signal {
         this.signalId = signalId;
         this.liked = liked;
         this.signalMilestones = signalMilestones;
-        this.grade = grade;
+        this.signalGrade = signalGrade;
     }
 
 }
