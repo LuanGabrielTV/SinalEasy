@@ -18,7 +18,7 @@ public record SignalRecordDTO(
     LocalDate date,
     Integer numberOfLikes,
     Integer status,
-    List<MilestoneRecordDTO> signalMilestones
-
+    List<MilestoneRecordDTO> signalMilestones,
+    GradeRecordDTO signalGrade
 ) {}
 

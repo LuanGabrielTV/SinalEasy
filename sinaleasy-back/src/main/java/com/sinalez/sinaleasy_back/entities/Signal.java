@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
@@ -57,6 +58,11 @@ public class Signal implements Serializable {
     @JsonBackReference
     @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true) //pq nao funciona
     private List<Milestone> signalMilestones;
+
+    @JsonIgnoreProperties("signs")
+    @OneToOne
+    @JoinColumn(name = "grade_id")
+    private Grade grade;
 
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {

@@ -7,8 +7,10 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.sinalez.sinaleasy_back.dtos.GradeRecordDTO;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.entities.Grade;
 import com.sinalez.sinaleasy_back.entities.Milestone;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
@@ -44,6 +46,7 @@ public class SignalService {
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
         addMilestoneIfStatusChanged(signal, signalRequestDTO.status());
+        addGradeIfSignalConcluded(signal, signalRequestDTO.signalGrade());
 
         // BeanUtils.copyProperties(signalRequestDTO, signal);
         BeanUtils.copyProperties(signalRequestDTO, signal, "signalId", "signalMilestones", "city");
@@ -61,7 +64,18 @@ public class SignalService {
             milestone.setSignal(signal);
             signal.setSignalMilestone(milestone);
             signal.setStatus(newStatus);
+        }
+    }
 
+    private void addGradeIfSignalConcluded(Signal signal, GradeRecordDTO gradeRecordDTO){
+        int currentStatus = signal.getStatus();
+        if(currentStatus == 3){
+            Grade grade = new Grade();
+            grade.setRating(gradeRecordDTO.rating());
+            grade.setDescription(gradeRecordDTO.description());
+            grade.setDate(gradeRecordDTO.gradeUpdateTime());
+            grade.setSignal(signal);
+            signal.setGrade(grade);
         }
     }
 
