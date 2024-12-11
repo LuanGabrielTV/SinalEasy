@@ -88,20 +88,20 @@
         </div>
         <p-dialog styleClass="p-dialog-override" [modal]="true" header="Avalie o serviço prestado" [(visible)]="visible"
             [style]="{ width: '25rem', color:'red' }">
-            <form id="ratingForm" [formGroup]="ratingForm">
+            <form id="gradeForm" [formGroup]="gradeForm">
                 <div class="row">
-                    <p-rating id="rating" formControlName="rating" [cancel]="false" />
+                    <p-rating id="grade" formControlName="grade" [cancel]="false" />
                 </div>
                 <div class="row">
                     <div>
-                        <label for="ratingDescription">Descrição</label><br>
-                        <textarea id="ratingDescription" placeholder="Descreva a avaliação (opcional)" type="text"
-                            formControlName="ratingDescription"></textarea>
+                        <label for="gradeDescription">Descrição</label><br>
+                        <textarea id="gradeDescription" placeholder="Descreva a avaliação (opcional)" type="text"
+                            formControlName="gradeDescription"></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <p-button class="confirm" [style]="{marginBottom: '10%'}"
-                        [disabled]="!this.ratingForm.valid" (click)="rate()" label="Confirmar"
+                        [disabled]="!this.gradeForm.valid" (click)="rate()" label="Confirmar"
                         severity="contrast" />
                 </div>
             </form>

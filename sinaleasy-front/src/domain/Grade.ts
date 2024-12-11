@@ -1,4 +1,4 @@
-export class SignalRating{
+export class Grade{
     rating: number | undefined;
     description: string | undefined;
     date: Date | undefined;

@@ -65,12 +65,12 @@ label {
     height: 75vh;
 }
 
-#ratingForm {
+#gradeForm {
     padding: 0;
     margin: 0;
 }
 
-#ratingDescription {
+#gradeDescription {
     resize: none;
     font-size: 1.5vh;
     background-color: #f2f2f2;
@@ -79,9 +79,10 @@ label {
     width: 104%;
     margin-top: 2%;
     border-radius: 8px;
+    padding: 5%;
 }
 
-#rating {
+#grade {
     margin: auto;
 }
 
@@ -151,7 +152,7 @@ textarea {
         font-family: 'Figtree';
         // font-weight: 400;
         font-size: small;
-        letter-spacing: 0.6px;
+        // letter-spacing: 0.6px;
     }
 
     ::ng-deep .p-steps-override .p-steps-number {

@@ -21,7 +21,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RatingModule } from 'primeng/rating';
-import { SignalRating } from '../domain/SignalRating';
+import { Grade } from '../domain/Grade';
 
 @Component({
   selector: 'app-update-signal',
@@ -35,7 +35,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   city: City | undefined;
   private map!: L.Map;
   form: FormGroup;
-  ratingForm: FormGroup;
+  gradeForm: FormGroup;
   states: State[] | undefined;
   cities: City[] | undefined;
   filteredCities: City[] = [];
@@ -48,11 +48,11 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   signalTypes = SignalType;
   status: number;
   visible = false;
-  signalRating: SignalRating;
+  grade: Grade;
 
   constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private route: ActivatedRoute, private router: Router) {
     this.signal = new Signal();
-    this.signalRating = new SignalRating();
+    this.grade = new Grade();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
         Validators.minLength(2),
@@ -67,9 +67,9 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
       'description': [this.signal.description, Validators.compose([
         Validators.required])],
     });
-    this.ratingForm = this.fBuilder.group({
-      'rating': [this.signalRating.rating, Validators.required],
-      'ratingDescription': [this.signalRating.description]
+    this.gradeForm = this.fBuilder.group({
+      'grade': [this.grade.rating, Validators.required],
+      'gradeDescription': [this.grade.description]
     })
     this.address = "";
     this.status = 0;
@@ -285,7 +285,6 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    console.log(this.city);
     this.signal.name = this.form.get('name')?.value;
     this.signal.address = this.address;
     this.signal.typeOfSignal = this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number;
@@ -305,12 +304,15 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   }
 
   rate(){
-    this.signalRating.signalId = this.signal.signalId;
-    this.signalRating.rating = this.ratingForm.get('rating')?.value;
-    this.signalRating.date = new Date();
-    this.signalRating.description = this.ratingForm.get('ratingDescription')?.value;
-
-    // criar avaliacao e fazer update de sinal
+    this.grade.signalId = this.signal.signalId;
+    this.grade.rating = this.gradeForm.get('grade')?.value;
+    this.grade.date = new Date();
+    this.grade.description = this.gradeForm.get('gradeDescription')?.value;
+    this.signal.grade = this.grade;
+    console.log(this.signal);
+    this.signalService.updateSignal(this.signal).subscribe(_=>{
+      this.goHome();
+    });    
   }
 
 }
