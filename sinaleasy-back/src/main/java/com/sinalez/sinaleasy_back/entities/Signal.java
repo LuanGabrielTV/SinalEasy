@@ -61,8 +61,8 @@ public class Signal implements Serializable {
 
     @JsonIgnoreProperties("signs")
     @OneToOne
-    @JoinColumn(name = "signalrating_id")
-    private SignalRating signalRating;
+    @JoinColumn(name = "grade_id")
+    private Grade grade;
 
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {

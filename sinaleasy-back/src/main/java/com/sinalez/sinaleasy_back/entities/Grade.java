@@ -17,16 +17,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_SignalRating")
+@Table(name = "TB_Grade")
 @Getter
 @Setter
 
-public class SignalRating implements Serializable{
+public class Grade implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID signalRatingId;
+    private UUID gradeId;
 
     @NotNull private Integer rating;
     @NotBlank private String description;
