@@ -1,5 +1,6 @@
 package com.sinalez.sinaleasy_back.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -36,11 +37,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
     }
 
+    // curl -X GET http://localhost:8080/api/users/ \ -H "Content-Type: application/json"
+    @GetMapping("/")
+    public ResponseEntity<List<UserRecordDTO>> getUsers() {
+        List<User> users = userService.getUsers();
+        List<UserRecordDTO> usersResponseDTO = users.stream()
+            .map(userMapper::toDTO)
+            .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(usersResponseDTO);
+
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable(value = "id") UUID id) {
         User user  = userService.getUserById(id);
         UserRecordDTO userResponseDTO = userMapper.toDTO(user);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
     }
+
     
 }
