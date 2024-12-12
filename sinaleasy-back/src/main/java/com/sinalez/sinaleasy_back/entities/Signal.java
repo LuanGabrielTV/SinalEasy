@@ -41,7 +41,7 @@ public class Signal implements Serializable {
     @NotNull private Double longitude;
     @NotNull private Integer typeOfSignal;
     @NotNull private Integer status;
-    private LocalDate date;
+    private LocalDate date; // Mudar esse nome para algo mais sugestivo
     @Transient private Integer numberOfLikes;
     @Transient private Integer scaleFactor;
 
@@ -76,6 +76,29 @@ public class Signal implements Serializable {
             throw new IllegalArgumentException("Novo status não pode ser nulo!");
         }
         this.signalMilestones.add(milestone);
+    }
+
+    public void updateStatus(Integer newStatus) {
+        if (this.status != newStatus) {
+            Milestone newMilestone = new Milestone();
+            newMilestone.setStatus(newStatus);
+            newMilestone.setStatusUpdateTime(LocalDate.now());
+            newMilestone.setSignal(this);
+            this.signalMilestones.add(newMilestone);
+            this.status = newStatus;
+        }
+    }
+
+
+    public void addGradeIfConcluded(Integer rating, String gradeDescription, LocalDate gradeUpdateTime) {
+        if (this.status == 3) {
+            Grade newGrade = new Grade();
+            newGrade.setRating(rating);
+            newGrade.setDescription(description);
+            newGrade.setDate(gradeUpdateTime);
+            newGrade.setSignal(this);
+            this.grade = newGrade;
+        }
     }
 
 }

@@ -1,17 +1,13 @@
 package com.sinalez.sinaleasy_back.services.logic;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sinalez.sinaleasy_back.dtos.GradeRecordDTO;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
-import com.sinalez.sinaleasy_back.entities.Grade;
-import com.sinalez.sinaleasy_back.entities.Milestone;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
@@ -40,43 +36,20 @@ public class SignalService {
     }
 
     public Signal updateSignal(SignalRecordDTO signalRequestDTO, Signal signal) {
-        String cityIdOfNewSignal = signalRequestDTO.cityId();
         City cityOfSignal = cityRepository
-            .findById(cityIdOfNewSignal)
+            .findById(signalRequestDTO.cityId())
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
-        addMilestoneIfStatusChanged(signal, signalRequestDTO.status());
-        addGradeIfSignalConcluded(signal, signalRequestDTO.signalGrade());
+        signal.updateStatus(signalRequestDTO.status());
+        signal.addGradeIfConcluded(
+            signalRequestDTO.signalGrade().rating(),
+            signalRequestDTO.signalGrade().description(),
+            signalRequestDTO.signalGrade().gradeUpdateTime()
+        );
 
-        // BeanUtils.copyProperties(signalRequestDTO, signal);
         BeanUtils.copyProperties(signalRequestDTO, signal, "signalId", "signalMilestones", "city");
-        
+
         return signalRepository.save(signal);
-    }
-    
-
-    private void addMilestoneIfStatusChanged(Signal signal, int newStatus) {
-        int currentStatus = signal.getStatus();
-        if (currentStatus != newStatus) {
-            Milestone milestone = new Milestone();
-            milestone.setStatus(newStatus);
-            milestone.setStatusUpdateTime(LocalDate.now());
-            milestone.setSignal(signal);
-            signal.setSignalMilestone(milestone);
-            signal.setStatus(newStatus);
-        }
-    }
-
-    private void addGradeIfSignalConcluded(Signal signal, GradeRecordDTO gradeRecordDTO){
-        int currentStatus = signal.getStatus();
-        if(currentStatus == 3){
-            Grade grade = new Grade();
-            grade.setRating(gradeRecordDTO.rating());
-            grade.setDescription(gradeRecordDTO.description());
-            grade.setDate(gradeRecordDTO.gradeUpdateTime());
-            grade.setSignal(signal);
-            signal.setGrade(grade);
-        }
     }
 
     public Signal getSignalById(UUID id) {

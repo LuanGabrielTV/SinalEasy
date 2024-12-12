@@ -31,4 +31,6 @@ public class Milestone implements Serializable {
     @ManyToOne
     @JoinColumn(name = "signal_id", nullable = false)
     private Signal signal;
+
+
 }
