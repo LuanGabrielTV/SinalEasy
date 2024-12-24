@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TB_USER_SIGNAL")
+@Table(name = "TB_users_signals")
 @Getter
 @Setter
 public class UserSignal implements Serializable {
@@ -25,7 +25,7 @@ public class UserSignal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID userSignalId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
