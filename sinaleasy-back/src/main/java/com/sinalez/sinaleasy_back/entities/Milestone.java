@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_Milestone")
+@Table(name = "TB_Milestones")
 @Getter
 @Setter
 public class Milestone implements Serializable {

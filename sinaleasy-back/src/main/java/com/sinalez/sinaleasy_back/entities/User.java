@@ -33,6 +33,6 @@ public class User implements Serializable {
 
     @JsonBackReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Signal> userSigns;
+    private List<Signal> userSignals;
 
 }

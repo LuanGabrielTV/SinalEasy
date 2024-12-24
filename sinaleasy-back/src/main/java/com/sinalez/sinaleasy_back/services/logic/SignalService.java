@@ -56,15 +56,15 @@ public class SignalService {
         return signalRepository.findById(id).orElseThrow(SignalNotFoundException::new);
     }
 
-    public List<Signal> getSigns() {
+    public List<Signal> getSignals() {
         return signalRepository.findAll();
     }
 
-    public List<Signal> getSignsByCityId(String cityId) {
+    public List<Signal> getSignalsByCityId(String cityId) {
         return signalRepository.findByCityCityId(cityId);
     }
 
-    public List<Signal> getSignsByUserId(UUID userId) {
+    public List<Signal> getSignalsByUserId(UUID userId) {
         return signalRepository.findByUserUserId(userId);
     }
 

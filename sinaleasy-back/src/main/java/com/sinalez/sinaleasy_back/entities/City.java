@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_City")
+@Table(name = "TB_Cities")
 @Getter
 @Setter
 public class City implements Serializable {
@@ -29,7 +29,7 @@ public class City implements Serializable {
 
     @JsonBackReference
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true) 
-    private List<Signal> signs;
+    private List<Signal> signals;
 }
 
 

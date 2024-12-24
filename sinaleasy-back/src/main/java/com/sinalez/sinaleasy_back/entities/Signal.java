@@ -25,7 +25,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_Signal")
+@Table(name = "TB_Signals")
 @Getter
 @Setter
 public class Signal implements Serializable {
@@ -45,12 +45,12 @@ public class Signal implements Serializable {
     @Transient private Integer numberOfLikes;
     @Transient private Integer scaleFactor;
 
-    @JsonIgnoreProperties("signs")
+    @JsonIgnoreProperties("signals")
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @JsonIgnoreProperties("signs")
+    @JsonIgnoreProperties("signals")
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -59,7 +59,7 @@ public class Signal implements Serializable {
     @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true) //pq nao funciona
     private List<Milestone> signalMilestones;
 
-    @JsonIgnoreProperties("signs")
+    @JsonIgnoreProperties("signals")
     @OneToOne
     @JoinColumn(name = "grade_id")
     private Grade grade;

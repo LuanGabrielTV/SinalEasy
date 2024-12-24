@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/signs")
+@RequestMapping("/api/signals")
 // @CrossOrigin
 @CrossOrigin(origins = "http://localhost:4200")
 public class SignalController {
@@ -43,12 +43,12 @@ public class SignalController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<SignalRecordDTO>> getSigns() {
-        List<Signal> signs = signalService.getSigns();
-        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+    public ResponseEntity<List<SignalRecordDTO>> getsignals() {
+        List<Signal> signals = signalService.getSignals();
+        List<SignalRecordDTO> signalsResponseDTO = signals.stream()
             .map(signalMapper::toDTO)
             .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
     }
     
     // @GetMapping("/{id}")
@@ -79,21 +79,21 @@ public class SignalController {
 
 
     @GetMapping("/city/{id}")
-    public ResponseEntity<List<SignalRecordDTO>> getSignsByCityId(@PathVariable(value = "id") String id) {
-        List<Signal> signs = signalService.getSignsByCityId(id);
-        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+    public ResponseEntity<List<SignalRecordDTO>> getSignalsByCityId(@PathVariable(value = "id") String id) {
+        List<Signal> signals = signalService.getSignalsByCityId(id);
+        List<SignalRecordDTO> signalsResponseDTO = signals.stream()
             .map(signalMapper::toDTO)
             .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
     }
 
     @GetMapping("/signal/{id}")
-    public ResponseEntity<List<SignalRecordDTO>> getSignsByUserId(@PathVariable(value = "id") UUID id) {
-        List<Signal> signs = signalService.getSignsByUserId(id);
-        List<SignalRecordDTO> signsResponseDTO = signs.stream()
+    public ResponseEntity<List<SignalRecordDTO>> getSignalsByUserId(@PathVariable(value = "id") UUID id) {
+        List<Signal> signals = signalService.getSignalsByUserId(id);
+        List<SignalRecordDTO> signalsResponseDTO = signals.stream()
             .map(signalMapper::toDTO)
             .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(signsResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
 
     }
 
