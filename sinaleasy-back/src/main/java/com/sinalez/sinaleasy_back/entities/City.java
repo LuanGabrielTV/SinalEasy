@@ -31,13 +31,3 @@ public class City implements Serializable {
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Signal> signals;
 }
-
-
-// Exemplo utilizando GIS no Postgres, caso seja necessario calcular algo no backend um dia
-
-// @Column(columnDefinition = "POINT")
-// private Point location;
-
-// @Column(columnDefinition = "jsonb")
-// private String geolocation;  // {"latitude": xx.xxxx, "longitude": yy.yyyy}
-

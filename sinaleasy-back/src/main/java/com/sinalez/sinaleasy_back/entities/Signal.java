@@ -64,6 +64,10 @@ public class Signal implements Serializable {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
+    @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSignal> signalVotes; // lista de votos recebidos pelo sinal
+
+
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {
             throw new IllegalArgumentException("Cidade não pode ser nula!");
