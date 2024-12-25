@@ -17,7 +17,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TB_users_signals")
+@Table(name = "TB_users_signals") // cada linha na tabela UserSignal representa um like ou dislike de um usuário em um sinal
+
 @Getter
 @Setter
 public class UserSignal implements Serializable {
@@ -36,5 +37,5 @@ public class UserSignal implements Serializable {
     private Signal signal;
 
     @Column(nullable = false)
-    private boolean liked; // true = like, false = dislike
+    private boolean voted; // true = com voto, false = sem voto
 }
