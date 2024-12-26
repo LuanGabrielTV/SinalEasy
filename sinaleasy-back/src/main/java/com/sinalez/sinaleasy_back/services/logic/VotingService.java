@@ -9,8 +9,6 @@ import com.sinalez.sinaleasy_back.dtos.VoteRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.entities.UserSignal;
-import com.sinalez.sinaleasy_back.repositories.SignalRepository;
-import com.sinalez.sinaleasy_back.repositories.UserRepository;
 import com.sinalez.sinaleasy_back.repositories.UserSignalRepository;
 
 @Service
@@ -20,8 +18,6 @@ public class VotingService {
     public final UserService userService;
     public VotingService(
             UserSignalRepository userSignalRepository,
-            UserRepository userRepository,
-            SignalRepository signalRepository,
             SignalService signalService,
             UserService userService
         ) {
@@ -56,7 +52,7 @@ public class VotingService {
 
     // Metodo para contar o numero de votos de um sinal
     public Integer countVotes(UUID signalId) {
-        return userSignalRepository.countBySignalId(signalId);
+        return userSignalRepository.countBySignal_signalId(signalId);
     }
  
 }
