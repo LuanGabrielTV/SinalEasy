@@ -12,6 +12,7 @@ public interface SignalMapper {
     @Mapping(target = "scaleFactor", constant = "1")
     @Mapping(target = "numberOfLikes", constant = "1")
     @Mapping(target = "cityId", source = "signal.city.cityId")
+    @Mapping(target = "signalGrade", source = "signal.grade")
     SignalRecordDTO toDTO(Signal signal);
 
     // @Mapping(target = "city", ignore = true)

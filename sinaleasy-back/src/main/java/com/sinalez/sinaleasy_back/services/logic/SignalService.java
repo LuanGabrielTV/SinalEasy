@@ -35,6 +35,11 @@ public class SignalService {
         City cityOfSignal = cityRepository.findById(cityIdOfSignal)
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
+        Milestone milestone = new Milestone();
+        milestone.setStatus(0);
+        milestone.setStatusUpdateTime(LocalDate.now());
+        milestone.setSignal(signal);
+        signal.setSignalMilestone(milestone);
         return signalRepository.save(signal);
 
     }

@@ -2,6 +2,7 @@ package com.sinalez.sinaleasy_back.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,7 +61,7 @@ public class Signal implements Serializable {
     private List<Milestone> signalMilestones;
 
     @JsonIgnoreProperties("signs")
-    @OneToOne
+    @OneToOne(cascade =  CascadeType.ALL)
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
@@ -74,6 +75,9 @@ public class Signal implements Serializable {
     public void setSignalMilestone(Milestone milestone) {
         if(milestone == null) {
             throw new IllegalArgumentException("Novo status não pode ser nulo!");
+        }
+        if(this.signalMilestones == null){
+            this.signalMilestones = new ArrayList<Milestone>();
         }
         this.signalMilestones.add(milestone);
     }

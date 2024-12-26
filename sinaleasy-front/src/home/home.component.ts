@@ -15,6 +15,7 @@ import { SignalService } from '../services/signal.service';
 import { CityService } from '../services/city.service';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
+import { Like } from '../domain/Like';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('mapContainer')
   private mapContainer!: ElementRef;
   private map: L.Map | undefined;
-  private changedVotes: string[];
+  private changedVotes: Array<Like>;
 
   constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private homeService: HomeService, private router: Router) {
     this.signals = [];
@@ -246,26 +247,28 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  likeSignal(s: Signal, i:number) {
+  likeSignal(s: Signal, i: number) {
 
     s.liked = !s.liked;
-    let index = this.changedVotes.indexOf(s.signalId!);
+    let like:Like = new Like(s.signalId, s.liked);
+    let index = this.changedVotes.map(l => l.signalId).indexOf(like.signalId);
+    console.log(index);
     if (index == -1) {
-      this.markers[i].setRadius(this.markers[i].getRadius()+2);
-      this.changedVotes.push(s.signalId!);
-    }else{
-      this.markers[i].setRadius(this.markers[i].getRadius()-2);
-      this.changedVotes.splice(index,1)
+      // this.markers[i].setRadius(this.markers[i].getRadius() + 2);
+      this.changedVotes.push(like);
+    } else {
+      // this.markers[i].setRadius(this.markers[i].getRadius() - 2);
+      this.changedVotes.splice(index, 1)
     }
     console.log(this.changedVotes);
   }
 
   @HostListener('window:beforeunload', ['$event'])
   updateLikes() {
-    console.log(this.changedVotes)
+    // console.log(this.changedVotes)
   }
-  
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     console.log(this.changedVotes)
   }
 }
