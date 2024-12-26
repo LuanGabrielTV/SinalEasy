@@ -38,4 +38,5 @@ public class UserSignal implements Serializable {
 
     @Column(nullable = false)
     private boolean voted; // true = com voto, false = sem voto
+    
 }

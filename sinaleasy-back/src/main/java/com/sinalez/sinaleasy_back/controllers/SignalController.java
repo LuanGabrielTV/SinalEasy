@@ -18,6 +18,7 @@ import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
 import com.sinalez.sinaleasy_back.services.logic.SignalService;
+import com.sinalez.sinaleasy_back.services.logic.VotingService;
 
 import jakarta.validation.Valid;
 
@@ -28,11 +29,13 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:4200")
 public class SignalController {
     private final SignalService signalService;
+    private final VotingService votingService;
     private final SignalMapper signalMapper;
 
-    public SignalController(SignalService signalService, SignalMapper signalMapper) {
+    public SignalController(SignalService signalService, SignalMapper signalMapper, VotingService votingService) {
         this.signalService = signalService;
         this.signalMapper = signalMapper;
+        this.votingService = votingService;
     }
 
     @GetMapping("/{id}")
@@ -96,5 +99,7 @@ public class SignalController {
         return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
 
     }
+
+
 
 }
