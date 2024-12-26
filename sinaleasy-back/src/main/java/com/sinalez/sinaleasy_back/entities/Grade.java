@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_Grade")
+@Table(name = "TB_Grades")
 @Getter
 @Setter
 

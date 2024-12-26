@@ -7,10 +7,8 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sinalez.sinaleasy_back.dtos.GradeRecordDTO;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
-import com.sinalez.sinaleasy_back.entities.Grade;
 import com.sinalez.sinaleasy_back.entities.Milestone;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
@@ -45,58 +43,35 @@ public class SignalService {
     }
 
     public Signal updateSignal(SignalRecordDTO signalRequestDTO, Signal signal) {
-        String cityIdOfNewSignal = signalRequestDTO.cityId();
         City cityOfSignal = cityRepository
-            .findById(cityIdOfNewSignal)
+            .findById(signalRequestDTO.cityId())
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
-        addMilestoneIfStatusChanged(signal, signalRequestDTO.status());
-        addGradeIfSignalConcluded(signal, signalRequestDTO.signalGrade());
+        signal.updateStatus(signalRequestDTO.status());
+        signal.addGradeIfConcluded(
+            signalRequestDTO.signalGrade().rating(),
+            signalRequestDTO.signalGrade().description(),
+            signalRequestDTO.signalGrade().gradeUpdateTime()
+        );
 
-        // BeanUtils.copyProperties(signalRequestDTO, signal);
         BeanUtils.copyProperties(signalRequestDTO, signal, "signalId", "signalMilestones", "city");
-        
+
         return signalRepository.save(signal);
-    }
-    
-
-    private void addMilestoneIfStatusChanged(Signal signal, int newStatus) {
-        int currentStatus = signal.getStatus();
-        if (currentStatus != newStatus) {
-            Milestone milestone = new Milestone();
-            milestone.setStatus(newStatus);
-            milestone.setStatusUpdateTime(LocalDate.now());
-            milestone.setSignal(signal);
-            signal.setSignalMilestone(milestone);
-            signal.setStatus(newStatus);
-        }
-    }
-
-    private void addGradeIfSignalConcluded(Signal signal, GradeRecordDTO gradeRecordDTO){
-        int currentStatus = signal.getStatus();
-        if(currentStatus == 3){
-            Grade grade = new Grade();
-            grade.setRating(gradeRecordDTO.rating());
-            grade.setDescription(gradeRecordDTO.description());
-            grade.setDate(gradeRecordDTO.gradeUpdateTime());
-            grade.setSignal(signal);
-            signal.setGrade(grade);
-        }
     }
 
     public Signal getSignalById(UUID id) {
         return signalRepository.findById(id).orElseThrow(SignalNotFoundException::new);
     }
 
-    public List<Signal> getSigns() {
+    public List<Signal> getSignals() {
         return signalRepository.findAll();
     }
 
-    public List<Signal> getSignsByCityId(String cityId) {
+    public List<Signal> getSignalsByCityId(String cityId) {
         return signalRepository.findByCityCityId(cityId);
     }
 
-    public List<Signal> getSignsByUserId(UUID userId) {
+    public List<Signal> getSignalsByUserId(UUID userId) {
         return signalRepository.findByUserUserId(userId);
     }
 

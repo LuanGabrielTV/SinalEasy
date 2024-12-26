@@ -11,6 +11,8 @@ import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundExcept
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.UserNotFoundException;
 
+
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler(SignalNotFoundException.class)

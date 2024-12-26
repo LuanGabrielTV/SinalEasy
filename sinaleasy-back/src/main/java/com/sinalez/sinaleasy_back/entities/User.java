@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_USERS")
+@Table(name = "TB_Users")
 @Getter
 @Setter
 public class User implements Serializable {
@@ -33,6 +33,10 @@ public class User implements Serializable {
 
     @JsonBackReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Signal> userSigns;
+    private List<Signal> userSignals;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSignal> userVotesOnSignals; // lista de votos do usuário
+
 
 }

@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_Signal")
+@Table(name = "TB_Signals")
 @Getter
 @Setter
 public class Signal implements Serializable {
@@ -42,16 +42,16 @@ public class Signal implements Serializable {
     @NotNull private Double longitude;
     @NotNull private Integer typeOfSignal;
     @NotNull private Integer status;
-    private LocalDate date;
+    private LocalDate date; // Mudar esse nome para algo mais sugestivo
     @Transient private Integer numberOfLikes;
     @Transient private Integer scaleFactor;
 
-    @JsonIgnoreProperties("signs")
+    @JsonIgnoreProperties("signals")
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @JsonIgnoreProperties("signs")
+    @JsonIgnoreProperties("signals")
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -60,10 +60,14 @@ public class Signal implements Serializable {
     @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true) //pq nao funciona
     private List<Milestone> signalMilestones;
 
-    @JsonIgnoreProperties("signs")
-    @OneToOne(cascade =  CascadeType.ALL)
+    @JsonIgnoreProperties("signals")
+    @OneToOne
     @JoinColumn(name = "grade_id")
     private Grade grade;
+
+    @OneToMany(mappedBy = "signal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSignal> signalVotes; // lista de votos recebidos pelo sinal
+
 
     public void setCity(City cityOfSignal) {
         if (cityOfSignal == null) {
@@ -80,6 +84,29 @@ public class Signal implements Serializable {
             this.signalMilestones = new ArrayList<Milestone>();
         }
         this.signalMilestones.add(milestone);
+    }
+
+    public void updateStatus(Integer newStatus) {
+        if (this.status != newStatus) {
+            Milestone newMilestone = new Milestone();
+            newMilestone.setStatus(newStatus);
+            newMilestone.setStatusUpdateTime(LocalDate.now());
+            newMilestone.setSignal(this);
+            this.signalMilestones.add(newMilestone);
+            this.status = newStatus;
+        }
+    }
+
+
+    public void addGradeIfConcluded(Integer rating, String gradeDescription, LocalDate gradeUpdateTime) {
+        if (this.status == 3) {
+            Grade newGrade = new Grade();
+            newGrade.setRating(rating);
+            newGrade.setDescription(description);
+            newGrade.setDate(gradeUpdateTime);
+            newGrade.setSignal(this);
+            this.grade = newGrade;
+        }
     }
 
 }

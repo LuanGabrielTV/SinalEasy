@@ -8,6 +8,6 @@ public record UserRecordDTO(
     String userLogin,
     String userPassword,
     String userEmail,
-    List<SignalRecordDTO> userSigns
+    List<SignalRecordDTO> userSignals
 
 ) {}

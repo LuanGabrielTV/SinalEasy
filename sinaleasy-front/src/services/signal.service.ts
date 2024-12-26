@@ -21,7 +21,7 @@ export class SignalService {
   constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient) { }
 
   createSignal(signal: Signal) {
-    let url = this.url + 'signs/';
+    let url = this.url + 'signals/';
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
         switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(_ => this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions)));
@@ -41,19 +41,19 @@ export class SignalService {
   
   updateSignal(signal: Signal) {
     console.log(signal)
-    let url = this.url + 'signs/' + signal.signalId;
+    let url = this.url + 'signals/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
         switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(city => this.httpClient.put<Signal>(url, JSON.stringify(signal), this.httpOptions)));
   }
 
   getSignalsByCity(cityId: string) {
-    let url = this.url + 'signs/city/' + cityId;
+    let url = this.url + 'signals/city/' + cityId;
     return this.httpClient.get(url, this.httpOptions);
   }
 
   getSignalById(signalId: string) {
-    let url = this.url + 'signs/' + signalId;
+    let url = this.url + 'signals/' + signalId;
     return this.httpClient.get<Signal>(url, this.httpOptions);
   }
 }

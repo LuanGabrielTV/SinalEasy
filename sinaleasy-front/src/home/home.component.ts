@@ -101,8 +101,8 @@ export class HomeComponent implements OnInit {
   loadSignals() {
     this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
       if (city != null) {
-        this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signs) => {
-          this.signals = signs as unknown as Signal[];
+        this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signals) => {
+          this.signals = signals as unknown as Signal[];
           this.drawMarkers(this.signals);
         })
       }
