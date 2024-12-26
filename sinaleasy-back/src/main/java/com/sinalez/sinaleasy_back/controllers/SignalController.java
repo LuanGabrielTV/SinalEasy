@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
+import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
 import com.sinalez.sinaleasy_back.services.logic.SignalService;
+import com.sinalez.sinaleasy_back.services.logic.UserService;
 
 import jakarta.validation.Valid;
 
@@ -29,11 +31,12 @@ import jakarta.validation.Valid;
 public class SignalController {
     private final SignalService signalService;
     private final SignalMapper signalMapper;
+    private final UserService userService;
 
-    public SignalController(SignalService signalService, SignalMapper signalMapper) {
+    public SignalController(SignalService signalService, SignalMapper signalMapper, UserService userService) {
         this.signalService = signalService;
         this.signalMapper = signalMapper;
-        
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -85,6 +88,18 @@ public class SignalController {
         List<SignalRecordDTO> signalsResponseDTO = signals.stream()
             .map(signalMapper::toDTO)
             .toList();
+            
+        // o user logado, por enquanto, é o userTester
+        User userTester = userService.getUserById(UUID.fromString("17afce30-ff01-4766-9073-0706a141a6f6"));
+        for (int i = 0; i < signalsResponseDTO.size(); i++) {
+            // signalsResponseDTO.get(i).liked(true)
+            signalsResponseDTO.get(i).setNumberOfLikes(signals.get(i).getSignalVotes().size());
+
+            if(signals.get(i).getSignalVotes().stream().filter(s -> s.getUser().getUserId().equals(userTester.getUserId())).findAny().isPresent()){
+                signalsResponseDTO.get(i).setLiked(true);
+            };
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
     }
 

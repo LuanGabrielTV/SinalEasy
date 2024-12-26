@@ -10,8 +10,10 @@ import com.sinalez.sinaleasy_back.entities.Signal;
 @Mapper(componentModel = "spring")
 public interface SignalMapper {
     @Mapping(target = "scaleFactor", constant = "1")
+    @Mapping(target = "liked", constant = "false")
     @Mapping(target = "numberOfLikes", constant = "1")
     @Mapping(target = "cityId", source = "signal.city.cityId")
+    @Mapping(target = "userId", source = "signal.user.userId")
     @Mapping(target = "signalGrade", source = "signal.grade")
     SignalRecordDTO toDTO(Signal signal);
 

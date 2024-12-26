@@ -104,6 +104,7 @@ export class HomeComponent implements OnInit {
         this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signals) => {
           this.signals = signals as unknown as Signal[];
           this.drawMarkers(this.signals);
+          console.log(this.signals);
         })
       }
     }));

@@ -15,10 +15,22 @@ public record SignalRecordDTO(
     Double longitude,
     Integer typeOfSignal,
     String cityId,
+    String userId,
     LocalDate date,
     Integer numberOfLikes,
     Integer status,
     List<MilestoneRecordDTO> signalMilestones,
-    GradeRecordDTO signalGrade
-) {}
+    GradeRecordDTO signalGrade,
+    boolean liked
+) {
+
+    public SignalRecordDTO setNumberOfLikes(int numberOfLikes){
+        return new SignalRecordDTO(signalId(), name(), description(), address(), scaleFactor(), latitude(), longitude(), typeOfSignal(), cityId(), userId(), date(), numberOfLikes, status(), signalMilestones(), signalGrade(), liked());
+    }
+
+    public SignalRecordDTO setLiked(boolean liked){
+        return new SignalRecordDTO(signalId(), name(), description(), address(), scaleFactor(), latitude(), longitude(), typeOfSignal(), cityId(), userId(), date(), numberOfLikes(), status(), signalMilestones(), signalGrade(), liked);
+    }
+
+}
 

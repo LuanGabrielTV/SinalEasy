@@ -9,21 +9,25 @@ import org.springframework.stereotype.Service;
 
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
 import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.entities.Milestone;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;
+import com.sinalez.sinaleasy_back.repositories.UserRepository;
 import com.sinalez.sinaleasy_back.repositories.SignalRepository;
 
 @Service
 public class SignalService {
     private final SignalRepository signalRepository;
     private final CityRepository cityRepository;
-
-    public SignalService(SignalRepository signalRepository, CityRepository cityRepository) {
+    private final UserRepository userRepository;
+    
+    public SignalService(SignalRepository signalRepository, CityRepository cityRepository, UserRepository userRepository) {
         this.signalRepository = signalRepository;
         this.cityRepository = cityRepository;
+        this.userRepository = userRepository;
     }
 
     public Signal createSignal(SignalRecordDTO signalRequestDTO) {
@@ -33,6 +37,12 @@ public class SignalService {
         City cityOfSignal = cityRepository.findById(cityIdOfSignal)
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
+
+        String userIdOfSignal = signalRequestDTO.userId();
+        User userOfSignal = userRepository.findById(UUID.fromString(userIdOfSignal))
+            .orElseThrow(CityNotFoundException::new);
+        signal.setUser(userOfSignal);
+
         Milestone milestone = new Milestone();
         milestone.setStatus(0);
         milestone.setStatusUpdateTime(LocalDate.now());
