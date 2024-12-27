@@ -36,14 +36,17 @@ public class VotingService {
         UserSignal existingUserSignal = userSignalRepository.existsByUserUserIdAndSignalSignalId(userId, signal.getSignalId());
 
         if (existingUserSignal != null) {
+            System.out.println("Já tinha votado!");
             // se o voto ja existir, removemos ele (desfazer o voto)
             userSignalRepository.deleteByUserUserIdAndSignalSignalId(userId, signal.getSignalId());
+            
         } else {
             // se o voto n existir, criamos um novo
             UserSignal userSignal = new UserSignal();
             userSignal.setUser(user);
             userSignal.setSignal(signal);
             userSignal.setVoted(true);
+            System.out.println("devidamente votado!");
             userSignalRepository.save(userSignal);
         }
         
