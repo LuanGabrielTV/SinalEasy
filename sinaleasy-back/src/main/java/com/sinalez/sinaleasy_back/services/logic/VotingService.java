@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sinalez.sinaleasy_back.dtos.VoteRecordDTO;
 import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.entities.UserSignal;
@@ -29,9 +28,9 @@ public class VotingService {
     // Em vez de reportar o repositorio, vou importar o servico
 
     @Transactional
-    public void voteSignal(VoteRecordDTO voteRequestDTO, UUID userId) {
+    public void voteSignal(UUID userId, UUID signalId) {
         User user = userService.getUserById(userId);
-        Signal signal = signalService.getSignalById(voteRequestDTO.signalId());
+        Signal signal = signalService.getSignalById(signalId);
 
         // verifica se o usuario ja votou nesse sinal
         UserSignal existingUserSignal = userSignalRepository.existsByUserUserIdAndSignalSignalId(userId, signal.getSignalId());

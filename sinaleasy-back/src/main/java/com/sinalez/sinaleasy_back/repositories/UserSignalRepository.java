@@ -19,12 +19,12 @@ public interface UserSignalRepository extends JpaRepository<UserSignal, UUID>{
 
     UserSignal existsByUserUserIdAndSignalSignalId(UUID userId, UUID signalId); // Verifica se existe um registro na tabela UserSignal para um usuário (userId) e um sinal (signalId). sera utilizada para verificacao, evitando duplicação de votos.
 
-    @Query(
-        value = "SELECT COUNT(DISTINCT su.user_id, su.signal_id) " +
-                "FROM signal_usuario su " +
-                "INNER JOIN usuario u ON su.user_id = u.user_id " +
-                "INNER JOIN signal s ON su.signal_id = s.signal_id", 
-        nativeQuery = true
-    )
-    long countDistinctUserSignalCombinations();
+    // @Query(
+    //     value = "SELECT COUNT(DISTINCT us.user_id, us.signal_id) " +
+    //             "FROM tb_users_signals us " +
+    //             "INNER JOIN tb_users u ON us.user_id = u.user_id " +
+    //             "INNER JOIN tb_signals s ON us.signal_id = s.signal_id", 
+    //     nativeQuery = true
+    // )
+    // long countDistinctUserSignalCombinations();
 }

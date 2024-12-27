@@ -96,6 +96,8 @@ public class SignalController {
         // o user logado, por enquanto, é o userTester
         User userTester = userService.getUserById(UUID.fromString("17afce30-ff01-4766-9073-0706a141a6f6"));
 
+        
+
 
         for (int i = 0; i < signalsResponseDTO.size(); i++) {
             int signalVoteCount = votingService.countVotes(signals.get(i).getSignalId());
@@ -105,7 +107,9 @@ public class SignalController {
 
             if(isUserVotePresent){
                 signalsResponseDTO.get(i).setLiked(true);
+                votingService.voteSignal(userTester.getUserId(), signals.get(i).getSignalId());
             };
+            
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
