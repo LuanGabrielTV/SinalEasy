@@ -17,7 +17,7 @@ public interface UserSignalRepository extends JpaRepository<UserSignal, UUID>{
 
     void deleteByUserUserIdAndSignalSignalId(UUID userId, UUID signalId); // Deleta um registro da tabela UserSignal com base no userId e signalId (remove o voto)
 
-    UserSignal existsByUserUserIdAndSignalSignalId(UUID userId, UUID signalId); // Verifica se existe um registro na tabela UserSignal para um usuário (userId) e um sinal (signalId). sera utilizada para verificacao, evitando duplicação de votos.
+    UserSignal findByUserUserIdAndSignalSignalId(UUID userId, UUID signalId); // Verifica se existe um registro na tabela UserSignal para um usuário (userId) e um sinal (signalId). sera utilizada para verificacao, evitando duplicação de votos.
 
     // @Query(
     //     value = "SELECT COUNT(DISTINCT us.user_id, us.signal_id) " +
@@ -27,4 +27,7 @@ public interface UserSignalRepository extends JpaRepository<UserSignal, UUID>{
     //     nativeQuery = true
     // )
     // long countDistinctUserSignalCombinations();
+
+    @Query(value="select count(signal_id) from tb_users_signals where signal_id in (select signal_id from tb_signals where city_id=?1);", nativeQuery = true)
+    Integer countByCity(String cityId);
 }

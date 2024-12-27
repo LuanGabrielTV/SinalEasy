@@ -56,4 +56,11 @@ export class SignalService {
     let url = this.url + 'signals/' + signalId;
     return this.httpClient.get<Signal>(url, this.httpOptions);
   }
+
+  voteOnSignal(changedVotes: Array<string>){
+    let url = this.url + 'signals/vote';
+    console.log(url)
+    console.log(JSON.stringify(changedVotes))
+    return this.httpClient.post<Signal>(url, JSON.stringify(changedVotes), this.httpOptions).subscribe();
+  }
 }

@@ -15,7 +15,6 @@ import { SignalService } from '../services/signal.service';
 import { CityService } from '../services/city.service';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
-import { Like } from '../domain/Like';
 
 @Component({
   selector: 'app-home',
@@ -41,7 +40,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('mapContainer')
   private mapContainer!: ElementRef;
   private map: L.Map | undefined;
-  private changedVotes: Array<Like>;
+  private changedVotes: Array<string>;
 
   constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private homeService: HomeService, private router: Router) {
     this.signals = [];
@@ -115,7 +114,7 @@ export class HomeComponent implements OnInit {
     this.markers = [];
     signalList.forEach((s) => {
       let m: L.CircleMarker = new L.CircleMarker(new L.LatLng(s.latitude!, s.longitude!), {
-        radius: 10 * s.scaleFactor!,
+        radius: s.scaleFactor!,
         className: 'marker'
       });
       m.bindTooltip(s.name!);
@@ -248,28 +247,23 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  likeSignal(s: Signal, i: number) {
-
+  likeSignal(s: Signal) {
     s.liked = !s.liked;
-    let like:Like = new Like(s.signalId, s.liked);
-    let index = this.changedVotes.map(l => l.signalId).indexOf(like.signalId);
-    console.log(index);
+    let index = this.changedVotes.indexOf(s.signalId!);
     if (index == -1) {
-      // this.markers[i].setRadius(this.markers[i].getRadius() + 2);
-      this.changedVotes.push(like);
+      this.changedVotes.push(s.signalId!);
     } else {
-      // this.markers[i].setRadius(this.markers[i].getRadius() - 2);
-      this.changedVotes.splice(index, 1)
+      this.changedVotes.splice(index, 1);
     }
-    console.log(this.changedVotes);
+    // this.signalService.voteOnSignal(this.changedVotes);
   }
 
   @HostListener('window:beforeunload', ['$event'])
   updateLikes() {
-    // console.log(this.changedVotes)
+    this.signalService.voteOnSignal(this.changedVotes);
   }
 
   ngOnDestroy() {
-    console.log(this.changedVotes)
+    this.signalService.voteOnSignal(this.changedVotes);
   }
 }

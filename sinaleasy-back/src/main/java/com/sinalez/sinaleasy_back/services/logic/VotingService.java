@@ -31,9 +31,8 @@ public class VotingService {
     public void voteSignal(UUID userId, UUID signalId) {
         User user = userService.getUserById(userId);
         Signal signal = signalService.getSignalById(signalId);
-
         // verifica se o usuario ja votou nesse sinal
-        UserSignal existingUserSignal = userSignalRepository.existsByUserUserIdAndSignalSignalId(userId, signal.getSignalId());
+        UserSignal existingUserSignal = userSignalRepository.findByUserUserIdAndSignalSignalId(userId, signal.getSignalId());
 
         if (existingUserSignal != null) {
             System.out.println("Já tinha votado!");
@@ -45,7 +44,6 @@ public class VotingService {
             UserSignal userSignal = new UserSignal();
             userSignal.setUser(user);
             userSignal.setSignal(signal);
-            userSignal.setVoted(true);
             System.out.println("devidamente votado!");
             userSignalRepository.save(userSignal);
         }
@@ -54,13 +52,17 @@ public class VotingService {
     
     public boolean hasUserVoted(UUID userId, UUID signalId) {
         // Verifica se existe um registro no repositório para o usuário e o sinal
-        return userSignalRepository.existsByUserUserIdAndSignalSignalId(userId, signalId) != null;
+        return (userSignalRepository.findByUserUserIdAndSignalSignalId(userId, signalId) != null);
     }
     
 
     // Metodo para contar o numero de votos de um sinal
     public Integer countVotes(UUID signalId) {
         return userSignalRepository.countBySignal_signalId(signalId);
+    }
+
+    public Integer countVotesByCityId(String cityId) {
+        return userSignalRepository.countByCity(cityId);
     }
  
 }

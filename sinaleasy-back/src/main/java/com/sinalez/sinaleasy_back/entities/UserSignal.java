@@ -36,7 +36,4 @@ public class UserSignal implements Serializable {
     @JoinColumn(name = "signal_id", nullable = false)
     private Signal signal;
 
-    @Column(nullable = false)
-    private boolean voted; // true = com voto, false = sem voto
-    
 }
