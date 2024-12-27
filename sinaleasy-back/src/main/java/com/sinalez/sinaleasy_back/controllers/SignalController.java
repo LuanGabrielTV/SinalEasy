@@ -116,9 +116,8 @@ public class SignalController {
 
     @PostMapping("/{signalId}/vote")
     public ResponseEntity<Void> voteSignal(
-        @PathVariable(value = "signalId") UUID signalId,
-        @RequestBody UUID userId) {
-            votingService.voteSignal(userId, signalId);
+        @PathVariable(value = "signalId") UUID signalId) {
+            votingService.voteSignal(UUID.fromString("17afce30-ff01-4766-9073-0706a141a6f6"), signalId);
             return ResponseEntity.status(HttpStatus.OK).build();
     }
 
