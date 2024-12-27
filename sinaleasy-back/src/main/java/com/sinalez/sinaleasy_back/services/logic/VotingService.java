@@ -49,6 +49,12 @@ public class VotingService {
         }
         
     }
+    
+    public boolean hasUserVoted(UUID userId, UUID signalId) {
+        // Verifica se existe um registro no repositório para o usuário e o sinal
+        return userSignalRepository.existsByUserUserIdAndSignalSignalId(userId, signalId) != null;
+    }
+    
 
     // Metodo para contar o numero de votos de um sinal
     public Integer countVotes(UUID signalId) {
