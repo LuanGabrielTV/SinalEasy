@@ -16,7 +16,8 @@ public interface SignalMapper {
     @Mapping(target = "numberOfLikes", constant = "1")
     @Mapping(target = "cityId", source = "signal.city.cityId")
     @Mapping(target = "userId", source = "signal.user.userId")
-    @Mapping(target = "signalGrade", source = "signal.grade")
+    @Mapping(target = "signalGrade.description", source = "signal.grade.description")
+    @Mapping(target = "signalGrade.rating", source = "signal.grade.rating")
     SignalRecordDTO toDTO(Signal signal);
 
     @Mapping(target = "cityId", source = "signal.city.cityId")

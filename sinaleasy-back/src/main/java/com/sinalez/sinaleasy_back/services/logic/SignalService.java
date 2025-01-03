@@ -58,6 +58,7 @@ public class SignalService {
             .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
         signal.updateStatus(signalRequestDTO.status());
+        System.out.println(signalRequestDTO.signalGrade().description());
         signal.addGradeIfConcluded(
             signalRequestDTO.signalGrade().rating(),
             signalRequestDTO.signalGrade().description(),

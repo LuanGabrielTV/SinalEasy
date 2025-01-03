@@ -61,7 +61,7 @@ public class Signal implements Serializable {
     private List<Milestone> signalMilestones;
 
     @JsonIgnoreProperties("signals")
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
@@ -102,7 +102,7 @@ public class Signal implements Serializable {
         if (this.status == 3) {
             Grade newGrade = new Grade();
             newGrade.setRating(rating);
-            newGrade.setDescription(description);
+            newGrade.setDescription(gradeDescription);
             newGrade.setDate(gradeUpdateTime);
             newGrade.setSignal(this);
             this.grade = newGrade;

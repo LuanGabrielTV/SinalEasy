@@ -79,11 +79,15 @@ export class HomeComponent implements OnInit {
     let latestCity: City | undefined = this.homeService.getLatestCity();
     let latestState: State | undefined = this.homeService.getLatestState();
     if (latestCity != undefined && latestState != undefined) {
-      this.city = latestCity;
       this.state = latestState;
-      let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
-      this.flyToAddress(address, 13, false, 0);
-      this.loadCities();
+      this.cityService.getCityById(latestCity.cityId!).subscribe((city=>{
+        this.city = city;
+        this.rating = this.city.rating;
+        let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
+        this.flyToAddress(address, 13, false, 2);
+        this.loadCities();
+        this.loadSignals();
+      }))
     }
   }
 
@@ -98,15 +102,12 @@ export class HomeComponent implements OnInit {
   }
 
   loadSignals() {
-    this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
-      if (city != null) {
-        this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signals) => {
-          this.signals = signals as unknown as Signal[];
-          this.drawMarkers(this.signals);
-          console.log(this.signals);
-        })
-      }
-    }));
+    this.signals = [];
+    this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signals) => {
+      this.signals = signals as unknown as Signal[];
+      this.drawMarkers(this.signals);
+      console.log(this.signals);
+    })
 
   }
 
@@ -183,6 +184,7 @@ export class HomeComponent implements OnInit {
 
   changeState() {
     this.city = undefined;
+    this.rating = 0;
     this.cities = [];
     this.filteredCities = [];
     this.loadCities();
@@ -197,14 +199,16 @@ export class HomeComponent implements OnInit {
       m.remove();
     })
     this.markers = [];
-    let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
-    if (this.city?.rating == undefined) {
-      this.city!.rating = 0;
+    if (this.city != undefined) {
+      let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
+      this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
+        this.city = city;
+        this.rating = city.rating;
+        this.homeService.setLatestCity(this.city!);
+        this.loadSignals();
+      }))
+      this.flyToAddress(address, 13, true, 2);
     }
-    this.rating = this.city?.rating;
-    this.homeService.setLatestCity(this.city!);
-    this.loadSignals();
-    this.flyToAddress(address, 13, true, 2);
 
   }
 
