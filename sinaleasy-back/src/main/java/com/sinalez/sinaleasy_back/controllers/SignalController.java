@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sinalez.sinaleasy_back.domains.Signal;
+import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
-import com.sinalez.sinaleasy_back.entities.Signal;
-import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
 import com.sinalez.sinaleasy_back.services.logic.SignalService;
 import com.sinalez.sinaleasy_back.services.logic.UserService;

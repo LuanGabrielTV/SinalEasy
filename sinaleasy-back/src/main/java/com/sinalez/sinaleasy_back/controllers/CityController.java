@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
-import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.domains.City;
 import com.sinalez.sinaleasy_back.mappers.CityMapper;
 import com.sinalez.sinaleasy_back.services.logic.CityService;
 

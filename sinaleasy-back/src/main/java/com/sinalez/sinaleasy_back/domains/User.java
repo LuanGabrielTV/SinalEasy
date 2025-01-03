@@ -1,8 +1,12 @@
-package com.sinalez.sinaleasy_back.entities;
+package com.sinalez.sinaleasy_back.domains;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -22,7 +26,7 @@ import lombok.Setter;
 @Table(name = "TB_Users")
 @Getter
 @Setter
-public class User implements Serializable {
+public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +41,23 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserSignal> userVotesOnSignals; // lista de votos do usuário
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // para bloquear ou nao as POSTs a depender da role
+        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+    }
+
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+    }
+
+    @Override
+    public String getUsername() {
+        return userLogin;
+    }
 
 
 }

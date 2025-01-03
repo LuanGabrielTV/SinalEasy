@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.UserRecordDTO;
-import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.mappers.UserMapper;
 import com.sinalez.sinaleasy_back.services.logic.UserService;
 

@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.sinalez.sinaleasy_back.entities.City;
-import com.sinalez.sinaleasy_back.entities.Signal;
+import com.sinalez.sinaleasy_back.domains.City;
+import com.sinalez.sinaleasy_back.domains.Signal;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
