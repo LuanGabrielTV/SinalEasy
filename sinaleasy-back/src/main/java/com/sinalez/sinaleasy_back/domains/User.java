@@ -20,12 +20,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "TB_Users")
 @Getter
 @Setter
+@NoArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,6 +43,11 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserSignal> userVotesOnSignals; // lista de votos do usuário
+
+    public User(String userLogin, String userPassword) {
+        this.userLogin = userLogin;
+        this.userPassword = userPassword;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
