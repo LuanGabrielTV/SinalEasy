@@ -3,11 +3,11 @@ package com.sinalez.sinaleasy_back.dtos;
 import java.util.List;
 import java.util.UUID;
 
-public record UserRecordDTO(
+public record UserDTO(
     UUID userId,
     String userLogin,
     String userPassword,
     String userEmail,
-    List<SignalRecordDTO> userSignals
+    List<SignalDTO> userSignals
 
 ) {}

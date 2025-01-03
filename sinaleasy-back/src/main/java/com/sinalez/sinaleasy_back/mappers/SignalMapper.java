@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import com.sinalez.sinaleasy_back.domains.Signal;
-import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
+import com.sinalez.sinaleasy_back.dtos.SignalDTO;
 
 @Mapper(componentModel = "spring")
 public interface SignalMapper {
@@ -17,14 +17,14 @@ public interface SignalMapper {
     @Mapping(target = "cityId", source = "signal.city.cityId")
     @Mapping(target = "userId", source = "signal.user.userId")
     @Mapping(target = "signalGrade", source = "signal.grade")
-    SignalRecordDTO toDTO(Signal signal);
+    SignalDTO toDTO(Signal signal);
 
     @Mapping(target = "cityId", source = "signal.city.cityId")
     @Mapping(target = "userId", source = "signal.user.userId")
     @Mapping(target = "signalGrade", source = "signal.grade")
     @Mapping(target = "numberOfLikes", source = "numberOfLikes")
     @Mapping(target = "scaleFactor", source = "scaleFactor")
-    SignalRecordDTO toDTO(Signal signal, boolean liked, Integer numberOfLikes, BigDecimal scaleFactor);
+    SignalDTO toDTO(Signal signal, boolean liked, Integer numberOfLikes, BigDecimal scaleFactor);
 
     // @Mapping(target = "city", ignore = true)
     // @Mapping(target = "signalId", ignore = true)
