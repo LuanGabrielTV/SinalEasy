@@ -1,6 +1,5 @@
 package com.sinalez.sinaleasy_back.domains;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;

@@ -28,6 +28,9 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable()) // desabilitando o Cross-Site Request Forgery, pois o client eh confiavel(frontend)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.GET, "/api/signals/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/signals/city/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/cities/{id}").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll() 
                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll() // todos tem autorizacao para tentar logar
                 .anyRequest().authenticated() // como nao temos role admin, todas as req nao autorizadas precisaram de autenticacao
