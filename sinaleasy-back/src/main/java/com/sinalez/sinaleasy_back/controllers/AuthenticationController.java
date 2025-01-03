@@ -17,7 +17,7 @@ import com.sinalez.sinaleasy_back.repositories.UserRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth") // possivel erro, deveria ser api/auth?
+@RequestMapping("/api/auth")
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;

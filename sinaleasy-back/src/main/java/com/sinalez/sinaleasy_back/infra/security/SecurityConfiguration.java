@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.config;
+package com.sinalez.sinaleasy_back.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
