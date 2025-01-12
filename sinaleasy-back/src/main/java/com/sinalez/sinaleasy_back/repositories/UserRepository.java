@@ -1,6 +1,5 @@
 package com.sinalez.sinaleasy_back.repositories;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
