@@ -18,17 +18,6 @@ public class CityService {
         this.cityRepository = cityRepository;
     }
 
-    // public City createCity(CityRecordDTO cityRecordDTO) {
-
-    
-    //     if (city.getCityId() == null) {
-    //         // Pra verificar se o city foi realmente enviado
-    //         throw new IllegalArgumentException("O ID da cidade não foi enviado.");
-    //     }
-        
-    //     return cityRepository.save(city);
-    // }
-
     public City createCity(CityDTO cityRequestDTO) {
         if(cityRequestDTO.cityId() == null) {
             throw new CityIdNotFoundException();
