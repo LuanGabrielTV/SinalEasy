@@ -69,7 +69,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
     });
     this.gradeForm = this.fBuilder.group({
       'grade': [this.grade.rating, Validators.required],
-      'gradeDescription': [this.grade.description]
+      'gradeDescription': [this.grade.description, Validators.required]
     })
     this.address = "";
     this.status = 0;

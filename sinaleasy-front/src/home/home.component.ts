@@ -259,7 +259,6 @@ export class HomeComponent implements OnInit {
     } else {
       this.changedVotes.splice(index, 1);
     }
-    // this.signalService.voteOnSignal(this.changedVotes);
   }
 
   @HostListener('window:beforeunload', ['$event'])
