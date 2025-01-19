@@ -3,8 +3,8 @@ package com.sinalez.sinaleasy_back.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.sinalez.sinaleasy_back.domains.City;
 import com.sinalez.sinaleasy_back.dtos.CityDTO;
-import com.sinalez.sinaleasy_back.entities.City;
 
 @Mapper(componentModel = "spring")
 public interface CityMapper {

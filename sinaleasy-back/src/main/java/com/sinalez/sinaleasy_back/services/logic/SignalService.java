@@ -7,11 +7,11 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.sinalez.sinaleasy_back.domains.City;
+import com.sinalez.sinaleasy_back.domains.Milestone;
+import com.sinalez.sinaleasy_back.domains.Signal;
+import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.SignalDTO;
-import com.sinalez.sinaleasy_back.entities.City;
-import com.sinalez.sinaleasy_back.entities.User;
-import com.sinalez.sinaleasy_back.entities.Milestone;
-import com.sinalez.sinaleasy_back.entities.Signal;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;

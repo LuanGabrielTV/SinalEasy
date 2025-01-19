@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.entities;
+package com.sinalez.sinaleasy_back.domains;
 
 import java.io.Serializable;
 import java.time.LocalDate;

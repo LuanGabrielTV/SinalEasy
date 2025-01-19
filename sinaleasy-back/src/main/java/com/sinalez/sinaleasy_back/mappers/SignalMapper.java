@@ -6,8 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import com.sinalez.sinaleasy_back.domains.Signal;
 import com.sinalez.sinaleasy_back.dtos.SignalDTO;
-import com.sinalez.sinaleasy_back.entities.Signal;
 
 @Mapper(componentModel = "spring")
 public interface SignalMapper {
