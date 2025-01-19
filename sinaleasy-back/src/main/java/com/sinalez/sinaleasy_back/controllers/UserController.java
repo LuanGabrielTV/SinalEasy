@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,13 @@ import com.sinalez.sinaleasy_back.services.logic.UserService;
 import jakarta.validation.Valid;
 
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/api/users") // endpoint para criacao de usuarios teste. A criacao real do usuario eh em /api/auth/register/
+=======
+@RequestMapping("/api/users")
+@CrossOrigin
+
+>>>>>>> develop
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;

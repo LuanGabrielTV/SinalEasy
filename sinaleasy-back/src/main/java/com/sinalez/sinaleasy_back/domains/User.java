@@ -22,12 +22,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 // A relacao entre user e signal eh bidirecional. A primeira eh para a criacao de um sinal para cada usuario one to many e many to one (um usuario pode criar varios sinais, mas um sinal so pode ser criado por um usuario). Outro eh a relacao descrita em UserSignal, para relacionar a votacao many to many (um usuario pode votar em varios sinais e um sinal pode ser votado por varios usuarios) 
+
 @Entity
 @Table(name = "TB_Users")
 @Getter
 @Setter
 @NoArgsConstructor
 public class User implements UserDetails {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

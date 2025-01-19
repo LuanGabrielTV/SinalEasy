@@ -16,7 +16,8 @@ public interface SignalMapper {
     @Mapping(target = "numberOfLikes", constant = "1")
     @Mapping(target = "cityId", source = "signal.city.cityId")
     @Mapping(target = "userId", source = "signal.user.userId")
-    @Mapping(target = "signalGrade", source = "signal.grade")
+    @Mapping(target = "signalGrade.description", source = "signal.grade.description")
+    @Mapping(target = "signalGrade.rating", source = "signal.grade.rating")
     SignalDTO toDTO(Signal signal);
 
     @Mapping(target = "cityId", source = "signal.city.cityId")
@@ -28,11 +29,11 @@ public interface SignalMapper {
 
     // @Mapping(target = "city", ignore = true)
     // @Mapping(target = "signalId", ignore = true)
-    // Signal fromDTO(SignalRecordDTO signalRecordDTO);
+    // Signal fromDTO(SignalDTO signalDTO);
 
     // @Mapping(target = "city", ignore = true)
     // @Mapping(target = "signalId", ignore = true)
     // @Mapping(target = "signalMilestones", ignore = true)
-    // Signal updateFromDTO(SignalRecordDTO signalRecordDTO, @MappingTarget Signal signal);
+    // Signal updateFromDTO(SignalDTO signalDTO, @MappingTarget Signal signal);
 
 }

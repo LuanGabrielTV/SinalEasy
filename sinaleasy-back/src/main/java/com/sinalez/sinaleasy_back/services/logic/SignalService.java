@@ -23,8 +23,9 @@ public class SignalService {
     private final SignalRepository signalRepository;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
-    
-    public SignalService(SignalRepository signalRepository, CityRepository cityRepository, UserRepository userRepository) {
+
+    public SignalService(SignalRepository signalRepository, CityRepository cityRepository,
+            UserRepository userRepository) {
         this.signalRepository = signalRepository;
         this.cityRepository = cityRepository;
         this.userRepository = userRepository;
@@ -35,12 +36,12 @@ public class SignalService {
         BeanUtils.copyProperties(signalRequestDTO, signal);
         String cityIdOfSignal = signalRequestDTO.cityId();
         City cityOfSignal = cityRepository.findById(cityIdOfSignal)
-            .orElseThrow(CityNotFoundException::new);
+                .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
 
         String userIdOfSignal = signalRequestDTO.userId();
         User userOfSignal = userRepository.findById(UUID.fromString(userIdOfSignal))
-            .orElseThrow(CityNotFoundException::new);
+                .orElseThrow(CityNotFoundException::new);
         signal.setUser(userOfSignal);
 
         Milestone milestone = new Milestone();
@@ -54,15 +55,16 @@ public class SignalService {
 
     public Signal updateSignal(SignalDTO signalRequestDTO, Signal signal) {
         City cityOfSignal = cityRepository
-            .findById(signalRequestDTO.cityId())
-            .orElseThrow(CityNotFoundException::new);
+                .findById(signalRequestDTO.cityId())
+                .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
         signal.updateStatus(signalRequestDTO.status());
-        signal.addGradeIfConcluded(
-            signalRequestDTO.signalGrade().rating(),
-            signalRequestDTO.signalGrade().description(),
-            signalRequestDTO.signalGrade().gradeUpdateTime()
-        );
+        if (signalRequestDTO.status() == 3) {
+            signal.addGradeIfConcluded(
+                    signalRequestDTO.signalGrade().rating(),
+                    signalRequestDTO.signalGrade().description(),
+                    signalRequestDTO.signalGrade().gradeUpdateTime());
+        }
 
         BeanUtils.copyProperties(signalRequestDTO, signal, "signalId", "signalMilestones", "city");
 

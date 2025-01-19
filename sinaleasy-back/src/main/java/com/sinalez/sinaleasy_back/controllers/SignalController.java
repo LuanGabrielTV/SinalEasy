@@ -28,8 +28,8 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/signals")
-// @CrossOrigin
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
+// @CrossOrigin(origins = "http://localhost:4200")
 public class SignalController {
     private final SignalService signalService;
     private final SignalMapper signalMapper;
@@ -106,13 +106,13 @@ public class SignalController {
                             * ((double) (signalVoteCount.intValue() + 1) / (double) (votesByCityId.intValue() + 1))));
 
             if (isUserVotePresent) {
-                SignalDTO newSignalRecordDTO = signalMapper.toDTO(signals.get(i), true, signalVoteCount,
+                SignalDTO newSignalDTO = signalMapper.toDTO(signals.get(i), true, signalVoteCount,
                         scaleFactor);
-                signalsResponseDTO.add(newSignalRecordDTO);
+                signalsResponseDTO.add(newSignalDTO);
             } else {
-                SignalDTO newSignalRecordDTO = signalMapper.toDTO(signals.get(i), false, signalVoteCount,
+                SignalDTO newSignalDTO = signalMapper.toDTO(signals.get(i), false, signalVoteCount,
                         scaleFactor);
-                signalsResponseDTO.add(newSignalRecordDTO);
+                signalsResponseDTO.add(newSignalDTO);
             }
 
         }

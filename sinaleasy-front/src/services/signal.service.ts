@@ -40,7 +40,7 @@ export class SignalService {
   }
   
   updateSignal(signal: Signal) {
-    console.log(signal)
+    console.log(JSON.stringify(signal))
     let url = this.url + 'signals/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(

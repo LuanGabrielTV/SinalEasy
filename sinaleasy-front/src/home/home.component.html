@@ -11,7 +11,7 @@
                     (completeMethod)="filterStates($event)" field="name" />
             </div>
             <div>
-                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" (ngModelChange)="changeCity()" placeholder="Município"
+                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
                     [forceSelection]="true" [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
                     (completeMethod)="filterCities($event)" field="name" />
             </div>
