@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
+import com.sinalez.sinaleasy_back.dtos.SignalDTO;
 import com.sinalez.sinaleasy_back.entities.City;
 import com.sinalez.sinaleasy_back.entities.User;
 import com.sinalez.sinaleasy_back.entities.Milestone;
@@ -31,7 +31,7 @@ public class SignalService {
         this.userRepository = userRepository;
     }
 
-    public Signal createSignal(SignalRecordDTO signalRequestDTO) {
+    public Signal createSignal(SignalDTO signalRequestDTO) {
         Signal signal = new Signal();
         BeanUtils.copyProperties(signalRequestDTO, signal);
         String cityIdOfSignal = signalRequestDTO.cityId();
@@ -53,7 +53,7 @@ public class SignalService {
 
     }
 
-    public Signal updateSignal(SignalRecordDTO signalRequestDTO, Signal signal) {
+    public Signal updateSignal(SignalDTO signalRequestDTO, Signal signal) {
         City cityOfSignal = cityRepository
                 .findById(signalRequestDTO.cityId())
                 .orElseThrow(CityNotFoundException::new);
