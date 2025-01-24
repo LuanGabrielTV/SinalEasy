@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.sinalez.sinaleasy_back.entities.UserSignal;
+import com.sinalez.sinaleasy_back.domains.UserSignal;
 
 @Repository
 public interface UserSignalRepository extends JpaRepository<UserSignal, UUID>{

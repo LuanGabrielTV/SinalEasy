@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sinalez.sinaleasy_back.dtos.SignalRecordDTO;
-import com.sinalez.sinaleasy_back.entities.Signal;
-import com.sinalez.sinaleasy_back.entities.User;
+import com.sinalez.sinaleasy_back.domains.Signal;
+import com.sinalez.sinaleasy_back.domains.User;
+import com.sinalez.sinaleasy_back.dtos.SignalDTO;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
 import com.sinalez.sinaleasy_back.services.logic.SignalService;
 import com.sinalez.sinaleasy_back.services.logic.UserService;
@@ -47,14 +47,14 @@ public class SignalController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSignalById(@PathVariable(value = "id") UUID id) {
         Signal signal = signalService.getSignalById(id);
-        SignalRecordDTO signalResponseDTO = signalMapper.toDTO(signal);
+        SignalDTO signalResponseDTO = signalMapper.toDTO(signal);
         return ResponseEntity.status(HttpStatus.OK).body(signalResponseDTO);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<SignalRecordDTO>> getsignals() {
+    public ResponseEntity<List<SignalDTO>> getsignals() {
         List<Signal> signals = signalService.getSignals();
-        List<SignalRecordDTO> signalsResponseDTO = signals.stream()
+        List<SignalDTO> signalsResponseDTO = signals.stream()
                 .map(signalMapper::toDTO)
                 .toList();
         return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
@@ -68,9 +68,9 @@ public class SignalController {
     // }
 
     @PostMapping("/")
-    public ResponseEntity<SignalRecordDTO> createSignal(@RequestBody @Valid SignalRecordDTO signalRequestDTO) {
+    public ResponseEntity<SignalDTO> createSignal(@RequestBody @Valid SignalDTO signalRequestDTO) {
         Signal createdSignal = signalService.createSignal(signalRequestDTO);
-        SignalRecordDTO signalResponseDTO = signalMapper.toDTO(createdSignal);
+        SignalDTO signalResponseDTO = signalMapper.toDTO(createdSignal);
         return ResponseEntity.status(HttpStatus.CREATED).body(signalResponseDTO);
 
     }
@@ -80,16 +80,16 @@ public class SignalController {
 
     (
             @PathVariable(value = "id") UUID id,
-            @RequestBody @Valid SignalRecordDTO signalRequestDTO) {
+            @RequestBody @Valid SignalDTO signalRequestDTO) {
         Signal updatedSignal = signalService.updateSignal(signalRequestDTO, signalService.getSignalById(id));
-        SignalRecordDTO signalResponseDTO = signalMapper.toDTO(updatedSignal);
+        SignalDTO signalResponseDTO = signalMapper.toDTO(updatedSignal);
         return ResponseEntity.status(HttpStatus.OK).body(signalResponseDTO);
     }
 
     @GetMapping("/city/{id}")
-    public ResponseEntity<List<SignalRecordDTO>> getSignalsByCityId(@PathVariable(value = "id") String id) {
+    public ResponseEntity<List<SignalDTO>> getSignalsByCityId(@PathVariable(value = "id") String id) {
         List<Signal> signals = signalService.getSignalsByCityId(id);
-        List<SignalRecordDTO> signalsResponseDTO = new ArrayList<SignalRecordDTO>();
+        List<SignalDTO> signalsResponseDTO = new ArrayList<SignalDTO>();
 
         User userTester = userService.getUserById(UUID.fromString("17afce30-ff01-4766-9073-0706a141a6f6"));
 
@@ -106,13 +106,13 @@ public class SignalController {
                             * ((double) (signalVoteCount.intValue() + 1) / (double) (votesByCityId.intValue() + 1))));
 
             if (isUserVotePresent) {
-                SignalRecordDTO newSignalRecordDTO = signalMapper.toDTO(signals.get(i), true, signalVoteCount,
+                SignalDTO newSignalDTO = signalMapper.toDTO(signals.get(i), true, signalVoteCount,
                         scaleFactor);
-                signalsResponseDTO.add(newSignalRecordDTO);
+                signalsResponseDTO.add(newSignalDTO);
             } else {
-                SignalRecordDTO newSignalRecordDTO = signalMapper.toDTO(signals.get(i), false, signalVoteCount,
+                SignalDTO newSignalDTO = signalMapper.toDTO(signals.get(i), false, signalVoteCount,
                         scaleFactor);
-                signalsResponseDTO.add(newSignalRecordDTO);
+                signalsResponseDTO.add(newSignalDTO);
             }
 
         }
@@ -128,9 +128,9 @@ public class SignalController {
     }
 
     @GetMapping("/signal/{id}")
-    public ResponseEntity<List<SignalRecordDTO>> getSignalsByUserId(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<List<SignalDTO>> getSignalsByUserId(@PathVariable(value = "id") UUID id) {
         List<Signal> signals = signalService.getSignalsByUserId(id);
-        List<SignalRecordDTO> signalsResponseDTO = signals.stream()
+        List<SignalDTO> signalsResponseDTO = signals.stream()
                 .map(signalMapper::toDTO)
                 .toList();
         return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);

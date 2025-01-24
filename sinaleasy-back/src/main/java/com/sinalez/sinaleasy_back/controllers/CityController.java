@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
-import com.sinalez.sinaleasy_back.entities.City;
+
+import com.sinalez.sinaleasy_back.domains.City;
+import com.sinalez.sinaleasy_back.dtos.CityDTO;
+
 import com.sinalez.sinaleasy_back.mappers.CityMapper;
 import com.sinalez.sinaleasy_back.services.logic.CityService;
 
@@ -42,16 +44,17 @@ public class CityController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CityRecordDTO> createCity(@RequestBody @Valid CityRecordDTO cityRequestDTO) {
+    public ResponseEntity<CityDTO> createCity(@RequestBody @Valid CityDTO cityRequestDTO) {
         City createdCity = cityService.createCity(cityRequestDTO);
-        CityRecordDTO cityResponseDTO = cityMapper.toDTO(createdCity);
+        CityDTO cityResponseDTO = cityMapper.toDTO(createdCity);
         return ResponseEntity.status(HttpStatus.CREATED).body(cityResponseDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCityById(@PathVariable(value = "id") String id) {
         City city = cityService.getCityById(id);
-        CityRecordDTO cityResponseDTO = cityMapper.toDTO(city);
+        CityDTO cityResponseDTO = cityMapper.toDTO(city);
+
         if (city != null) {
             if (city.getSignals().size() != 0) {
                 double avgRatingFinished = 0;

@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sinalez.sinaleasy_back.dtos.UserRecordDTO;
-import com.sinalez.sinaleasy_back.entities.User;
+import com.sinalez.sinaleasy_back.domains.User;
+import com.sinalez.sinaleasy_back.dtos.UserDTO;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.UserNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.UserRepository;
 
@@ -18,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(UserRecordDTO userRequestDTO) {
+    public User createUser(UserDTO userRequestDTO) {
         User user = new User();
         BeanUtils.copyProperties(userRequestDTO, user);
         return userRepository.save(user);

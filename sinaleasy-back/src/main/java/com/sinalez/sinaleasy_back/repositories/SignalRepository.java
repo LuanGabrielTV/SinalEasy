@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.sinalez.sinaleasy_back.entities.Signal;
+import com.sinalez.sinaleasy_back.domains.Signal;
 
 @Repository
 public interface SignalRepository extends JpaRepository<Signal, UUID> {

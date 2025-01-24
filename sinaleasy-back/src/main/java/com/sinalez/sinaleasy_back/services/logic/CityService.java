@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sinalez.sinaleasy_back.dtos.CityRecordDTO;
-import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.domains.City;
+import com.sinalez.sinaleasy_back.dtos.CityDTO;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityIdNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;
 
@@ -18,18 +18,7 @@ public class CityService {
         this.cityRepository = cityRepository;
     }
 
-    // public City createCity(CityRecordDTO cityRecordDTO) {
-
-    
-    //     if (city.getCityId() == null) {
-    //         // Pra verificar se o city foi realmente enviado
-    //         throw new IllegalArgumentException("O ID da cidade não foi enviado.");
-    //     }
-        
-    //     return cityRepository.save(city);
-    // }
-
-    public City createCity(CityRecordDTO cityRequestDTO) {
+    public City createCity(CityDTO cityRequestDTO) {
         if(cityRequestDTO.cityId() == null) {
             throw new CityIdNotFoundException();
         }

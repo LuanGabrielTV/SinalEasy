@@ -5,9 +5,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sinalez.sinaleasy_back.entities.Signal;
-import com.sinalez.sinaleasy_back.entities.User;
-import com.sinalez.sinaleasy_back.entities.UserSignal;
+import com.sinalez.sinaleasy_back.domains.Signal;
+import com.sinalez.sinaleasy_back.domains.User;
+import com.sinalez.sinaleasy_back.domains.UserSignal;
 import com.sinalez.sinaleasy_back.repositories.UserSignalRepository;
 
 @Service

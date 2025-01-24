@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.sinalez.sinaleasy_back.entities.City;
+import com.sinalez.sinaleasy_back.domains.City;
 
 
 @Repository

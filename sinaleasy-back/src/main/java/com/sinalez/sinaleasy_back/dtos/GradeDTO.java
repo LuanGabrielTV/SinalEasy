@@ -3,7 +3,7 @@ package com.sinalez.sinaleasy_back.dtos;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record GradeRecordDTO(
+public record GradeDTO(
     UUID gradeId,
     Integer rating,
     String description,
