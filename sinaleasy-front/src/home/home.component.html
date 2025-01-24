@@ -2,18 +2,20 @@
     <a class="addButton" routerLink="/create-signal">
         <img src="icon.png">
     </a>
-    <img src="logo.png" routerLink="/" id="logo">
     <div id="header">
-        <div class="container">
+        <div>
+            <img src="logo.png" routerLink="/" id="logo">
+        </div>
+        <div id="container">
             <div>
                 <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
-                    [(ngModel)]="state" [dropdown]="true" [suggestions]="filteredStates"
-                    (completeMethod)="filterStates($event)" field="name" />
+                [(ngModel)]="state" [dropdown]="true" [suggestions]="filteredStates"
+                (completeMethod)="filterStates($event)" field="name" />
             </div>
             <div>
                 <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
-                    [forceSelection]="true" [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
-                    (completeMethod)="filterCities($event)" field="name" />
+                [forceSelection]="true" [dropdown]="true" [(ngModel)]="city" [virtualScroll]="true" [suggestions]="filteredCities"
+                (completeMethod)="filterCities($event)" field="name" />
             </div>
         </div>
     </div>
@@ -40,7 +42,7 @@
                         </g>
                     </svg>
                 </button>
-                <button class="viewButton"(click)="viewSignal(s)">
+                <button class="viewButton" (click)="viewSignal(s)">
                     <svg fill="#000000" width="64px" height="64px" viewBox="0 0 256.00098 256.00098" id="Flat"
                         xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
