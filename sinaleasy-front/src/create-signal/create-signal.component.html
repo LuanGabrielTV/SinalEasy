@@ -1,9 +1,19 @@
 <body>
-    <img src="logo.png" routerLink="/" id="logo">
+    <div id="header">
+        <img src="logo.png" routerLink="/" id="logo">
+    </div>
     <div class="container">
         <div class="sinal-container">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 17L7 7M7 7V16M7 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></a>
+                <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M17 17L7 7M7 7V16M7 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </g>
+                    </svg></a>
                 <p class="title">Crie um <br>sinal</p>
                 <div class="row">
                     <div>
@@ -11,7 +21,7 @@
                         <input id="name" placeholder="Dê um sinal" type="text" formControlName="name">
                     </div>
                 </div>
-                <div class="row">
+                <div class="column">
                     <div>
                         <label for="typeOfSignal">Tipo</label><br>
                         <select id="typeOfSignal" formControlName="typeOfSignal">
@@ -38,28 +48,36 @@
                     </p-divider>
                 </div>
 
-                <div class="row" style="flex-wrap: wrap;">
-                    <div style="flex-basis: 45%;">
-                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado" formControlName="state"
-                            [dropdown]="true" [suggestions]="filteredStates" (completeMethod)="filterStates($event)"
-                            field="name" />
+                <div class="row">
+                    <div>
+                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
+                            formControlName="state" [dropdown]="true" [suggestions]="filteredStates"
+                            (completeMethod)="filterStates($event)" field="name" />
                     </div>
-                    <div style="flex-basis: 45%;">
-                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município" [forceSelection]="true"
-                            formControlName="city" [virtualScroll]="true" [suggestions]="filteredCities"
+                    <div>
+                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()"
+                            placeholder="Município" [forceSelection]="true" formControlName="city"
+                            [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
                     </div>
+                </div>
+                <div>
                     <small id="address" style="flex-basis: 100%;" *ngIf="this.address.length != 0">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
-                          </svg>
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
+                        </svg>
                         {{address}}
                     </small>
                 </div>
 
                 <div class="row" style="width:95%; flex-direction: column-reverse;">
-                    <p-button id="sinalize" [disabled]="!this.form.valid || this.city == undefined || this.address == ''" type="submit" label="Confirmar!" severity="contrast"/>
+                    <p-button id="sinalize"
+                        [disabled]="!this.form.valid || this.city == undefined || this.address == ''" type="submit"
+                        label="Confirmar!" severity="contrast" />
                 </div>
             </form>
         </div>
