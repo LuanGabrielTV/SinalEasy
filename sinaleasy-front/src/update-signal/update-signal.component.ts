@@ -101,13 +101,13 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.route.queryParams.subscribe(params => {
-      if(params['signalId'] == null || params['signalId']==undefined){
+      if (params['signalId'] == null || params['signalId'] == undefined) {
         this.goHome();
         return;
       }
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
-        if(this.signal.status == 3){
+        if (this.signal.status == 3) {
           this.goHome();
         }
         this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
@@ -280,7 +280,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
     L.tileLayer(baseMapURl).addTo(this.map);
   }
 
-  goHome(){
+  goHome() {
     this.router.navigate(['/']);
   }
 
@@ -294,25 +294,25 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
     this.signal.cityId = this.city?.cityId;
     this.signal.latitude = this.marker?.getLatLng().lat!;
     this.signal.longitude = this.marker?.getLatLng().lng!;
-    if(this.signal.status == 3){
+    if (this.signal.status == 3) {
       this.visible = true;
-    }else{
-      this.signalService.updateSignal(this.signal).subscribe(_=>{
+    } else {
+      this.signalService.updateSignal(this.signal).subscribe(_ => {
         this.goHome();
       });
     }
   }
 
-  rate(){
+  rate() {
     this.grade.signalId = this.signal.signalId;
     this.grade.rating = this.gradeForm.get('grade')?.value;
     this.grade.date = new Date();
     this.grade.description = this.gradeForm.get('gradeDescription')?.value;
     this.signal.signalGrade = this.grade;
     console.log(this.signal);
-    this.signalService.updateSignal(this.signal).subscribe(_=>{
+    this.signalService.updateSignal(this.signal).subscribe(_ => {
       this.goHome();
-    });    
+    });
   }
 
 }
