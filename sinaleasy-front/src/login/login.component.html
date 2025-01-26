@@ -1,0 +1,23 @@
+<body>
+    <div id="header">
+        <img src="logo.png" routerLink="/" id="logo">
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div id="row">
+            <p class="title">Entre com suas<br>credenciais</p>
+        </div>
+        <div class="row">
+            <label for="login">Login</label><br>
+            <input id="login" placeholder="Como você é chamado?" type="text" formControlName="login">
+        </div>
+        <div class="row">
+            <label for="password">Senha</label><br>
+            <input id="password" placeholder="Entre 8-20 caracteres" type="password" formControlName="password">
+        </div>
+        <div id="last-row">
+            <a id="redirect" href="/register">Criar uma conta</a>
+            <p-button id="registrar" [disabled]="!this.form.valid" type="submit" label="Entrar"
+                severity="contrast" />
+        </div>
+    </form>
+</body>

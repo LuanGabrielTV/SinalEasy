@@ -45,25 +45,25 @@ export class ViewSignalComponent {
   }
 
   ngAfterViewInit() {
-    this.route.queryParams.subscribe(params => {
-      if (params['signalId'] == null || params['signalId'] == undefined) {
-        this.goHome();
-        return;
-      }
-      this.signalService.getSignalById(params['signalId']).subscribe((res) => {
-        this.signal = res;
-        this.events = [];
-        console.log(this.signal)
-        this.signal.signalMilestones?.forEach((m)=>{
-          this.events?.push({status: this.status[m.status!], date:formatDate(m.statusUpdateTime!,'dd/MM/yyyy','en-US')});
-        });
-        this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
-          this.city = res;
+    // this.route.queryParams.subscribe(params => {
+    //   if (params['signalId'] == null || params['signalId'] == undefined) {
+    //     this.goHome();
+    //     return;
+    //   }
+    //   this.signalService.getSignalById(params['signalId']).subscribe((res) => {
+    //     this.signal = res;
+    //     this.events = [];
+    //     console.log(this.signal)
+    //     this.signal.signalMilestones?.forEach((m)=>{
+    //       this.events?.push({status: this.status[m.status!], date:formatDate(m.statusUpdateTime!,'dd/MM/yyyy','en-US')});
+    //     });
+    //     this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
+    //       this.city = res;
           this.initMap();
-          this.loadData();
-        })
-      });
-    });
+    //       this.loadData();
+    //     })
+    //   });
+    // });
 
   }
 
@@ -90,7 +90,8 @@ export class ViewSignalComponent {
     }
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
-      center: [this.signal.latitude!, this.signal.longitude!],
+      // center: [this.signal.latitude!, this.signal.longitude!],
+      center: [-15.47, -47.56],
       zoom: 12,
       zoomControl: false
     });
