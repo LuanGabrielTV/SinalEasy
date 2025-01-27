@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { User } from '../domain/User';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { Auth } from '../domain/Auth';
 
 @Component({
   selector: 'app-register',
@@ -21,23 +22,18 @@ export class LoginComponent {
     this.user = new User();
     this.form = this.fBuilder.group({
       'login': [this.user.login, Validators.compose([
-        Validators.minLength(2),
-        Validators.maxLength(255),
         Validators.required])],
       'password': [this.user.password, Validators.compose([
-        Validators.minLength(8),
-        Validators.maxLength(20),
         Validators.required])
-      ],
-      'email': [this.user.email, Validators.compose([
-        Validators.required])]
-    });
+      ]});
   }
 
   onSubmit() {
     this.user = new User(this.form.get('email')?.value, this.form.get('password')?.value, this.form.get('login')?.value);
-    this.userService.register(this.user).subscribe((_: any) =>{
-      this.router.navigate(['/login']);
+    let auth:Auth = new Auth(this.user);
+    this.userService.login(auth).subscribe((token: any) =>{
+      sessionStorage.setItem('token', JSON.stringify(token));
+      this.router.navigate(['/']);
     })
   }
 

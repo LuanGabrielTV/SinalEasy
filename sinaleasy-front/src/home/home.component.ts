@@ -24,6 +24,8 @@ import { HomeService } from '../services/home.service';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
+  token: string | undefined;
+  
   city: City | undefined;
   state: State | undefined;
   states: State[] | undefined;
@@ -50,6 +52,9 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.token = JSON.parse(sessionStorage.getItem('token') as string);
+
     this.states = [];
     this.cities = [];
     this.loadStates();
@@ -66,13 +71,13 @@ export class HomeComponent implements OnInit {
     this.filteredCities = [];
   }
 
-  focusOnSignal(signal: Signal, index: number) {
-    let coord = new L.LatLng(signal.latitude!, signal.longitude!);
-    this.map!.flyTo(coord, this.map?.getZoom(), {
-      "animate": true,
-      "duration": 1
-    });
-  }
+  // focusOnSignal(signal: Signal, index: number) {
+  //   let coord = new L.LatLng(signal.latitude!, signal.longitude!);
+  //   this.map!.flyTo(coord, this.map?.getZoom(), {
+  //     "animate": true,
+  //     "duration": 1
+  //   });
+  // }
 
 
   reloadLatestValues() {
@@ -197,15 +202,18 @@ export class HomeComponent implements OnInit {
     this.signals = [];
     this.markers.forEach((m) => {
       m.remove();
+      m.redraw();
     })
     this.markers = [];
     if (this.city != undefined) {
       let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
       this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
-        this.city = city;
-        this.rating = city.rating;
-        this.homeService.setLatestCity(this.city!);
-        this.loadSignals();
+        if(city != null){
+          this.city = city;
+          this.rating = city.rating;
+          this.homeService.setLatestCity(this.city!);
+          this.loadSignals();
+        }
       }))
       this.flyToAddress(address, 13, true, 2);
     }
