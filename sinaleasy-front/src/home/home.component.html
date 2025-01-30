@@ -23,7 +23,10 @@
             <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
             <p-rating id="rating" [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
             <br><br><br>
-            <p class='warning' *ngIf="this.signals.length==0">Opa! Essa cidade não tem nenhum sinal.</p>
+            <p class='warning' *ngIf="this.signals.length==0 && ! this.isLoadingSignals">Opa! Essa cidade não tem nenhum sinal.</p>
+            <div *ngIf="this.isLoadingSignals" class="loading">
+                <p-progressSpinner ariaLabel="loading" strokeWidth="6" [style]="{ width: '20px', height: '20px' }"/>
+            </div>
             <div class="signals" *ngIf="this.signals.length!=0">
                 <div class="signal fadeIn"
                     [ngClass]="{'unselected': this.selectedIndex != i && this.selectedIndex != undefined, 'selected': this.selectedIndex == i && this.selectedIndex != undefined}"

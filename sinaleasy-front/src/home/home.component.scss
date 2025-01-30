@@ -7,6 +7,12 @@
     padding: none;
 }
 
+.loading{
+    display: flex;
+    justify-content: center;
+    height: 3vh;
+}
+
 body,
 html {
     height: 100%;
@@ -110,7 +116,9 @@ small {
 #content {
     // align-content: stretch;
     height: 88vh;
-    width: 98%;
+    width: 100%;
+    position: absolute;
+    left:0;
     margin: 0;
 }
 
@@ -165,7 +173,7 @@ small {
 
 .map-frame {
     height: 100%;
-    width: 98%;
+    width: 100%;
 }
 
 .map-container {
@@ -174,10 +182,15 @@ small {
 
 @media only screen and (min-width: 1100px) {
 
+    .signals{
+        height: 76vh;
+    }
+
     #content {
         display: flex;
         flex-direction: row-reverse;
-        height: 87vh;
+        height: 89vh;
+        width: 100%;
     }
 
     #map {
@@ -221,7 +234,6 @@ small {
 
     #header {
         padding-top: 1.3%;
-        // width: 100%;
         height: 10vh;
         margin-top: 0;
         display: flex;
@@ -242,7 +254,7 @@ small {
 
 }
 
-@media only screen and (max-width: 1100px) and (min-width: 580px) {
+@media only screen and (max-width: 1100px) and (min-width: 650px) {
 
     .signals {
         max-height: 40vh;
@@ -254,8 +266,8 @@ small {
         flex-direction: column;
         position: absolute;
         top: 10vh;
+        height: 90vh;
         width: 100%;
-        // height: 88vh;
     }
 
     #map {
@@ -265,9 +277,7 @@ small {
     }
 
     .map-container {
-        padding-left: 2%;
         height: 100%;
-        width: 98%;
     }
 
     .city {
@@ -299,9 +309,6 @@ small {
         background-color: white;
         position: absolute;
         margin-bottom: 1%;
-        // top:0;
-        // left:0;
-        // padding:1%;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -322,7 +329,7 @@ small {
     }
 }
 
-@media only screen and (max-width: 580px) {
+@media only screen and (max-width: 650px) {
 
     .signals {
         max-height: 40vh;
@@ -333,10 +340,11 @@ small {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        position: absolute;
         top: 22vh;
         width: 100%;
-        height: 77vh;
+        position: absolute;
+        left:0;
+        height: 78vh;
     }
 
     #map {
@@ -346,9 +354,7 @@ small {
     }
 
     .map-container {
-        padding-left: 2%;
         height: 100%;
-        width: 96%;
     }
 
     .city {
@@ -492,14 +498,8 @@ small {
 
 
 .signals::-webkit-scrollbar {
-    // display: none;
     display: block;
     border-radius: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    // box-shadow: inset 0 0 0px 10px rgb(255, 68, 68);
 }
 
 /* Handle */
@@ -540,7 +540,6 @@ small {
     height: 3vh;
     width: 3vh;
     transition: .5s;
-    // position: absolute;
 }
 
 .addButton {

@@ -1,5 +1,7 @@
 <body>
-    <img src="logo.png" routerLink="/" id="logo">
+    <div id="header">
+        <img src="logo.png" routerLink="/" id="logo">
+    </div>
     <div class="container">
 
         <div class="sinal-container">
@@ -28,7 +30,7 @@
                     <p id="status" [class]="status[signal.status!]">{{this.status[this.signal.status!]}}</p>
                     <div class="row" style="margin-top: -5%;">
                         <div>
-                            <input id="name" readonly type="text" formControlName="name">
+                            <p id="name" readonly type="text">{{this.signal?.name}}</p>
                         </div>
                     </div>
                 </div>
@@ -41,10 +43,6 @@
                         <label for="date">Data</label><br>
                         <input id="date" readonly type="date" formControlName="date">
                     </div>
-                    <!-- <div>
-                        <label for="status">Status</label><br>
-                        <input id="status" readonly type="status" [class]="status[signal.status!]" formControlName="status">
-                    </div> -->
                 </div>
                 <div class="row">
                     <div>

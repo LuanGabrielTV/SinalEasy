@@ -15,11 +15,12 @@ import { SignalService } from '../services/signal.service';
 import { CityService } from '../services/city.service';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, AutoCompleteModule, ButtonModule, RatingModule, RouterModule],
+  imports: [CommonModule, FormsModule, AutoCompleteModule, ButtonModule, RatingModule, RouterModule, ProgressSpinnerModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
   filteredCities: City[] = [];
   filteredStates: State[] = [];
   selected = false;
+  isLoadingSignals = false;
   rating: number | undefined;
   signals: Signal[];
   signalType = SignalType;
@@ -107,8 +109,10 @@ export class HomeComponent implements OnInit {
   }
 
   loadSignals() {
+    this.isLoadingSignals = true;
     this.signals = [];
     this.signalService.getSignalsByCity(this.city?.cityId!).subscribe((signals) => {
+      this.isLoadingSignals = false;
       this.signals = signals as unknown as Signal[];
       this.drawMarkers(this.signals);
       console.log(this.signals);

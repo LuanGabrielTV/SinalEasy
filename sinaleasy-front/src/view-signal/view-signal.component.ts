@@ -45,30 +45,28 @@ export class ViewSignalComponent {
   }
 
   ngAfterViewInit() {
-    // this.route.queryParams.subscribe(params => {
-    //   if (params['signalId'] == null || params['signalId'] == undefined) {
-    //     this.goHome();
-    //     return;
-    //   }
-    //   this.signalService.getSignalById(params['signalId']).subscribe((res) => {
-    //     this.signal = res;
-    //     this.events = [];
-    //     console.log(this.signal)
-    //     this.signal.signalMilestones?.forEach((m)=>{
-    //       this.events?.push({status: this.status[m.status!], date:formatDate(m.statusUpdateTime!,'dd/MM/yyyy','en-US')});
-    //     });
-    //     this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
-    //       this.city = res;
-          this.initMap();
-    //       this.loadData();
-    //     })
-    //   });
-    // });
-
+    this.route.queryParams.subscribe(params => {
+      if (params['signalId'] == null || params['signalId'] == undefined) {
+        this.goHome();
+        return;
+      }
+      this.signalService.getSignalById(params['signalId']).subscribe((res) => {
+        this.signal = res;
+        this.events = [];
+        console.log(this.signal)
+        this.signal.signalMilestones?.forEach((m)=>{
+          this.events?.push({status: this.status[m.status!], date:formatDate(m.statusUpdateTime!,'dd/MM/yyyy','en-US')});
+        });
+        this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
+          this.city = res;
+    this.initMap();
+    this.loadData();
+        })
+      });
+    });
   }
 
   loadData() {
-    this.form.get('name')?.setValue(this.signal.name);
     this.form.get('typeOfSignal')?.setValue(this.types[this.signal.typeOfSignal!]);
     this.form.get('date')?.setValue(formatDate(this.signal.date!, 'yyyy-MM-dd', 'en'));
     this.form.get('city')?.setValue(this.city!.name);
@@ -90,8 +88,7 @@ export class ViewSignalComponent {
     }
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     this.map = L.map('map', {
-      // center: [this.signal.latitude!, this.signal.longitude!],
-      center: [-15.47, -47.56],
+      center: [this.signal.latitude!, this.signal.longitude!],
       zoom: 12,
       zoomControl: false
     });
