@@ -33,7 +33,7 @@
                     [ngClass]="{'unselected': this.selectedIndex != i && this.selectedIndex != undefined, 'selected': this.selectedIndex == i && this.selectedIndex != undefined}"
                     *ngFor="let s of this.signals, index as i">
                     <h3>{{s.name}}
-                        <button class='editButton' *ngIf="s.status!=3" (click)="editSignal(s)">
+                        <button class='editButton' *ngIf="s.status!=3 && this.login!=undefined" (click)="editSignal(s)">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
