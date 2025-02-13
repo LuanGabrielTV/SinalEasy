@@ -78,8 +78,8 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    if(this.userService.getToken()==null){
-      this.goHome();
+    if (this.userService.getToken() == null) {
+      this.router.navigate(['/login']);
     }
 
     this.states = [];
