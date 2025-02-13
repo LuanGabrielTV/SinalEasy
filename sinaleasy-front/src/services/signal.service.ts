@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { CityService } from './city.service';
 import { tap, catchError, of, throwError, concatMap, switchMap, concat, filter, iif, defaultIfEmpty, map } from 'rxjs';
 import { City } from '../domain/City';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,10 @@ export class SignalService {
   };
 
 
-  constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient) { }
+  constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient, private userService: UserService) { }
 
   createSignal(signal: Signal) {
+    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     let url = this.url + 'signals/';
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
@@ -28,6 +30,7 @@ export class SignalService {
   }
 
   private createCity(signal: Signal) {
+    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     return this.addressService.getCityById(signal.cityId!).pipe((switchMap(res => {
       let city: City = new City();
       city.cityId = String((res['id' as keyof Object] as Object) as number);
@@ -38,9 +41,9 @@ export class SignalService {
       return this.cityService.createCity(city);
     })))
   }
-  
+
   updateSignal(signal: Signal) {
-    console.log(JSON.stringify(signal))
+    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     let url = this.url + 'signals/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
@@ -57,10 +60,9 @@ export class SignalService {
     return this.httpClient.get<Signal>(url, this.httpOptions);
   }
 
-  voteOnSignal(changedVotes: Array<string>){
+  voteOnSignal(changedVotes: Array<string>) {
+    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     let url = this.url + 'signals/vote';
-    console.log(url)
-    console.log(JSON.stringify(changedVotes))
     return this.httpClient.post<Signal>(url, JSON.stringify(changedVotes), this.httpOptions).subscribe();
   }
 }

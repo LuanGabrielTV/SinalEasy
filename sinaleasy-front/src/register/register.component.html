@@ -1,7 +1,8 @@
 <body>
 <div id="header">
-    <img src="logo.png" routerLink="/" id="logo">
+    <img src="logo.png" (click)="goHome()" id="logo">
 </div>
+<p-toast />
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div id="row">
         <p class="title">Registre seu<br>usuário</p>

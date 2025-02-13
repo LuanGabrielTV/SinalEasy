@@ -4,11 +4,13 @@ import { ButtonModule } from 'primeng/button';
 import { User } from '../domain/User';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ButtonModule, FormsModule, ReactiveFormsModule],
+  imports: [ButtonModule, FormsModule, ReactiveFormsModule, ToastModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -17,7 +19,7 @@ export class RegisterComponent {
   form: FormGroup;
   user: User;
 
-  constructor(private fBuilder: FormBuilder, private router: Router, private userService:UserService) {
+  constructor(private fBuilder: FormBuilder, private router: Router, private userService: UserService, private messageService: MessageService) {
     this.user = new User();
     this.form = this.fBuilder.group({
       'login': [this.user.login, Validators.compose([
@@ -36,9 +38,14 @@ export class RegisterComponent {
 
   onSubmit() {
     this.user = new User(this.form.get('email')?.value, this.form.get('password')?.value, this.form.get('login')?.value);
-    this.userService.register(this.user).subscribe((_: any) =>{
-      this.router.navigate(['/login']);
-    })
+    this.userService.register(this.user).subscribe({
+      next: (response) => {
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Erro!', detail: 'Esse email já está cadastrado.' });
+      }
+    });
   }
 
   goHome() {

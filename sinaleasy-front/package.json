@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@popperjs/core": "^2.11.8",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "ng-inline-svg-2": "^15.0.1",
     "primeicons": "^7.0.0",

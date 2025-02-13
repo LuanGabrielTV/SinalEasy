@@ -53,13 +53,15 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // para bloquear ou nao as POSTs a depender da role
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+        return null;
+        // throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
     }
 
     @Override
     public String getPassword() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+        return userPassword;
+        // throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
     }
 
     @Override

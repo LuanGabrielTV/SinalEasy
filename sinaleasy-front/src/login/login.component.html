@@ -1,7 +1,8 @@
 <body>
     <div id="header">
-        <img src="logo.png" routerLink="/" id="logo">
+        <img src="logo.png" (click)="goHome()" id="logo">
     </div>
+    <p-toast />
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div id="row">
             <p class="title">Entre com suas<br>credenciais</p>
@@ -16,8 +17,7 @@
         </div>
         <div id="last-row">
             <a id="redirect" href="/register">Criar uma conta</a>
-            <p-button id="registrar" [disabled]="!this.form.valid" type="submit" label="Entrar"
-                severity="contrast" />
+            <p-button id="registrar" [disabled]="!this.form.valid" type="submit" label="Entrar" severity="contrast" />
         </div>
     </form>
 </body>

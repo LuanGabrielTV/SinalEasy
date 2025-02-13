@@ -6,6 +6,7 @@
             <img src="logo.png" routerLink="/" id="logo">
         </div>
         <div id="container">
+            <p *ngIf="this.login!=undefined">Olá, {{this.login}}</p>
             <div>
                 <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
                     [(ngModel)]="state" [dropdown]="true" [suggestions]="filteredStates"
@@ -59,7 +60,7 @@
                                 </g>
                             </svg>
                         </button>
-                        <button class='likeButton' (click)="likeSignal(s)"
+                        <button *ngIf="this.login!=undefined" class='likeButton' (click)="likeSignal(s)"
                             [ngClass]="{'likedButton': s.liked, 'likeButton': !s.liked}">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -91,10 +92,10 @@
                     <a class="addButton" routerLink="/create-signal">
                         <img src="icon.png">
                     </a>
-                    <button class="accessButton" *ngIf="this.token!=undefined">
+                    <button class="accessButton" (click)="this.logout()" *ngIf="this.login!=undefined">
                         <img src="Logout.svg">
                     </button>
-                    <button class="accessButton" *ngIf="this.token==undefined">
+                    <button class="accessButton" (click)="this.goToLogin()" *ngIf="this.login==undefined">
                         <img src="login.svg">
                     </button>
                 </div>

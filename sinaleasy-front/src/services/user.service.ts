@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../domain/User';
 import { Auth } from '../domain/Auth';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,19 @@ export class UserService {
 
   login(auth: Auth) {
     let url = this.url + 'login';
-    console.log(JSON.stringify(auth));
     return this.httpClient.post(url, JSON.stringify(auth), this.httpOptions);
+  }
+
+  getToken(){
+    return JSON.parse(sessionStorage.getItem('token') as string);
+  }
+
+  decode(): any {
+    let token = this.getToken();
+    if(token!=null){
+      return jwtDecode(token);
+    }else{
+      return null;
+    }
   }
 }

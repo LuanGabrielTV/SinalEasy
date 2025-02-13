@@ -22,6 +22,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RatingModule } from 'primeng/rating';
 import { Grade } from '../domain/Grade';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-update-signal',
@@ -50,7 +51,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   visible = false;
   grade: Grade;
 
-  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fBuilder: FormBuilder, private cityService: CityService, private addressService: AddressService, private signalService: SignalService, private userService: UserService, private route: ActivatedRoute, private router: Router) {
     this.signal = new Signal();
     this.grade = new Grade();
     this.form = this.fBuilder.group({
@@ -76,6 +77,11 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    if(this.userService.getToken()==null){
+      this.goHome();
+    }
+
     this.states = [];
     this.cities = [];
     this.items = [

@@ -16,6 +16,7 @@ import { CityService } from '../services/city.service';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -25,8 +26,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  token: string | undefined;
-  
+  login: string | undefined;
   city: City | undefined;
   state: State | undefined;
   states: State[] | undefined;
@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
   private map: L.Map | undefined;
   private changedVotes: Array<string>;
 
-  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private homeService: HomeService, private router: Router) {
+  constructor(private addressService: AddressService, private signalService: SignalService, private cityService: CityService, private homeService: HomeService, private userService: UserService, private router: Router) {
     this.signals = [];
     this.markers = [];
     this.changedVotes = [];
@@ -54,14 +54,14 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    this.token = JSON.parse(sessionStorage.getItem('token') as string);
-
+    let login = this.userService.decode();
+    if (login != null) {
+      this.login = login["sub"];
+    }
     this.states = [];
     this.cities = [];
     this.loadStates();
     this.reloadLatestValues();
-
   }
 
   ngAfterViewInit() {
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
     let latestState: State | undefined = this.homeService.getLatestState();
     if (latestCity != undefined && latestState != undefined) {
       this.state = latestState;
-      this.cityService.getCityById(latestCity.cityId!).subscribe((city=>{
+      this.cityService.getCityById(latestCity.cityId!).subscribe((city => {
         this.city = city;
         this.rating = this.city.rating;
         let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
@@ -212,7 +212,7 @@ export class HomeComponent implements OnInit {
     if (this.city != undefined) {
       let address = this.city?.name + ', ' + this.state?.name! + ', Brazil';
       this.cityService.getCityById(this.city?.cityId!).subscribe((city => {
-        if(city != null){
+        if (city != null) {
           this.city = city;
           this.rating = city.rating;
           this.homeService.setLatestCity(this.city!);
@@ -271,6 +271,15 @@ export class HomeComponent implements OnInit {
     } else {
       this.changedVotes.splice(index, 1);
     }
+  }
+
+  goToLogin(){
+    this.router.navigate(['/login']);
+  }
+
+  logout() {
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
   @HostListener('window:beforeunload', ['$event'])

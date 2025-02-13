@@ -18,6 +18,7 @@ import { SignalType } from '../domain/SignalType';
 import { SignalService } from '../services/signal.service';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService } from '../services/home.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-create-signal',
@@ -44,7 +45,7 @@ export class CreateSignalComponent implements OnInit, AfterViewInit {
   types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
   signalTypes = SignalType;
 
-  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService, private homeService: HomeService, private router: Router) {
+  constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService, private homeService: HomeService, private userService: UserService, private router: Router) {
     this.signal = new Signal();
     this.form = this.fBuilder.group({
       'name': [this.signal.name, Validators.compose([
@@ -65,6 +66,11 @@ export class CreateSignalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    if (this.userService.getToken() == null) {
+      this.router.navigate(['/login']);
+    }
+
     this.states = [];
     this.cities = [];
     this.brasiliaCoord = new L.LatLng(-15.47, -47.56);
