@@ -27,6 +27,7 @@ import { UserService } from '../services/user.service';
 })
 export class HomeComponent implements OnInit {
   login: string | undefined;
+  userId: string | undefined;
   city: City | undefined;
   state: State | undefined;
   states: State[] | undefined;
@@ -50,6 +51,7 @@ export class HomeComponent implements OnInit {
     this.signals = [];
     this.markers = [];
     this.changedVotes = [];
+    this.userId = "";
   }
 
 
@@ -57,6 +59,7 @@ export class HomeComponent implements OnInit {
     let login = this.userService.decode();
     if (login != null) {
       this.login = login["sub"];
+      this.userId = login["userId"];
     }
     this.states = [];
     this.cities = [];

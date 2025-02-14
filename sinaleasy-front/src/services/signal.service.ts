@@ -19,10 +19,11 @@ export class SignalService {
   };
 
 
-  constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient, private userService: UserService) { }
+  constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient, private userService: UserService) {
+    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
+  }
 
   createSignal(signal: Signal) {
-    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     let url = this.url + 'signals/';
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
@@ -30,7 +31,6 @@ export class SignalService {
   }
 
   private createCity(signal: Signal) {
-    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     return this.addressService.getCityById(signal.cityId!).pipe((switchMap(res => {
       let city: City = new City();
       city.cityId = String((res['id' as keyof Object] as Object) as number);
@@ -38,12 +38,11 @@ export class SignalService {
       city.state = (res['microrregiao' as keyof Object]['mesorregiao' as keyof Object]["UF" as keyof Object]["sigla" as keyof Object] as Object) as string;
       city.rating = 0;
       city.signals = [];
-      return this.cityService.createCity(city);
+      return this.cityService.createCity(city, this.userService.getToken());
     })))
   }
 
   updateSignal(signal: Signal) {
-    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     let url = this.url + 'signals/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
@@ -61,7 +60,6 @@ export class SignalService {
   }
 
   voteOnSignal(changedVotes: Array<string>) {
-    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
     let url = this.url + 'signals/vote';
     return this.httpClient.post<Signal>(url, JSON.stringify(changedVotes), this.httpOptions).subscribe();
   }

@@ -22,7 +22,7 @@
     <div id="content">
         <div class="city" *ngIf="!(this.city == undefined)">
             <p id="title">{{this.city?.name}}, {{this.state?.sigla}}</p><br>
-            <p-rating id="rating" [(ngModel)]="this.rating" [readonly]="true" [cancel]="false" />
+            <p-rating id="rating" [(ngModel)]="this.rating" [disabled]="true" [readonly]="true" [cancel]="false" />
             <br><br><br>
             <p class='warning' *ngIf="this.signals.length==0 && ! this.isLoadingSignals">Opa! Essa cidade não tem nenhum sinal.</p>
             <div *ngIf="this.isLoadingSignals" class="loading">
@@ -33,7 +33,7 @@
                     [ngClass]="{'unselected': this.selectedIndex != i && this.selectedIndex != undefined, 'selected': this.selectedIndex == i && this.selectedIndex != undefined}"
                     *ngFor="let s of this.signals, index as i">
                     <h3>{{s.name}}
-                        <button class='editButton' *ngIf="s.status!=3 && this.login!=undefined" (click)="editSignal(s)">
+                        <button class='editButton' *ngIf="s.status!=3 && this.login!=undefined && this.userId==s.userId" (click)="editSignal(s)">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

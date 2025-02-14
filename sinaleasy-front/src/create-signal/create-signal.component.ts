@@ -44,6 +44,7 @@ export class CreateSignalComponent implements OnInit, AfterViewInit {
   address: string;
   types = ['Construção', 'Reparo', 'Limpeza', 'Meio-ambiente', 'Saúde'];
   signalTypes = SignalType;
+  userId: string | undefined;
 
   constructor(private fBuilder: FormBuilder, private addressService: AddressService, private signalService: SignalService, private homeService: HomeService, private userService: UserService, private router: Router) {
     this.signal = new Signal();
@@ -69,6 +70,8 @@ export class CreateSignalComponent implements OnInit, AfterViewInit {
 
     if (this.userService.getToken() == null) {
       this.router.navigate(['/login']);
+    }else{
+      this.userId = this.userService.getToken()["userId"];
     }
 
     this.states = [];
@@ -214,7 +217,7 @@ export class CreateSignalComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.signal = new Signal(this.form.get('name')?.value!, this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
-    this.signal.userId = "17afce30-ff01-4766-9073-0706a141a6f6";
+    this.signal.userId = this.userId!;
     this.signalService.createSignal(this.signal).subscribe(_ => {
       this.homeService.setLatestCity(this.city!);
       this.homeService.setLatestState(this.form.get('state')?.value);

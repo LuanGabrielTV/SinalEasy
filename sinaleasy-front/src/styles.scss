@@ -29,6 +29,10 @@ body .p-component {
 //    height: 2.3vh;
 // }
 
+#logo{
+   cursor: pointer;
+}
+
 #map{
    filter:saturate(1.8) hue-rotate(-8deg) brightness(0.88) contrast(1.4);
    animation: fadeIn 3s;

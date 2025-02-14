@@ -147,6 +147,7 @@ small {
 }
 
 .accessButton {
+    cursor: pointer;
     padding: 10px;
     background: transparent;
     outline: none;
@@ -361,11 +362,11 @@ small {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        top: 22vh;
+        top: 28vh;
         width: 100%;
         position: absolute;
         left:0;
-        height: 78vh;
+        height: 72vh;
     }
 
     #map {
@@ -538,11 +539,6 @@ small {
     border-radius: 10px;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #b30000;
-}
-
 .selected {
     opacity: 1;
 }
@@ -572,6 +568,7 @@ small {
 }
 
 .addButton {
+    cursor: pointer;
     display: flex;
     flex: 1;
     align-items: center;
@@ -595,6 +592,7 @@ small {
 }
 
 .editButton {
+    cursor: pointer;
     width: 2vh;
     background: none;
     border: none;
@@ -606,6 +604,7 @@ small {
 }
 
 .likeButton {
+    cursor: pointer;
     background: none;
     float: right;
     margin-right: 2%;
@@ -645,6 +644,7 @@ small {
 }
 
 .viewButton {
+    cursor: pointer;
     background: none;
     border: none;
 }
