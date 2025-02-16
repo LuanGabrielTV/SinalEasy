@@ -53,7 +53,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // para bloquear ou nao as POSTs a depender da role
-        return null;
+        return List.of();
         // throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
     }
 

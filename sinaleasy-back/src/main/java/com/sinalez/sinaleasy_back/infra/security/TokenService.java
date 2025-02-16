@@ -24,7 +24,7 @@ public class TokenService {
                     .withIssuer("auth-api")
                     .withSubject(user.getUserLogin())
                     .withClaim("userId", user.getUserId().toString()) // Adiciona o ID do usuário como um claim
-                    .withExpiresAt(genExpirationDate())
+                    // .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception) {

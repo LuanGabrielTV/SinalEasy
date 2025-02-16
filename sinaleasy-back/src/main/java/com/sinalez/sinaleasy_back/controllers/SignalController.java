@@ -76,9 +76,7 @@ public class SignalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSignal
-
-    (
+    public ResponseEntity<Object> updateSignal(
             @PathVariable(value = "id") UUID id,
             @RequestBody @Valid SignalDTO signalRequestDTO) {
         Signal updatedSignal = signalService.updateSignal(signalRequestDTO, signalService.getSignalById(id));

@@ -20,14 +20,16 @@ export class SignalService {
 
 
   constructor(private addressService: AddressService, private cityService: CityService, private httpClient: HttpClient, private userService: UserService) {
-    this.httpOptions.headers.append('Authorization', 'Bearer ' + this.userService.getToken());
   }
 
   createSignal(signal: Signal) {
+    let options = this.httpOptions;
+    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken()});
     let url = this.url + 'signals/';
+    console.log(options.headers)
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
-        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(_ => this.httpClient.post<Signal>(url, JSON.stringify(signal), this.httpOptions)));
+        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(_ => this.httpClient.post<Signal>(url, JSON.stringify(signal), options)));
   }
 
   private createCity(signal: Signal) {
@@ -43,10 +45,12 @@ export class SignalService {
   }
 
   updateSignal(signal: Signal) {
+    let options = this.httpOptions;
+    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken()});
     let url = this.url + 'signals/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
-        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(city => this.httpClient.put<Signal>(url, JSON.stringify(signal), this.httpOptions)));
+        switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(city => this.httpClient.put<Signal>(url, JSON.stringify(signal), options)));
   }
 
   getSignalsByCity(cityId: string) {
@@ -60,7 +64,9 @@ export class SignalService {
   }
 
   voteOnSignal(changedVotes: Array<string>) {
+    let options = this.httpOptions;
+    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken()});
     let url = this.url + 'signals/vote';
-    return this.httpClient.post<Signal>(url, JSON.stringify(changedVotes), this.httpOptions).subscribe();
+    return this.httpClient.post<Signal>(url, JSON.stringify(changedVotes), options).subscribe();
   }
 }
