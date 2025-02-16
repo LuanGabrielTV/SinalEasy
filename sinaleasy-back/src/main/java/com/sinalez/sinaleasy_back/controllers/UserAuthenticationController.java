@@ -1,6 +1,5 @@
 package com.sinalez.sinaleasy_back.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +25,13 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/auth")
 @CrossOrigin
 public class UserAuthenticationController {
-    @Autowired
-    private final AuthenticationManager authenticationManager;
-    @Autowired
+
+    
     private final UserRepository userRepository;
-    @Autowired
     private final TokenService tokenService;
+
+    // o authenticationManager eh configurado no SecurityConfiguration
+    private final AuthenticationManager authenticationManager;
 
     public UserAuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
@@ -45,6 +45,7 @@ public class UserAuthenticationController {
 
         //token a ser retornado pro client
         var usernamePassword = new UsernamePasswordAuthenticationToken(authenticationDTO.login(), authenticationDTO.password());
+
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
@@ -58,9 +59,12 @@ public class UserAuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO("Error. Login already exists"));
         }
 
+        // aqui sera implementado a verificacao de email
+        // if(this.userRepository.findByUserEmail) ...
+
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
 
-        User newUser = new User(registerDTO.login(), encryptedPassword);
+        User newUser = new User(registerDTO.login(), encryptedPassword, registerDTO.role());
 
         this.userRepository.save(newUser);
 
