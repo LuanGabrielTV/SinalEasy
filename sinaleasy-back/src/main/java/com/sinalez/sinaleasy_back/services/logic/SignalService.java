@@ -14,6 +14,7 @@ import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.SignalDTO;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.SignalNotFoundException;
+import com.sinalez.sinaleasy_back.infra.security.TokenService;
 import com.sinalez.sinaleasy_back.repositories.CityRepository;
 import com.sinalez.sinaleasy_back.repositories.UserRepository;
 import com.sinalez.sinaleasy_back.repositories.SignalRepository;
@@ -23,34 +24,40 @@ public class SignalService {
     private final SignalRepository signalRepository;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     public SignalService(SignalRepository signalRepository, CityRepository cityRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository, TokenService tokenService) {
         this.signalRepository = signalRepository;
         this.cityRepository = cityRepository;
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
     }
 
-    public Signal createSignal(SignalDTO signalRequestDTO) {
+    public Signal createSignal(SignalDTO signalRequestDTO, String token) {
+        // Converte DTO para entidade Signal
         Signal signal = new Signal();
         BeanUtils.copyProperties(signalRequestDTO, signal);
-        String cityIdOfSignal = signalRequestDTO.cityId();
-        City cityOfSignal = cityRepository.findById(cityIdOfSignal)
+    
+        // Busca a cidade
+        City cityOfSignal = cityRepository.findById(signalRequestDTO.cityId())
                 .orElseThrow(CityNotFoundException::new);
         signal.setCity(cityOfSignal);
-
-        String userIdOfSignal = signalRequestDTO.userId();
-        User userOfSignal = userRepository.findById(UUID.fromString(userIdOfSignal))
-                .orElseThrow(CityNotFoundException::new);
+    
+        // Extrai o UserId do token
+        UUID userId = tokenService.getUserIdFromToken(token);
+        User userOfSignal = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         signal.setUser(userOfSignal);
-
+    
+        // Cria e associa o Milestone
         Milestone milestone = new Milestone();
         milestone.setStatus(0);
         milestone.setStatusUpdateTime(LocalDate.now());
         milestone.setSignal(signal);
         signal.setSignalMilestone(milestone);
+    
         return signalRepository.save(signal);
-
     }
 
     public Signal updateSignal(SignalDTO signalRequestDTO, Signal signal) {
