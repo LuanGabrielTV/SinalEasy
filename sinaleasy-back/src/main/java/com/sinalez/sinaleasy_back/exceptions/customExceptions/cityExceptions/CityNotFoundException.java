@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.exceptions.customExceptions;
+package com.sinalez.sinaleasy_back.exceptions.customExceptions.cityExceptions;
 
 public class CityNotFoundException extends RuntimeException {
     public CityNotFoundException() {
