@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +16,7 @@ import com.sinalez.sinaleasy_back.dtos.LoginResponseDTO;
 import com.sinalez.sinaleasy_back.dtos.RegisterDTO;
 import com.sinalez.sinaleasy_back.dtos.RegisterResponseDTO;
 import com.sinalez.sinaleasy_back.infra.security.TokenService;
-import com.sinalez.sinaleasy_back.repositories.UserRepository;
+import com.sinalez.sinaleasy_back.services.logic.UserService;
 
 import jakarta.validation.Valid;
 
@@ -27,19 +26,29 @@ import jakarta.validation.Valid;
 public class UserAuthenticationController {
 
     
-    private final UserRepository userRepository;
+    // private final UserRepository userRepository;
     private final TokenService tokenService;
 
     // o authenticationManager eh configurado no SecurityConfiguration
     private final AuthenticationManager authenticationManager;
 
-    public UserAuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, TokenService tokenService) {
+    private final UserService userService;
+
+    public UserAuthenticationController(AuthenticationManager authenticationManager, UserService userService, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
         this.tokenService = tokenService;
+        this.userService = userService;
     }
 
-    // o metodo vai utilizar o BCrypt para criptografar a senha que chegou por parametro (DTO) e comparar com o hash no banco
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterDTO registerDTO) {
+        try {
+            userService.registerUser(registerDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponseDTO("User registered successfully"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO(e.getMessage()));
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
 
@@ -52,25 +61,31 @@ public class UserAuthenticationController {
         return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterDTO registerDTO) {
-        // no momento, o unico caso que impede o registro eh se ele ja existir
-        if(this.userRepository.findByUserLogin(registerDTO.login()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO("Error. Login already exists"));
-        }
+    // @PostMapping("/register")
+    // public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterDTO registerDTO) {
+    //     // PASSAR PARA SERVICE
 
-        // aqui sera implementado a verificacao de email
-        // if(this.userRepository.findByUserEmail) ...
+    //     // verifica se o usuario ja existe
+    //     if(this.userRepository.findByUserLogin(registerDTO.login()) != null) {
+    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO("Error. Login already exists"));
+    //     }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
+    //     // verifica se o email ja foi cadastrado
+    //     if (this.userRepository.existsByUserEmail(registerDTO.email())) {
+    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO("Error. Email already exists"));
+    //     }
 
-        User newUser = new User(registerDTO.login(), encryptedPassword, registerDTO.role());
+    //     String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
 
-        this.userRepository.save(newUser);
+    //     User newUser = new User(registerDTO.login(), encryptedPassword, registerDTO.role());
 
-        return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponseDTO("User registered successfully"));
+    //     this.userRepository.save(newUser);
+
+    //     return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponseDTO("User registered successfully"));
              
-    }
+    // }
+
+
     
 
 }

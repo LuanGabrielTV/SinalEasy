@@ -12,10 +12,15 @@ import com.sinalez.sinaleasy_back.domains.User;
 
 public interface UserRepository extends JpaRepository<User, UUID>{
     UserDetails findByUserLogin(String userLogin);
+    
     Optional<User> findUserByUserLogin(String userLogin);
     
     @Query("SELECT u.userId FROM User u WHERE u.userLogin = :userLogin")
     Optional<UUID> findUserIdByUserLogin(@Param("userLogin") String userLogin);
+
+    Optional<User> findByUserEmail(String userEmail);
+
+    boolean existsByUserEmail(String userEmail);
 
     
 }
