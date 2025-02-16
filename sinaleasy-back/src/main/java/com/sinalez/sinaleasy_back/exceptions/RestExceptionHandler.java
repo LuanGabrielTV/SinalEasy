@@ -10,6 +10,7 @@ import com.sinalez.sinaleasy_back.exceptions.customExceptions.cityExceptions.Cit
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.cityExceptions.CityNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.signalException.SignalNotFoundException;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions.UserAlreadyExists;
+import com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions.UserEmailIsBlank;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions.UserNotFoundException;
 
 
@@ -46,5 +47,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return ResponseEntity.status(HttpStatus.CONFLICT).body(threatResponse);
     }
     
+    @ExceptionHandler(UserEmailIsBlank.class)
+    private ResponseEntity<RestErrorMessage> userEmailIsBlankException(UserEmailIsBlank exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(threatResponse);
+    }
     
 }
+
