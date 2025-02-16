@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +43,7 @@ public class SignalController {
         this.signalMapper = signalMapper;
         this.userService = userService;
         this.votingService = votingService;
+
     }
 
     @GetMapping("/{id}")
@@ -68,11 +70,14 @@ public class SignalController {
     // }
 
     @PostMapping("/")
-    public ResponseEntity<SignalDTO> createSignal(@RequestBody @Valid SignalDTO signalRequestDTO) {
-        Signal createdSignal = signalService.createSignal(signalRequestDTO);
+    public ResponseEntity<SignalDTO> createSignal(
+            @RequestBody @Valid SignalDTO signalRequestDTO,
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
+        String token = authorizationHeader.replace("Bearer ", "").trim();
+        Signal createdSignal = signalService.createSignal(signalRequestDTO, token);
         SignalDTO signalResponseDTO = signalMapper.toDTO(createdSignal);
         return ResponseEntity.status(HttpStatus.CREATED).body(signalResponseDTO);
-
     }
 
     @PutMapping("/{id}")

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -45,17 +46,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserSignal> userVotesOnSignals; // lista de votos do usuário
 
-    public User(String userLogin, String userPassword) {
+    public User(String userLogin, String userPassword, UserRole role) {
         this.userLogin = userLogin;
         this.userPassword = userPassword;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // para bloquear ou nao as POSTs a depender da role
-        return List.of();
-        // throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+        // Retorna uma autoridade genérica "ROLE_USER" para todos os usuários
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
 
     @Override
     public String getPassword() {
@@ -67,6 +68,26 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return userLogin;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 
