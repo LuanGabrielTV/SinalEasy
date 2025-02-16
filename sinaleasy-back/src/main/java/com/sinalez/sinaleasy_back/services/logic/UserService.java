@@ -34,6 +34,10 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    public UUID getUserIdByUserLogin(String userLogin) {
+        return userRepository.findUserIdByUserLogin(userLogin)
+                .orElseThrow(UserNotFoundException::new);
+    }
 
 }
 
