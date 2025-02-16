@@ -40,6 +40,7 @@ public class UserAuthenticationController {
         this.userService = userService;
     }
 
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterDTO registerDTO) {
         try {
             userService.registerUser(registerDTO);
@@ -60,30 +61,6 @@ public class UserAuthenticationController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
     }
-
-    // @PostMapping("/register")
-    // public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterDTO registerDTO) {
-    //     // PASSAR PARA SERVICE
-
-    //     // verifica se o usuario ja existe
-    //     if(this.userRepository.findByUserLogin(registerDTO.login()) != null) {
-    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO("Error. Login already exists"));
-    //     }
-
-    //     // verifica se o email ja foi cadastrado
-    //     if (this.userRepository.existsByUserEmail(registerDTO.email())) {
-    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponseDTO("Error. Email already exists"));
-    //     }
-
-    //     String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
-
-    //     User newUser = new User(registerDTO.login(), encryptedPassword, registerDTO.role());
-
-    //     this.userRepository.save(newUser);
-
-    //     return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponseDTO("User registered successfully"));
-             
-    // }
 
 
     

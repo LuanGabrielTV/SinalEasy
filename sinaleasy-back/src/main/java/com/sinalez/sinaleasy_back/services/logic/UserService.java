@@ -11,6 +11,7 @@ import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.RegisterDTO;
 import com.sinalez.sinaleasy_back.dtos.UserDTO;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions.UserAlreadyExists;
+import com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions.UserEmailIsBlank;
 import com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions.UserNotFoundException;
 import com.sinalez.sinaleasy_back.repositories.UserRepository;
 
@@ -30,12 +31,13 @@ public class UserService {
     }
 
     public User registerUser(RegisterDTO registerDTO) {
-        if (
-            userRepository.findByUserLogin(registerDTO.login()) != null ||
-            userRepository.existsByUserEmail(registerDTO.email())
-        ) {
-            throw new UserAlreadyExists();
-        }
+        if(userRepository.findByUserLogin(registerDTO.login()) != null)
+            throw new UserAlreadyExists("Este username já está em uso por outro usuário");
+        if(registerDTO.email() == null)
+            throw new UserEmailIsBlank();
+        if(userRepository.existsByUserEmail(registerDTO.email()))
+            throw new UserAlreadyExists("Este email já está em uso por outro usuário");
+        
         String encryptedPassword = new BCryptPasswordEncoder()
                 .encode(registerDTO.password());
         User newUser = new User(
