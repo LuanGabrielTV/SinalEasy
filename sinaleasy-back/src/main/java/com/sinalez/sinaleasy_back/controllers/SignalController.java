@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sinalez.sinaleasy_back.domains.Signal;
 import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.SignalDTO;
+import com.sinalez.sinaleasy_back.infra.security.TokenService;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
 import com.sinalez.sinaleasy_back.services.logic.SignalService;
 import com.sinalez.sinaleasy_back.services.logic.UserService;
@@ -36,14 +37,15 @@ public class SignalController {
     private final SignalMapper signalMapper;
     private final UserService userService;
     private final VotingService votingService;
+    private final TokenService tokenService;
 
     public SignalController(SignalService signalService, SignalMapper signalMapper, UserService userService,
-            VotingService votingService) {
+            VotingService votingService, TokenService tokenService) {
         this.signalService = signalService;
         this.signalMapper = signalMapper;
         this.userService = userService;
         this.votingService = votingService;
-
+        this.tokenService = tokenService;
     }
 
     @GetMapping("/{id}")
@@ -94,13 +96,36 @@ public class SignalController {
         List<Signal> signals = signalService.getSignalsByCityId(id);
         List<SignalDTO> signalsResponseDTO = new ArrayList<SignalDTO>();
 
-        User userTester = userService.getUserById(UUID.fromString("17afce30-ff01-4766-9073-0706a141a6f6"));
+        Integer votesByCityId = Integer.valueOf(votingService.countVotesByCityId(id));
+
+        for (int i = 0; i < signals.size(); i++) {
+
+            Integer signalVoteCount = Integer.valueOf(votingService.countVotes(signals.get(i).getSignalId()));
+            BigDecimal scaleFactor = new BigDecimal(
+                    10.0 + (10.0
+                            * ((double) (signalVoteCount.intValue() + 1) / (double) (votesByCityId.intValue() + 1))));
+
+            SignalDTO newSignalDTO = signalMapper.toDTO(signals.get(i), false, signalVoteCount, scaleFactor);
+            signalsResponseDTO.add(newSignalDTO);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(signalsResponseDTO);
+    }
+
+
+    @GetMapping("/city/{id}/auth")
+    public ResponseEntity<List<SignalDTO>> getSignalsByCityId(@PathVariable(value = "id") String id, @RequestHeader("Authorization") String authorizationHeader) {
+        List<Signal> signals = signalService.getSignalsByCityId(id);
+        List<SignalDTO> signalsResponseDTO = new ArrayList<SignalDTO>();
+
+        String token = authorizationHeader.replace("Bearer ", "").trim();
+        UUID userId = tokenService.getUserIdFromToken(token);
 
         Integer votesByCityId = Integer.valueOf(votingService.countVotesByCityId(id));
 
         for (int i = 0; i < signals.size(); i++) {
 
-            boolean isUserVotePresent = votingService.hasUserVoted(userTester.getUserId(),
+            boolean isUserVotePresent = votingService.hasUserVoted(userId,
                     signals.get(i).getSignalId());
 
             Integer signalVoteCount = Integer.valueOf(votingService.countVotes(signals.get(i).getSignalId()));
@@ -124,8 +149,11 @@ public class SignalController {
     }
 
     @PostMapping("/vote")
-    public ResponseEntity<Void> voteSignal(@RequestBody ArrayList<String> changedVotes) {
-        changedVotes.forEach(s -> votingService.voteSignal(UUID.fromString("17afce30-ff01-4766-9073-0706a141a6f6"),
+    public ResponseEntity<Void> voteSignal(@RequestBody ArrayList<String> changedVotes, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "").trim();
+        UUID userId = tokenService.getUserIdFromToken(token);
+
+        changedVotes.forEach(s -> votingService.voteSignal(userId,
                 UUID.fromString(s)));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
