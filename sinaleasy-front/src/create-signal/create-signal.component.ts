@@ -217,7 +217,6 @@ export class CreateSignalComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.signal = new Signal(this.form.get('name')?.value!, this.form.get('date')?.value!, this.address, this.form.get('description')?.value!, this.signalTypes[this.form.get('typeOfSignal')?.value] as unknown as number, this.marker?.getLatLng().lat!, this.marker?.getLatLng().lng!, 1, 0, 0, this.city?.cityId!);
-    this.signal.userId = this.userId!;
     this.signalService.createSignal(this.signal).subscribe(_ => {
       this.homeService.setLatestCity(this.city!);
       this.homeService.setLatestState(this.form.get('state')?.value);

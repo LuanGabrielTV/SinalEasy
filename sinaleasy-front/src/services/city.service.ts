@@ -19,13 +19,11 @@ export class CityService {
 
   getCityById(id: string) {
     let url = this.url + id;
-    console.log(url)
     return this.httpClient.get<City>(url);
   }
 
   createCity(city: City, token: string) {
     let options = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Authorization': 'Bearer ' + token }) }
-    console.log(JSON.stringify(city));
     return this.httpClient.post<City>(this.url, JSON.stringify(city), options);
   }
 

@@ -24,9 +24,8 @@ export class SignalService {
 
   createSignal(signal: Signal) {
     let options = this.httpOptions;
-    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken()});
+    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken() });
     let url = this.url + 'signals/';
-    console.log(options.headers)
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
         switchMap((city) => city ? of(city) : this.createCity(signal)), concatMap(_ => this.httpClient.post<Signal>(url, JSON.stringify(signal), options)));
@@ -46,7 +45,7 @@ export class SignalService {
 
   updateSignal(signal: Signal) {
     let options = this.httpOptions;
-    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken()});
+    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken() });
     let url = this.url + 'signals/' + signal.signalId;
     return this.cityService.getCityById(signal.cityId!)
       .pipe(
@@ -55,7 +54,12 @@ export class SignalService {
 
   getSignalsByCity(cityId: string) {
     let url = this.url + 'signals/city/' + cityId;
-    return this.httpClient.get(url, this.httpOptions);
+    let options = this.httpOptions;
+    if (this.userService.getToken() != null) {
+      url += "/auth";
+      options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken() });
+    }
+    return this.httpClient.get(url, options);
   }
 
   getSignalById(signalId: string) {
@@ -65,7 +69,7 @@ export class SignalService {
 
   voteOnSignal(changedVotes: Array<string>) {
     let options = this.httpOptions;
-    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken()});
+    options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/", 'Authorization': 'Bearer ' + this.userService.getToken() });
     let url = this.url + 'signals/vote';
     return this.httpClient.post<Signal>(url, JSON.stringify(changedVotes), options).subscribe();
   }

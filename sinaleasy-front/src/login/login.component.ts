@@ -36,7 +36,6 @@ export class LoginComponent {
     let auth: Auth = new Auth(this.user);
     this.userService.login(auth).subscribe({
       next: (token: any) => {
-        console.log(token);
         sessionStorage.setItem('token', JSON.stringify(token['token']));
         this.messageService.add({ severity: 'success', summary: 'Bem-vindo!', detail: '' });
         this.router.navigate(['/']);

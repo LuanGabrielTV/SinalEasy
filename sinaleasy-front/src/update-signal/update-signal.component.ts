@@ -113,7 +113,7 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
       }
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
-        if (this.signal.status == 3) {
+        if (this.signal.status == 3 || this.signal.userId != this.userService.decode()['userId']) {
           this.goHome();
         }
         this.cityService.getCityById(this.signal.cityId!).subscribe((res) => {
@@ -315,7 +315,6 @@ export class UpdateSignalComponent implements OnInit, AfterViewInit {
     this.grade.date = new Date();
     this.grade.description = this.gradeForm.get('gradeDescription')?.value;
     this.signal.signalGrade = this.grade;
-    console.log(this.signal);
     this.signalService.updateSignal(this.signal).subscribe(_ => {
       this.goHome();
     });

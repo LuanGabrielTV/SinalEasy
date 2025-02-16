@@ -10,11 +10,12 @@ import { CommonModule, formatDate } from '@angular/common';
 import { TimelineModule } from 'primeng/timeline';
 import { Status } from '../domain/Status';
 import { RatingModule } from 'primeng/rating';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-view-signal',
   standalone: true,
-  imports: [TimelineModule, FormsModule, ReactiveFormsModule, CommonModule, RouterModule, RatingModule],
+  imports: [TimelineModule, FormsModule, ReactiveFormsModule, CommonModule, RouterModule, RatingModule, ProgressSpinnerModule],
   templateUrl: './view-signal.component.html',
   styleUrl: './view-signal.component.scss'
 })
@@ -29,6 +30,7 @@ export class ViewSignalComponent {
   data: any;
   status = Status;
   events: any[] | undefined;
+  isLoadingSignal = true;
 
   constructor(private fBuilder: FormBuilder, private cityService: CityService, private signalService: SignalService, private route: ActivatedRoute, private router: Router) {
     this.signal = new Signal();
@@ -53,7 +55,6 @@ export class ViewSignalComponent {
       this.signalService.getSignalById(params['signalId']).subscribe((res) => {
         this.signal = res;
         this.events = [];
-        console.log(this.signal)
         this.signal.signalMilestones?.forEach((m)=>{
           this.events?.push({status: this.status[m.status!], date:formatDate(m.statusUpdateTime!,'dd/MM/yyyy','en-US')});
         });
@@ -67,6 +68,7 @@ export class ViewSignalComponent {
   }
 
   loadData() {
+    this.isLoadingSignal = false;
     this.form.get('typeOfSignal')?.setValue(this.types[this.signal.typeOfSignal!]);
     this.form.get('date')?.setValue(formatDate(this.signal.date!, 'yyyy-MM-dd', 'en'));
     this.form.get('city')?.setValue(this.city!.name);

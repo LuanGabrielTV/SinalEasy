@@ -4,7 +4,11 @@
     </div>
     <div class="container">
 
-        <div class="sinal-container">
+        <div *ngIf="this.isLoadingSignal" class="loading">
+            <p-progressSpinner ariaLabel="loading" strokeWidth="6"
+                [style]="{ width: '20px', height: '20px', position: 'absolute', top: '20%', left:'48%'}" />
+        </div>
+        <div class="sinal-container" *ngIf="!this.isLoadingSignal">
             <div class="card">
                 <a class="voltar" routerLink="/"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +79,8 @@
             </form>
             <div class="grade-card" *ngIf="this.signal.signalGrade != null">
                 <h4>Avaliação do autor</h4>
-                <p-rating id="grade" [disabled]="true" [ngModel]="this.signal.signalGrade.rating" />
+                <p-rating id="grade" [disabled]="true" [readonly]="true" [cancel]="false"
+                    [ngModel]="this.signal.signalGrade.rating" />
                 <p>"{{this.signal.signalGrade.description}}"</p>
             </div>
         </div>

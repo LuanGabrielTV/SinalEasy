@@ -118,7 +118,6 @@ export class HomeComponent implements OnInit {
       this.isLoadingSignals = false;
       this.signals = signals as unknown as Signal[];
       this.drawMarkers(this.signals);
-      console.log(this.signals);
     })
 
   }
@@ -141,7 +140,7 @@ export class HomeComponent implements OnInit {
   loadStates() {
     this.states = [];
     this.addressService.getStates().subscribe((response) => {
-      console.log(response);
+      (response);
       response.forEach((r) => {
         let u = new State();
         u.sigla = r['sigla'];
@@ -183,7 +182,6 @@ export class HomeComponent implements OnInit {
 
     let filtered: any[] = [];
     let query = event.query;
-    console.log(query)
     this.filteredStates = [];
     for (let i = 0; i < (this.states as any[]).length; i++) {
       let item = (this.states as any[])[i];
@@ -276,21 +274,27 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  goToLogin(){
+  goToLogin() {
     this.router.navigate(['/login']);
   }
 
   logout() {
     sessionStorage.removeItem('token');
+    this.userId = "";
+    this.login = "";
     this.router.navigate(['/login']);
   }
 
   @HostListener('window:beforeunload', ['$event'])
   updateLikes() {
-    this.signalService.voteOnSignal(this.changedVotes);
+    if (this.userId != "") {
+      this.signalService.voteOnSignal(this.changedVotes);
+    }
   }
 
   ngOnDestroy() {
-    this.signalService.voteOnSignal(this.changedVotes);
+    if (this.userId != "") {
+      this.signalService.voteOnSignal(this.changedVotes);
+    }
   }
 }
