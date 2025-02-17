@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.exceptions.customExceptions;
+package com.sinalez.sinaleasy_back.exceptions.customExceptions.signalException;
 
 public class SignalNotFoundException extends RuntimeException {
     public SignalNotFoundException() {

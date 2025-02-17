@@ -1,4 +1,4 @@
-package com.sinalez.sinaleasy_back.exceptions.customExceptions;
+package com.sinalez.sinaleasy_back.exceptions.customExceptions.userExceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
