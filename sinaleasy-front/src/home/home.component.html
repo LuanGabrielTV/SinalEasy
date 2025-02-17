@@ -8,12 +8,12 @@
         <div id="container">
             <p id="formLabel">Busque um local:</p>
             <div>
-                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
+                <p-autoComplete name="stateForm" id="nameForm" styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
                     [(ngModel)]="state" [dropdown]="true" [suggestions]="filteredStates"
                     (completeMethod)="filterStates($event)" field="name" />
             </div>
             <div>
-                <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
+                <p-autoComplete name="cityForm" id="cityForm" styleClass="p-dropdown-override" (onSelect)="changeCity()" placeholder="Município"
                     [forceSelection]="true" [dropdown]="true" [(ngModel)]="city" [virtualScroll]="true"
                     [suggestions]="filteredCities" (completeMethod)="filterCities($event)" field="name" />
             </div>
