@@ -57,12 +57,12 @@
 
                 <div class="row">
                     <div>
-                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeState()" placeholder="Estado"
+                        <p-autoComplete styleClass="p-dropdown-override" id="state" name="state" (onSelect)="changeState()" placeholder="Estado"
                             formControlName="state" [dropdown]="true" [suggestions]="filteredStates"
                             (completeMethod)="filterStates($event)" field="name" />
                     </div>
                     <div>
-                        <p-autoComplete styleClass="p-dropdown-override" (onSelect)="changeCity()"
+                        <p-autoComplete styleClass="p-dropdown-override" id="city" name="city" (onSelect)="changeCity()"
                             placeholder="Município" [forceSelection]="true" formControlName="city"
                             [virtualScroll]="true" [suggestions]="filteredCities"
                             (completeMethod)="filterCities($event)" dropdown="true" field="name" />
