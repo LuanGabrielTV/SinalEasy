@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sinalez.sinaleasy_back.domains.Signal;
-import com.sinalez.sinaleasy_back.domains.User;
 import com.sinalez.sinaleasy_back.dtos.SignalDTO;
 import com.sinalez.sinaleasy_back.infra.security.TokenService;
 import com.sinalez.sinaleasy_back.mappers.SignalMapper;
@@ -35,15 +34,12 @@ import jakarta.validation.Valid;
 public class SignalController {
     private final SignalService signalService;
     private final SignalMapper signalMapper;
-    private final UserService userService;
     private final VotingService votingService;
     private final TokenService tokenService;
 
-    public SignalController(SignalService signalService, SignalMapper signalMapper, UserService userService,
-            VotingService votingService, TokenService tokenService) {
+    public SignalController(SignalService signalService, SignalMapper signalMapper, VotingService votingService, TokenService tokenService) {
         this.signalService = signalService;
         this.signalMapper = signalMapper;
-        this.userService = userService;
         this.votingService = votingService;
         this.tokenService = tokenService;
     }
