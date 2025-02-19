@@ -1,15 +1,6 @@
 package com.sinalez.sinaleasy_back.controllers;
 
-import java.util.Date;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-import java.text.SimpleDateFormat;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,32 +45,8 @@ public class CityController {
     public ResponseEntity<Object> getCityById(@PathVariable(value = "id") String id) {
         City city = cityService.getCityById(id);
         CityDTO cityResponseDTO = cityMapper.toDTO(city);
-
-        if (city != null) {
-            if (city.getSignals().size() != 0) {
-                double avgRatingFinished = 0;
-                double avgDelayUnfinished = 0;
-                int countFinished = 0;
-                LocalDate now = LocalDate.now();
-
-                for (int i = 0; i < city.getSignals().size(); i++) {
-                    if (city.getSignals().get(i).getStatus() == 3) {
-                        avgRatingFinished += city.getSignals().get(i).getGrade().getRating();
-                        countFinished++;
-                    } else {
-                        avgDelayUnfinished += ChronoUnit.DAYS.between(city.getSignals().get(i).getDate(), now);
-                    }
-                }
-
-                avgRatingFinished /= (countFinished + 1);
-                avgDelayUnfinished /= ((city.getSignals().size() - countFinished) + 1);
-                Integer rating = Integer
-                        .valueOf((int) ((avgRatingFinished / (1 + avgDelayUnfinished))));
-
-                cityResponseDTO = cityMapper.toDTO(city, rating);
-            }
-        }
-
+        if (city != null) 
+            cityService.calculateCityRating(city, cityResponseDTO);
         return ResponseEntity.status(HttpStatus.OK).body(cityResponseDTO);
     }
 

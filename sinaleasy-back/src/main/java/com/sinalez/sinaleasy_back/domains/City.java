@@ -30,4 +30,9 @@ public class City implements Serializable {
     @JsonBackReference
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Signal> signals;
+
+    public boolean hasSignals() {
+        return signals != null && !signals.isEmpty();
+    }
+    
 }
