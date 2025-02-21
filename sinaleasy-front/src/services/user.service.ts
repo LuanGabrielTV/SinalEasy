@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 })
 export class UserService {
 
-  url = 'http://localhost:8080/api/auth/';
+  url = 'https://backend-sinaleasy-xdau.onrender.com/api/auth/';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "http://localhost:4200/" })
   };
